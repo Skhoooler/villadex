@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:villadex/Util/nav_bar.dart';
+import 'package:villadex/Style/colors.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(const Villadex());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Villadex extends StatelessWidget {
+  const Villadex({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -15,28 +18,31 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('hello there'),
+
+      /// Body
+      body: Container(
+        color: VillaDexColors().background,
+        //child: //Text('Welcome Diana'),
       ),
-      body: Container(color: Colors.blue,)
+
+      /// Bottom Navigation Bar
+      bottomNavigationBar: const NavBar(),
     );
   }
 }
