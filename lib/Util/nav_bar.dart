@@ -4,6 +4,8 @@ import 'package:villadex/Style/colors.dart';
 
 import 'package:villadex/main.dart' as home;
 import 'package:villadex/Routes/finances.dart' as finances;
+import 'package:villadex/Routes/scheduling.dart' as scheduling;
+import 'package:villadex/Routes/marketing.dart' as marketing;
 
 /// NAV BAR
 /// Bottom Navigation bar. It is included in every page of the app
@@ -16,11 +18,13 @@ class NavBar extends StatefulWidget {
 
 /// Nav Bar State
 class _NavBarState extends State<NavBar> {
-  int selectedPage = 0;
+  static int selectedPage = 0;
 
   final _pageOptions = [
     const home.HomePage(),
     const finances.FinancesPage(),
+    const scheduling.SchedulingPage(),
+    const marketing.MarketingPage(),
   ];
 
   @override
