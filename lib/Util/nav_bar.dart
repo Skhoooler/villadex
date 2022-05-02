@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:villadex/Style/colors.dart';
 
 import 'package:villadex/main.dart' as home;
+import 'package:villadex/Routes/properties.dart' as properties;
 import 'package:villadex/Routes/finances.dart' as finances;
 import 'package:villadex/Routes/scheduling.dart' as scheduling;
 import 'package:villadex/Routes/marketing.dart' as marketing;
@@ -21,7 +22,7 @@ class _NavBarState extends State<NavBar> {
   static int selectedPage = 0;
 
   final _pageOptions = [
-    const home.HomePage(),
+    const properties.PropertiesPage(),
     const finances.FinancesPage(),
     const scheduling.SchedulingPage(),
     const marketing.MarketingPage(),

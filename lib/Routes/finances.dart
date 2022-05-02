@@ -16,7 +16,7 @@ class _FinancesPageState extends State<FinancesPage> {
     return Scaffold(
       /// Body
       body: Container (
-        color: VillaDexColors().accent,
+        color: VillaDexColors().background,
       ),
 
       /// Bottom Nav Bar

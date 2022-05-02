@@ -16,7 +16,7 @@ class _MarketingPageState extends State<MarketingPage> {
     return Scaffold(
       /// Body
       body: Container (
-        color: VillaDexColors().accent,
+        color: VillaDexColors().background,
       ),
 
       /// Bottom Nav Bar

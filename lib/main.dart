@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
+import 'package:villadex/Style/theme.dart' as villadex_theme;
+
+import 'package:villadex/Routes/properties.dart' as home;
 
 void main() {
   runApp(const Villadex());
@@ -15,9 +18,7 @@ class Villadex extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: villadex_theme.getTheme(),
       home: const HomePage(),
     );
   }
@@ -33,16 +34,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
+    return const Scaffold(
       /// Body
-      body: Container(
-        color: VillaDexColors().background,
-        //child: //Text('Welcome Diana'),
-      ),
-
-      /// Bottom Navigation Bar
-      bottomNavigationBar: const NavBar(),
+      body: home.PropertiesPage(),
     );
   }
 }
