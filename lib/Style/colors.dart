@@ -6,9 +6,15 @@
 import 'package:flutter/material.dart';
 
 class VillaDexColors {
-  Color primary    = const Color(0xFF698F3F);
-  Color background = const Color(0xFFE8EEEE);
+  /// Main Colors
+  Color primary    = const Color(0xFF85D523);
+  Color background = const Color(0xFFDBD4D2);
   Color accent     = const Color(0xFF695958);
+  Color text       = const Color(0xFF030000);
+  Color textFaded  = const Color(0x74030000);
+
+  /// Gradients
+  Color primaryGradient = const Color(0xFF698F3F);
 
   /// Pie Chart Colors
   Color pieChartText  = const Color(0xffffffff);
@@ -16,4 +22,14 @@ class VillaDexColors {
   Color pieChartTwo   = const Color(0xffd49444);
   Color pieChartThree = const Color(0xff845bef);
   Color pieChartFour  = const Color(0xff13d38e);
+
+  /// Calendar Colors
+  Color calendarBackground = const Color(0x604682b4);
+  Color calendarBackgroundAccent = const Color(0xFF31697e);
+  Color calendarBackgroundText = const Color(0xFFb47946);
+
+  /// Other
+  Color error = const Color(0xFFFD0E0E);
+  Color blue  = const Color(0xff0293ee);
+
 }
