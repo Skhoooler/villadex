@@ -14,7 +14,7 @@ ThemeData getTheme() {
   );
 }
 
-/// Styling for the Calendar
+/// Styling for the Calendar Body
 CalendarStyle getCalendarStyle() {
   return CalendarStyle(
     canMarkersOverflow: false,
@@ -41,5 +41,16 @@ CalendarStyle getCalendarStyle() {
     weekendTextStyle: VilladexTextStyles().getCalendarTextStyle().copyWith(
         color: VillaDexColors().calendarBackgroundAccent,
         fontWeight: FontWeight.w900),
+  );
+}
+
+/// Styling for the Calendar Head
+HeaderStyle getCalendarHeaderStyle() {
+  return const HeaderStyle(
+    titleCentered: false,
+
+    // Chevron are the '<' '>' icons to swipe the calendar to the left or right
+    rightChevronVisible: true,
+    leftChevronVisible: true,
   );
 }
