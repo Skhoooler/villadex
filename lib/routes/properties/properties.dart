@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
-import 'package:villadex/Util/Properties/property_list_item.dart';
+import 'package:villadex/routes/properties/property_list_item.dart';
 
 List<Widget> _properties = [];
 
@@ -36,7 +36,6 @@ class _PropertiesPageState extends State<PropertiesPage> {
 
   @override
   Widget build(BuildContext context) {
-    double _marqueeWidth = MediaQuery.of(context).size.width * .5;
 
     return Scaffold(
       /// Body
@@ -244,7 +243,6 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                               state: _stateController.text,
                                               zip: _zipController.text,
                                               country: _countryController.text,
-                                              marqueeWidth: _marqueeWidth,
                                             ));
                                           });
 

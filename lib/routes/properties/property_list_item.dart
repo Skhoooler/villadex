@@ -14,7 +14,6 @@ class PropertyListItem extends StatelessWidget {
   final String state;
   final String zip;
   final String country;
-  final double marqueeWidth;
 
   final TextStyle nameStyle = const TextStyle(fontSize: 18);
   final TextStyle addressStyle = const TextStyle(fontSize: 16);
@@ -26,7 +25,6 @@ class PropertyListItem extends StatelessWidget {
       required this.state,
       required this.zip,
       required this.country,
-      required this.marqueeWidth,
       /*this.name ='',
        this.street = '',
        this.city = '',
@@ -39,6 +37,7 @@ class PropertyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double marqueeWidth = MediaQuery.of(context).size.width * .5;
     const String assetName = 'lib/res/default_house.svg';
 
     return GestureDetector(
@@ -76,7 +75,7 @@ class PropertyListItem extends StatelessWidget {
               children: [
                 Builder(
                   builder: (context) {
-                    if (_willTextOverflow(text: name, style: nameStyle)) {
+                    if (_willTextOverflow(text: name, style: nameStyle, marqueeWidth: marqueeWidth)) {
                       return SizedBox(
                         height: 23,
                         width: marqueeWidth,
@@ -99,7 +98,7 @@ class PropertyListItem extends StatelessWidget {
                 const Text(""),
                 Builder(
                   builder: (context) {
-                    if (_willTextOverflow(text: name, style: addressStyle)) {
+                    if (_willTextOverflow(text: name, style: addressStyle, marqueeWidth: marqueeWidth)) {
                       return SizedBox(
                         height: 20,
                         width: marqueeWidth,
@@ -129,7 +128,7 @@ class PropertyListItem extends StatelessWidget {
                 ),
                 Builder(
                   builder: (context) {
-                    if (_willTextOverflow(text: name, style: addressStyle)) {
+                    if (_willTextOverflow(text: name, style: addressStyle, marqueeWidth: marqueeWidth)) {
                       return SizedBox(
                         width: marqueeWidth,
                         height: 20,
@@ -152,7 +151,7 @@ class PropertyListItem extends StatelessWidget {
                 ),
                 Builder(
                   builder: (context) {
-                    if (_willTextOverflow(text: name, style: addressStyle)) {
+                    if (_willTextOverflow(text: name, style: addressStyle, marqueeWidth: marqueeWidth)) {
                       return SizedBox(
                         width: marqueeWidth,
                         height: 20,
@@ -180,7 +179,7 @@ class PropertyListItem extends StatelessWidget {
     );
   }
 
-  bool _willTextOverflow({required String text, required TextStyle style}) {
+  bool _willTextOverflow({required String text, required TextStyle style, required double marqueeWidth}) {
     final TextPainter textPainter = TextPainter(
       text: TextSpan(text: text, style: style),
       maxLines: 1,
