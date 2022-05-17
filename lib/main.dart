@@ -4,7 +4,7 @@ import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
 import 'package:villadex/Style/theme.dart' as villadex_theme;
 
-import 'package:villadex/Routes/properties.dart' as home;
+import 'package:villadex/Routes/properties/properties.dart' as home;
 
 void main() {
   runApp(const Villadex());
