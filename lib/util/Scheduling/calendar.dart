@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:table_calendar/table_calendar.dart';
-import 'package:villadex/Util/calendar_item.dart';
+import 'package:villadex/Util/Scheduling/calendar_item.dart';
 
 import 'package:villadex/Style/colors.dart';
 import 'package:villadex/Style/theme.dart';

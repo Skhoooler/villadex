@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
-import 'package:villadex/Util/pie_chart.dart' as chart;
+import 'package:villadex/Util/Finances/pie_chart.dart' as chart;
 
 class FinancesPage extends StatefulWidget {
   const FinancesPage({Key? key}) : super(key: key);

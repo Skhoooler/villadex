@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class VillaDexColors {
   /// Main Colors
   Color primary    = const Color(0xFF85D523);
+  Color secondary  = const Color(0xFF204525);
   Color background = const Color(0xFFDBD4D2);
   Color accent     = const Color(0xFF695958);
   Color text       = const Color(0xFF030000);

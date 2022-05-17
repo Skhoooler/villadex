@@ -7,10 +7,42 @@ import 'package:villadex/Style/text_styles.dart';
 /// Theming for the entire app
 ThemeData getTheme() {
   return ThemeData(
+    /// Decoration for Page Transitions
     pageTransitionsTheme: const PageTransitionsTheme(builders: {
       TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
     }),
+
+    /// Decoration for TextFields
+    inputDecorationTheme: InputDecorationTheme(
+
+      isDense: true,
+
+      // Default
+      border: const UnderlineInputBorder(),
+
+      // Focused
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40),
+        borderSide: BorderSide(
+          color: VillaDexColors().primary,
+          width: 2.0,
+        ),
+      ),
+      labelStyle: TextStyle(
+        color: VillaDexColors().secondary
+      ),
+
+      // Error
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: VillaDexColors().error,
+          width: 2.0,
+        ),
+      ),
+      errorStyle: TextStyle(color: VillaDexColors().error),
+      errorMaxLines: 2,
+    ),
   );
 }
 

@@ -11,17 +11,21 @@ class MarketingPage extends StatefulWidget {
 }
 
 class _MarketingPageState extends State<MarketingPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       /// Body
-      body: Container (
+      body: Container(
         color: VillaDexColors().background,
+        child: Column(
+          children: [
+          ],
+        ),
       ),
 
       /// Bottom Nav Bar
       bottomNavigationBar: const NavBar(),
     );
   }
-
 }
