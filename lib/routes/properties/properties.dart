@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
 import 'package:villadex/routes/properties/property_list_item.dart';
+import 'package:villadex/model/property.dart';
 
 List<Widget> _properties = [];
 
@@ -232,7 +233,6 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                       child: ElevatedButton(
                                         onPressed: () {
                                           setState(() {
-                                            // Todo: Add this to the database
 
                                             // Add the entry to the _properties list
                                             _properties.add(PropertyListItem(
