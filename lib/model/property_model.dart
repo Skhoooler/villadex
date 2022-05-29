@@ -27,33 +27,31 @@ class Property {
   Property.fromJSON({required Map<String, dynamic> json})
       : name = json['name'],
         owner = json['owner'],
-        _address = Address.fromJson(json: json['location']),
+        _address = Address.fromJSON(json: json['location']),
         _primaryKey = json['property_id'],
         _dateCreated = DateTime.fromMillisecondsSinceEpoch(json['dateCreated']);
 
   /// Data
   String name;
   String? owner;
-  final Address _address;
 
   /*final List<Event> calendar;
   final List<Expenditure> expenditures;
   final List<Associate> associates;
   final List<Earning> earnings;*/
 
+  final Address _address;
   final int? _primaryKey;
   final DateTime _dateCreated;
 
   ///Methods
   Future<void> insert() async {
-    String dateCreated = _dateCreated.toIso8601String().trim();
-
     Map<String, dynamic> data = {
       // SQFlite sets the primary key
       'name': name,
       'owner': owner,
-      'location': address.toJson(),
-      'dateCreated': dateCreated,
+      'location': address.toJSON(),
+      'dateCreated': _dateCreated.toIso8601String().trim()
     };
 
     await db.DatabaseConnection.database.then((databaseConnection) => {
@@ -74,6 +72,19 @@ class Property {
     });
   }
 
+  Map<String, dynamic> toJSON() {
+    return {
+      'name': name,
+      'owner': owner,
+      'location': address.toJSON(),
+      'dateCreated': _dateCreated.toIso8601String().trim()
+    };
+  }
+
   /// Getters
+  DateTime get dateCreated => _dateCreated;
+
+  int get key => _primaryKey ?? 0;
+
   Address get address => _address;
 }

@@ -32,7 +32,7 @@ class Address {
         _propertyId = propertyKey,
         _associateId = associateKey;
 
-  Address.fromJson({required Map<String, dynamic> json})
+  Address.fromJSON({required Map<String, dynamic> json})
       : street1 = json['street1'],
         street2 = json['street2'],
         city = json['city'],
@@ -75,7 +75,6 @@ class Address {
         {databaseConnection?.insert('addresses', data)});
   }
 
-  // Returns an address by ID
   static Future<Address?> fetchById(int id) async {
     String sql = "SELECT * FROM addresses WHERE address_id = $id";
 
@@ -84,11 +83,11 @@ class Address {
         (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
-      return Address.fromJson(json: data[0]);
+      return Address.fromJSON(json: data[0]);
     });
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJSON() {
     return {
       'street1': street1,
       'street2': street2,
