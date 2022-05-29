@@ -1,0 +1,113 @@
+CREATE TABLE properties(
+  property_id INTEGER PRIMARY KEY,
+  dateCreated TEXT NOT NULL,
+
+  name TEXT NOT NULL,
+  location TEXT NOT NULL,
+  owner TEXT NOT NULL,
+
+  calendar TEXT,
+  expenditures TEXT,
+  associates TEXT,
+  earnings TEXT);
+
+ CREATE TABLE expenditures(
+   expenditure_id INTEGER PRIMARY KEY,
+   property_id INTEGER NOT NULL,
+   dateCreated TEXT NOT NULL,
+
+   name TEXT NOT NULL,
+   amount REAL NOT NULL,
+   numberUnits INTEGER NOT NULL,
+   isPaid INTEGER NOT NULL,
+
+   description TEXT,
+   category TEXT,
+   date TEXT,
+   associates TEXT,
+
+   FOREIGN KEY (property_id)
+     REFERENCES properties(property_id)
+ );
+
+ CREATE TABLE earnings(
+   earning_id INTEGER PRIMARY KEY,
+   property_id INTEGER NOT NULL,
+   dateCreated TEXT NOT NULL,
+
+   name TEXT NOT NULL,
+   amount REAL NOT NULL,
+
+   description TEXT,
+   category TEXT,
+   date TEXT,
+   associates TEXT,
+
+   FOREIGN KEY (property_id)
+     REFERENCES properties(property_id)
+ );
+
+ CREATE TABLE categories(
+   category_id INTEGER NOT NULL,
+   dateCreated TEXT NOT NULL,
+
+   name TEXT NOT NULL
+ );
+
+ CREATE TABLE associates(
+   associate_id INTEGER PRIMARY KEY,
+   property_id INTEGER NOT NULL,
+   dateCreated TEXT NOT NULL,
+
+   name TEXT NOT NULL,
+
+   contact TEXT,
+   role TEXT,
+   payments TEXT,
+   FOREIGN KEY (property_id)
+     REFERENCES properties (property_id)
+ );
+
+ CREATE TABLE contact (
+   associate_id INTEGER NOT NULL,
+
+   phoneNumber TEXT,
+   email TEXT,
+   FOREIGN KEY (associate_id)
+     REFERENCES associates (associate_id)
+ );
+
+ CREATE TABLE addresses (
+   address_id INTEGER PRIMARY KEY,
+   property_id INTEGER,
+   associate_id INTEGER,
+   dateCreated TEXT NOT NULL,
+
+   street1 TEXT NOT NULL,
+   street2 TEXT,
+   city TEXT NOT NULL,
+   zip TEXT,
+   state TEXT,
+   country TEXT,
+   FOREIGN KEY (property_id)
+     REFERENCES properties (property_id),
+   FOREIGN KEY (associate_id)
+     REFERENCES associates (associate_id)
+ );
+
+ CREATE TABLE event (
+   event_id INTEGER PRIMARY KEY,
+   property_id INTEGER NOT NULL,
+   dateCreated TEXT NOT NULL,
+
+   name TEXT NOT NULL,
+
+   description TEXT,
+   address TEXT,
+   associates TEXT,
+   expenditures TEXT,
+   earnings TEXT,
+
+   FOREIGN KEY (property_id)
+     REFERENCES properties (property_id)
+ );

@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marquee/marquee.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
-import 'package:villadex/model/property.dart';
+import 'package:villadex/model/property_model.dart';
 import 'package:villadex/style/colors.dart';
 import 'package:villadex/routes/properties/info_page.dart';
 import 'package:villadex/style/text_styles.dart';
@@ -16,15 +16,7 @@ class PropertyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const String assetName = 'lib/res/default_house.svg';
-    final String fullAddress = propertyData.streetAddress +
-        " " +
-        propertyData.city +
-        ", " +
-        propertyData.state +
-        " " +
-        propertyData.zip +
-        ", " +
-        propertyData.country;
+    final String fullAddress = propertyData.address.fullAddress;
 
     return Scaffold(
       body: Container(

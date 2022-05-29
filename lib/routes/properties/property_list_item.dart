@@ -4,30 +4,18 @@ import 'package:marquee/marquee.dart';
 
 import 'package:villadex/routes/properties/property_page.dart';
 import 'package:villadex/style/colors.dart';
-import 'package:villadex/model/property.dart';
+import 'package:villadex/model/property_model.dart';
+import 'package:villadex/model/address_model.dart';
 
 // Marquee Guide: https://medium.com/codechai/anatomy-of-flutter-marquee-extensions-scroll-that-text-73951395a564
 
 class PropertyListItem extends StatelessWidget {
-  final String name;
-  final String street;
-  final String city;
-  final String state;
-  final String zip;
-  final String country;
+  final Property property;
 
   final TextStyle nameStyle = const TextStyle(fontSize: 18);
   final TextStyle addressStyle = const TextStyle(fontSize: 16);
 
-  const PropertyListItem(
-      {required this.name,
-      required this.street,
-      required this.city,
-      required this.state,
-      required this.zip,
-      required this.country,
-      Key? key})
-      : super(key: key);
+  const PropertyListItem({required this.property, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,22 +24,12 @@ class PropertyListItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Property property = Property(
-          name: name,
-          streetAddress: street,
-          city: city,
-          state: state,
-          zip: zip,
-          country: country,
-        );
-
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => PropertyPage(propertyData: property)),
         );
       },
-
       child: Container(
         height: 120,
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -82,11 +60,11 @@ class PropertyListItem extends StatelessWidget {
                   /// Name of Property
                   builder: (context) {
                     if (_willTextOverflow(
-                        text: name,
+                        text: property.name,
                         style: nameStyle,
                         marqueeWidth: textMaxWidth)) {
                       return Marquee(
-                        text: name,
+                        text: property.name,
                         style: nameStyle,
                         blankSpace: 50,
                         velocity: 30,
@@ -99,7 +77,7 @@ class PropertyListItem extends StatelessWidget {
                       return SizedBox(
                         height: 20,
                         width: textMaxWidth,
-                        child: Text(name, style: nameStyle),
+                        child: Text(property.name, style: nameStyle),
                       );
                     }
                   },
@@ -111,11 +89,15 @@ class PropertyListItem extends StatelessWidget {
                 Builder(
                   builder: (context) {
                     if (_willTextOverflow(
-                        text: name,
+                        text: property.address.street1 +
+                            ' ' +
+                            property.address.street2,
                         style: addressStyle,
                         marqueeWidth: textMaxWidth)) {
                       return Marquee(
-                        text: street,
+                        text: property.address.street1 +
+                            ' ' +
+                            property.address.street2,
                         style: addressStyle,
                         blankSpace: textMaxWidth / 3,
                         velocity: 37,
@@ -129,7 +111,9 @@ class PropertyListItem extends StatelessWidget {
                         height: 20,
                         width: textMaxWidth,
                         child: Text(
-                          street,
+                          property.address.street1 +
+                              ' ' +
+                              property.address.street2,
                           style: addressStyle,
                           maxLines: 1,
                         ),
@@ -142,11 +126,19 @@ class PropertyListItem extends StatelessWidget {
                 Builder(
                   builder: (context) {
                     if (_willTextOverflow(
-                        text: name,
+                        text: property.address.city +
+                            ', ' +
+                            property.address.state +
+                            ' ' +
+                            property.address.zip,
                         style: addressStyle,
                         marqueeWidth: textMaxWidth)) {
                       return Marquee(
-                        text: city + ", " + state + " " + zip,
+                        text: property.address.city +
+                            ', ' +
+                            property.address.state +
+                            ' ' +
+                            property.address.zip,
                         style: addressStyle,
                         blankSpace: 50,
                         velocity: 37,
@@ -159,7 +151,12 @@ class PropertyListItem extends StatelessWidget {
                       return SizedBox(
                         height: 20,
                         width: textMaxWidth,
-                        child: Text(city + ", " + state + " " + zip,
+                        child: Text(
+                            property.address.city +
+                                ', ' +
+                                property.address.state +
+                                ' ' +
+                                property.address.zip,
                             style: addressStyle),
                       );
                     }
@@ -170,11 +167,11 @@ class PropertyListItem extends StatelessWidget {
                 Builder(
                   builder: (context) {
                     if (_willTextOverflow(
-                        text: name,
+                        text: property.address.country,
                         style: addressStyle,
                         marqueeWidth: textMaxWidth)) {
                       return Marquee(
-                        text: country,
+                        text: property.address.country,
                         style: addressStyle,
                         blankSpace: 50,
                         velocity: 37,
@@ -187,7 +184,8 @@ class PropertyListItem extends StatelessWidget {
                       return SizedBox(
                         height: 20,
                         width: textMaxWidth,
-                        child: Text(country, style: addressStyle),
+                        child:
+                            Text(property.address.country, style: addressStyle),
                       );
                     }
                   },

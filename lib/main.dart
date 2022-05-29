@@ -4,6 +4,9 @@ import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
 import 'package:villadex/Style/theme.dart' as villadex_theme;
 
+import 'package:villadex/model/database.dart' as db;
+import 'package:villadex/model/address_model.dart';
+
 import 'package:villadex/Routes/properties/properties.dart' as home;
 
 void main() {
@@ -34,6 +37,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+
     return const Scaffold(
       /// Body
       body: home.PropertiesPage(),

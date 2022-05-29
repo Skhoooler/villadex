@@ -7,7 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
 import 'package:villadex/routes/properties/property_list_item.dart';
-import 'package:villadex/model/property.dart';
+
+import 'package:villadex/model/property_model.dart';
+import 'package:villadex/model/address_model.dart';
 
 List<Widget> _properties = [];
 
@@ -37,7 +39,6 @@ class _PropertiesPageState extends State<PropertiesPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       /// Body
       body: Container(
@@ -232,21 +233,34 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                       /// Continue Button
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          setState(() {
+                                          /// Create the property Object
+                                          Property property = Property(
+                                              name: _nameController.text,
+                                              owner: "Diana Doria", // todo: Make this not hard coded
+                                              address: Address(
+                                                  street1:
+                                                  _streetAddressController
+                                                      .text,
+                                                  city: _cityController.text,
+                                                  state:
+                                                  _stateController.text,
+                                                  zip: _zipController.text,
+                                                  country: _countryController
+                                                      .text));
 
+                                           /// Add the property Item to the database
+                                          property.insert();
+                                          property.address.insert();
+
+                                          /// Set the state of the widget with a new PropertyListItem
+                                          setState(() {
                                             // Add the entry to the _properties list
                                             _properties.add(PropertyListItem(
-                                              name: _nameController.text,
-                                              street:
-                                                  _streetAddressController.text,
-                                              city: _cityController.text,
-                                              state: _stateController.text,
-                                              zip: _zipController.text,
-                                              country: _countryController.text,
+                                              property: property,
                                             ));
                                           });
 
-                                          // Clear the Controller
+                                          /// Clear the Text Controllers
                                           _nameController.clear();
                                           _streetAddressController.clear();
                                           _cityController.clear();
