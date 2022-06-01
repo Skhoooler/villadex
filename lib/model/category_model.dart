@@ -34,23 +34,21 @@ class Category {
   Future<void> insert() async {
     Map<String, dynamic> data = {
       'name': name,
-      'category_id': _primaryKey,
       'parent_id': _parentKey,
       'dateCreated': _dateCreated.toIso8601String()
     };
 
-    await db.DatabaseConnection.database.then((databaseConnection) => {
-          databaseConnection?.insert('categories', data,
-              conflictAlgorithm: ConflictAlgorithm.replace)
-        });
+    db.DatabaseConnection.database.then((databaseConnection) =>
+        databaseConnection?.insert('categories', data,
+            conflictAlgorithm: ConflictAlgorithm.replace));
   }
 
   static Future<Category?> fetchById(int id) async {
     String sql = "SELECT * FROM categories WHERE category_id = $id";
 
     Future<List<Map<String, dynamic>>>? rawData;
-    await db.DatabaseConnection.database.then(
-        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
+    db.DatabaseConnection.database.then(
+        (databaseConnection) => rawData = databaseConnection?.rawQuery(sql));
 
     return rawData?.then((data) {
       return Category.fromJSON(json: data[0]);

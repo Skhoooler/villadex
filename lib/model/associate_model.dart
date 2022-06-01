@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/expenditure_model.dart';
@@ -8,12 +9,11 @@ class Associate {
   /// Constructors
   Associate({
     required this.name,
-    required this.contact,
+    this.contact,
     this.role = '',
     List<Expenditure>? payments,
     required int propertyKey,
-  })
-      : _dateCreated = DateTime.now(),
+  })  : _dateCreated = DateTime.now(),
         _primaryKey = null,
         _propertyKey = propertyKey,
         payments = payments ?? [];
@@ -26,17 +26,17 @@ class Associate {
     required DateTime dateCreated,
     required int propertyKey,
     required int key,
-  })
-      : _dateCreated = dateCreated,
+  })  : _dateCreated = dateCreated,
         _primaryKey = key,
         _propertyKey = propertyKey,
         payments = payments ?? [];
 
-  Associate.fromJSON({
-    required Map<String, dynamic> json})
+  Associate.fromJSON({required Map<String, dynamic> json})
       : name = json['name'],
         role = json['owner'],
-        payments = json['payments'],
+        payments = jsonDecode(json['payments'])
+            .map((data) => Expenditure.fromJSON(json: data))
+            .toList(),
         contact = Contact.fromJSON(json: json['contact']),
         _primaryKey = json['associate_id'],
         _propertyKey = json['property_id'],
@@ -44,9 +44,9 @@ class Associate {
 
   /// Data
   final String name;
-  final String role;
-  List<Expenditure> payments;
-  final Contact contact;
+  final String? role;
+  List<Expenditure?>? payments;
+  final Contact? contact;
 
   final int? _primaryKey;
   final int _propertyKey;
@@ -54,15 +54,29 @@ class Associate {
 
   /// Methods
   Future<void> insert() async {
+    Map<String, dynamic> data = {
+      'associate_id': _primaryKey,
+      'property_id': _propertyKey,
+      'dateCreated': _dateCreated.toIso8601String(),
+      'name': name,
+      'contact': contact?.toJSON,
+      'role': role,
+      // JSON encode the list of expenditure objects. Turn each object into json, turn that
+      // into a list and then json encode it.
+      'payments': json.encode(
+          payments?.map((expenditure) => expenditure?.toJSON()).toList())
+    };
 
+    db.DatabaseConnection.database.then(
+        (databaseConnection) => databaseConnection?.insert('associates', data));
   }
 
-  static Future<Associate?> fetchById(int id) async{
-    String sql = "SELECT * FROM addresses WHERE associate_id = $id";
+  static Future<Associate?> fetchById(int id) async {
+    String sql = "SELECT * FROM associate WHERE associate_id = $id";
 
     Future<List<Map<String, dynamic>>>? rawData;
-    await db.DatabaseConnection.database.then(
-            (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
+    db.DatabaseConnection.database.then(
+        (databaseConnection) => rawData = databaseConnection?.rawQuery(sql));
 
     return rawData?.then((data) {
       return Associate.fromJSON(json: data[0]);
@@ -75,9 +89,12 @@ class Associate {
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String(),
       'name': name,
-      'contact': contact.toJSON,
+      'contact': contact?.toJSON,
       'role': role,
-      'payments': payments.join('|||') // Turns the list into a string separated by '|||'
+      // JSON encode the list of expenditure objects. Turn each object into json, turn that
+      // into a list and then json encode it.
+      'payments': json.encode(
+          payments?.map((expenditure) => expenditure?.toJSON()).toList())
     };
   }
 

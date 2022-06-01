@@ -82,8 +82,7 @@ class DatabaseConnection {
 
       description TEXT,
       category TEXT,
-      date TEXT,
-      associates TEXT,
+      date TEXT NOT NULL,
 
       FOREIGN KEY (property_id)
         REFERENCES properties(property_id)
@@ -138,7 +137,7 @@ class DatabaseConnection {
       city TEXT NOT NULL,
       zip TEXT,
       state TEXT,
-      country TEXT,
+      country TEXT NOT NULL,
       FOREIGN KEY (property_id)
         REFERENCES properties (property_id),
       FOREIGN KEY (associate_id)
@@ -146,7 +145,7 @@ class DatabaseConnection {
       );''');
 
     /// CREATE EVENT TABLE
-    batch.execute(''' CREATE TABLE event (
+    batch.execute(''' CREATE TABLE events (
       event_id INTEGER PRIMARY KEY,
       property_id INTEGER NOT NULL,
       dateCreated TEXT NOT NULL,
@@ -155,9 +154,6 @@ class DatabaseConnection {
 
       description TEXT,
       address TEXT,
-      associates TEXT,
-      expenditures TEXT,
-      earnings TEXT,
 
       FOREIGN KEY (property_id)
         REFERENCES properties (property_id)
