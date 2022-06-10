@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +10,7 @@ import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
 import 'package:villadex/routes/properties/property_list_item.dart';
 
+import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/property_model.dart';
 import 'package:villadex/model/address_model.dart';
 
@@ -39,6 +42,35 @@ class _PropertiesPageState extends State<PropertiesPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Get all properties from the database synchronously
+    unawaited(
+      db.DatabaseConnection.database.then((databaseConnection) {
+        // Get data from the database
+        try {
+          /*databaseConnection?.query("properties").then((data) => {
+                // Turn each property item into Property objects and insert them into the
+                // _properties list as PropertyListItems
+                for (var rawProperty in data)
+                  {
+                    _properties.add(
+                      PropertyListItem(
+                        property: (Property.fromJSON(json: rawProperty)),
+                      ),
+                    )
+                  }
+              });*/
+          Property.fetchById(1).then((data) => {
+                _properties.add(
+                  PropertyListItem(property: data!),
+                )
+              });
+        } catch (e) {
+          print("Error with getting all properties >>>>>>>>>>>>>>>>>>>>>>>>>");
+          print(e);
+        }
+      }),
+    );
+
     return Scaffold(
       /// Body
       body: Container(
@@ -236,19 +268,23 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                           /// Create the property Object
                                           Property property = Property(
                                               name: _nameController.text,
-                                              owner: "Diana Doria", // todo: Make this not hard coded
+                                              owner: "Diana Doria",
+                                              // todo: Make this not hard coded
                                               address: Address(
                                                   street1:
-                                                  _streetAddressController
-                                                      .text,
+                                                      _streetAddressController
+                                                          .text,
                                                   city: _cityController.text,
-                                                  state:
-                                                  _stateController.text,
+                                                  state: _stateController.text,
                                                   zip: _zipController.text,
-                                                  country: _countryController
-                                                      .text));
+                                                  country:
+                                                      _countryController.text),
+                                              events: [],
+                                              expenditures: [],
+                                              associates: [],
+                                              earnings: []);
 
-                                           /// Add the property Item to the database
+                                          /// Add the property Item to the database
                                           property.insert();
                                           property.address.insert();
 

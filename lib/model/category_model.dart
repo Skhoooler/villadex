@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:villadex/model/database.dart' as db;
 
@@ -55,13 +57,13 @@ class Category {
     });
   }
 
-  Map<String, dynamic> toJSON() {
-    return {
+  String toJSON() {
+    return jsonEncode({
       'name': name,
       'category_id': _primaryKey,
       'parent_id': _parentKey,
       'dateCreated': _dateCreated.toIso8601String()
-    };
+    });
   }
 
   /// Getters

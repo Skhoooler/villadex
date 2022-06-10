@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:villadex/model/database.dart' as db;
@@ -87,8 +89,8 @@ class Address {
     });
   }
 
-  Map<String, dynamic> toJSON() {
-    return {
+  String toJSON() {
+    return jsonEncode({
       'street1': street1,
       'street2': street2,
       'city': city,
@@ -99,7 +101,7 @@ class Address {
       'property_id': _propertyId,
       'associate_id': _associateId,
       'dateCreated': _dateCreated.toIso8601String()
-    };
+    });
   }
 
   /// Getters

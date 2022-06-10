@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:sqflite/sqflite.dart';
 
 import 'package:villadex/model/address_model.dart';
@@ -69,15 +71,15 @@ class Contact {
     });
   }
 
-  Map<String, dynamic> toJSON() {
-    return {
+  String toJSON() {
+    return jsonEncode({
       'contact_id': _primaryKey,
       'associate_id': _associateKey,
       'dateCreated': _dateCreated.toIso8601String(),
       'phoneNumber': phoneNumber,
       'email': email,
       'address': address?.toJSON(),
-    };
+    });
   }
 
   /// Getters

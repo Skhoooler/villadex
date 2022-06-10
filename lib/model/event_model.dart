@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:villadex/model/database.dart' as db;
@@ -71,15 +73,15 @@ class Event {
     });
   }
 
-  Map<String, dynamic> toJSON() {
-    return {
+  String toJSON() {
+    return jsonEncode({
       'name': name,
       'description': description,
       'address': address?.toJSON(),
       'event_id': _primaryKey,
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String()
-    };
+    });
   }
 
   /// Getters

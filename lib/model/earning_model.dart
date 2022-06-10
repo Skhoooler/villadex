@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/category_model.dart';
 
@@ -76,8 +78,8 @@ class Earning {
     });
   }
 
-  Map<String, dynamic> toJSON() {
-    return {
+  String toJSON() {
+    return jsonEncode({
       'name': name,
       'amount': amount,
       'description': description,
@@ -86,7 +88,7 @@ class Earning {
       'expenditure_id': _primaryKey,
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String()
-    };
+    });
   }
   /// Getters
   DateTime get dateCreated => _dateCreated;

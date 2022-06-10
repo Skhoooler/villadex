@@ -98,8 +98,8 @@ class Expenditure {
     });
   }
 
-  Map<String, dynamic> toJSON() {
-    return {
+  String toJSON() {
+    return jsonEncode({
       'name': name,
       'amount': amount,
       'numberUnits': numUnits,
@@ -112,7 +112,7 @@ class Expenditure {
       'expenditure_id': _primaryKey,
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String()
-    };
+    });
   }
 
   /// Getters

@@ -83,8 +83,8 @@ class Associate {
     });
   }
 
-  Map<String, dynamic> toJSON() {
-    return {
+  String toJSON() {
+    return jsonEncode({
       'associate_id': _primaryKey,
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String(),
@@ -95,7 +95,7 @@ class Associate {
       // into a list and then json encode it.
       'payments': json.encode(
           payments?.map((expenditure) => expenditure?.toJSON()).toList())
-    };
+    });
   }
 
   /// Getters

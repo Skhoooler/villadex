@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
 
@@ -49,18 +48,15 @@ class Property {
       : name = json['name'],
         owner = json['owner'],
         calendar = jsonDecode(json['calendar'])
-            .map((data) => Event.fromJSON(json: data))
-            .toList(),
+            .forEach((data) => Event.fromJSON(json: data)) ?? [],
         expenditures = jsonDecode(json['expenditures'])
-            .map((data) => Expenditure.fromJSON(json: data))
-            .toList(),
+            .forEach((data) => Expenditure.fromJSON(json: data)) ?? [],
         associates = jsonDecode(json['associates'])
-            .map((data) => Associate.fromJSON(json: data))
-            .toList(),
+            .forEach((data) => Associate.fromJSON(json: data)) ?? [],
         earnings = jsonDecode(json['earnings'])
-            .map((data) => Earning.fromJSON(json: data))
-            .toList(),
-        _address = Address.fromJSON(json: json['location']),
+            .forEach((data) => Earning.fromJSON(json: data)) ?? [],
+        _address = Address.fromJSON(json: jsonDecode(json['location'])),
+        //Address.fromJSON(json: jsonDecode(json['location'])),
         _primaryKey = json['property_id'],
         _dateCreated = DateTime.fromMillisecondsSinceEpoch(json['dateCreated']);
 
@@ -68,10 +64,10 @@ class Property {
   String name;
   String? owner;
 
-  final List<Event?>? calendar;
-  final List<Expenditure?>? expenditures;
-  final List<Associate?>? associates;
-  final List<Earning?>? earnings;
+  final List<Event?> calendar;
+  final List<Expenditure?> expenditures;
+  final List<Associate?> associates;
+  final List<Earning?> earnings;
 
   final Address _address;
   final int? _primaryKey;
@@ -84,50 +80,58 @@ class Property {
       'name': name,
       'owner': owner,
       'calendar':
-          json.encode(calendar?.map((event) => event?.toJSON()).toList()),
+          json.encode(calendar.map((event) => event?.toJSON()).toList()),
       'expenditures': json.encode(
-          expenditures?.map((expenditure) => expenditure?.toJSON()).toList()),
+          expenditures.map((expenditure) => expenditure?.toJSON()).toList()),
       'associates': json
-          .encode(associates?.map((associate) => associate?.toJSON()).toList()),
+          .encode(associates.map((associate) => associate?.toJSON()).toList()),
       'earnings':
-          json.encode(earnings?.map((earning) => earning?.toJSON()).toList()),
+          json.encode(earnings.map((earning) => earning?.toJSON()).toList()),
       'location': address.toJSON(),
       'dateCreated': _dateCreated.toIso8601String().trim()
     };
 
-    db.DatabaseConnection.database.then((databaseConnection) =>
-        {databaseConnection?.insert('properties', data,
-            conflictAlgorithm: ConflictAlgorithm.replace)});
+    db.DatabaseConnection.database.then((databaseConnection) => {
+          databaseConnection?.insert('properties', data,
+              conflictAlgorithm: ConflictAlgorithm.replace)
+        });
   }
 
   static Future<Property?> fetchById(int id) async {
     String sql = "SELECT * FROM properties WHERE property_id = $id";
 
     Future<List<Map<String, dynamic>>>? rawData;
-    db.DatabaseConnection.database.then(
-        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      rawData = databaseConnection?.rawQuery(sql);
+      return rawData?.then((data) => Property.fromJSON(json: data[0]));
+    });
+    /*db.DatabaseConnection.database.then(
+            (databaseConnection) =>
+        {
+          rawData = databaseConnection?.rawQuery(sql)
+        });
 
     return rawData?.then((data) {
       return Property.fromJSON(json: data[0]);
-    });
+    });*/
   }
 
-  Map<String, dynamic> toJSON() {
-    return {
+  String toJSON() {
+    return jsonEncode({
       'name': name,
       'owner': owner,
       'location': address.toJSON(),
       'calendar':
-          json.encode(calendar?.map((event) => event?.toJSON()).toList()),
+          json.encode(calendar.map((event) => event?.toJSON()).toList()),
       'expenditures': json.encode(
-          expenditures?.map((expenditure) => expenditure?.toJSON()).toList()),
+          expenditures.map((expenditure) => expenditure?.toJSON()).toList()),
       'associates': json
-          .encode(associates?.map((associate) => associate?.toJSON()).toList()),
+          .encode(associates.map((associate) => associate?.toJSON()).toList()),
       'earnings':
-          json.encode(earnings?.map((earning) => earning?.toJSON()).toList()),
+          json.encode(earnings.map((earning) => earning?.toJSON()).toList()),
       'dateCreated': _dateCreated.toIso8601String().trim(),
       'property_id': _primaryKey,
-    };
+    });
   }
 
   /// Getters
