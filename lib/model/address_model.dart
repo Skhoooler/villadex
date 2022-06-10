@@ -72,7 +72,7 @@ class Address {
     };
 
     db.DatabaseConnection.database.then(
-        (databaseConnection) => databaseConnection?.insert('addresses', data));
+        (databaseConnection) => {databaseConnection?.insert('addresses', data)});
   }
 
   static Future<Address?> fetchById(int id) async {
@@ -80,7 +80,7 @@ class Address {
 
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
-        (databaseConnection) => rawData = databaseConnection?.rawQuery(sql));
+        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Address.fromJSON(json: data[0]);

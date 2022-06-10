@@ -53,8 +53,8 @@ class Contact {
     };
 
     db.DatabaseConnection.database.then((databaseConnection) =>
-        databaseConnection?.insert('contact', data,
-            conflictAlgorithm: ConflictAlgorithm.replace));
+        {databaseConnection?.insert('contact', data,
+            conflictAlgorithm: ConflictAlgorithm.replace)});
   }
 
   static Future<Contact?> fetchById(int id) async {
@@ -62,7 +62,7 @@ class Contact {
 
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
-        (databaseConnection) => rawData = databaseConnection?.rawQuery(sql));
+        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Contact.fromJSON(json: data[0]);

@@ -96,8 +96,8 @@ class Property {
     };
 
     db.DatabaseConnection.database.then((databaseConnection) =>
-        databaseConnection?.insert('properties', data,
-            conflictAlgorithm: ConflictAlgorithm.replace));
+        {databaseConnection?.insert('properties', data,
+            conflictAlgorithm: ConflictAlgorithm.replace)});
   }
 
   static Future<Property?> fetchById(int id) async {
@@ -105,7 +105,7 @@ class Property {
 
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
-        (databaseConnection) => rawData = databaseConnection?.rawQuery(sql));
+        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Property.fromJSON(json: data[0]);

@@ -55,7 +55,7 @@ class Event {
     };
 
     db.DatabaseConnection.database.then(
-            (databaseConnection) => databaseConnection?.insert('events', data));
+            (databaseConnection) => {databaseConnection?.insert('events', data)});
   }
 
   static Future<Event?> fetchById(int id) async {
@@ -64,7 +64,7 @@ class Event {
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
             (databaseConnection) =>
-        rawData = databaseConnection?.rawQuery(sql));
+        {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Event.fromJSON(json: data[0]);

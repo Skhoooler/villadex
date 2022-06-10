@@ -68,7 +68,7 @@ class Associate {
     };
 
     db.DatabaseConnection.database.then(
-        (databaseConnection) => databaseConnection?.insert('associates', data));
+        (databaseConnection) => {databaseConnection?.insert('associates', data)});
   }
 
   static Future<Associate?> fetchById(int id) async {
@@ -76,7 +76,7 @@ class Associate {
 
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
-        (databaseConnection) => rawData = databaseConnection?.rawQuery(sql));
+        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Associate.fromJSON(json: data[0]);

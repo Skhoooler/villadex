@@ -39,8 +39,8 @@ class Category {
     };
 
     db.DatabaseConnection.database.then((databaseConnection) =>
-        databaseConnection?.insert('categories', data,
-            conflictAlgorithm: ConflictAlgorithm.replace));
+        {databaseConnection?.insert('categories', data,
+            conflictAlgorithm: ConflictAlgorithm.replace)});
   }
 
   static Future<Category?> fetchById(int id) async {
@@ -48,7 +48,7 @@ class Category {
 
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
-        (databaseConnection) => rawData = databaseConnection?.rawQuery(sql));
+        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Category.fromJSON(json: data[0]);

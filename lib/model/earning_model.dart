@@ -61,7 +61,7 @@ class Earning {
     };
 
     db.DatabaseConnection.database.then(
-        (databaseConnection) => databaseConnection?.insert('earnings', data));
+        (databaseConnection) => {databaseConnection?.insert('earnings', data)});
   }
 
   static Future<Earning?> fetchById(int id) async {
@@ -69,7 +69,7 @@ class Earning {
 
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
-            (databaseConnection) => rawData = databaseConnection?.rawQuery(sql));
+            (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Earning.fromJSON(json: data[0]);
