@@ -39,6 +39,11 @@ class _PropertiesPageState extends State<PropertiesPage> {
   final _imagePicker = ImagePicker();
 
   //File imageFile;
+  @override
+  void initState() {
+    // Load properties from the database
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,18 +52,6 @@ class _PropertiesPageState extends State<PropertiesPage> {
       db.DatabaseConnection.database.then((databaseConnection) {
         // Get data from the database
         try {
-          /*databaseConnection?.query("properties").then((data) => {
-                // Turn each property item into Property objects and insert them into the
-                // _properties list as PropertyListItems
-                for (var rawProperty in data)
-                  {
-                    _properties.add(
-                      PropertyListItem(
-                        property: (Property.fromJSON(json: rawProperty)),
-                      ),
-                    )
-                  }
-              });*/
           Property.fetchById(1).then((data) => {
                 _properties.add(
                   PropertyListItem(property: data!),

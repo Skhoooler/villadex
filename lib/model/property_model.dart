@@ -58,7 +58,7 @@ class Property {
         _address = Address.fromJSON(json: jsonDecode(json['location'])),
         //Address.fromJSON(json: jsonDecode(json['location'])),
         _primaryKey = json['property_id'],
-        _dateCreated = DateTime.fromMillisecondsSinceEpoch(json['dateCreated']);
+        _dateCreated = DateTime.parse(json['dateCreated']);
 
   /// Data
   String name;

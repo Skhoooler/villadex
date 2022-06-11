@@ -44,7 +44,7 @@ class Address {
         _primaryKey = json['address_id'],
         _propertyId = json['property_id'],
         _associateId = json['associate_id'],
-        _dateCreated = DateTime.parse(json['_dateCreated']);
+        _dateCreated = DateTime.parse(json['dateCreated']);
 
   /// Data
   final String street1;
