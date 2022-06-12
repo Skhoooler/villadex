@@ -5,8 +5,9 @@ import 'package:marquee/marquee.dart';
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/model/property_model.dart';
 import 'package:villadex/style/colors.dart';
-import 'package:villadex/routes/properties/info_page.dart';
 import 'package:villadex/style/text_styles.dart';
+
+import 'property_menu_widget.dart';
 
 class PropertyPage extends StatelessWidget {
   const PropertyPage({Key? key, required this.propertyData}) : super(key: key);
@@ -19,115 +20,113 @@ class PropertyPage extends StatelessWidget {
     final String fullAddress = propertyData.address.fullAddress;
 
     return Scaffold(
-      body: Container(
-        color: VillaDexColors().background,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            /// Image, Name and Address
-            Stack(
-              children: [
-                /// Image
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * .35,
-                  child: SvgPicture.asset(assetName, fit: BoxFit.fitWidth),
-                ),
-
-                /// Name and Back Button
-                Column(
-                  children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        /// Back Button
-                        IconButton(
-                          iconSize: 35,
-                          color: VillaDexColors().accent,
-                          icon: const Icon(
-                            Icons.arrow_back,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-
-                        const SizedBox(
-                          width: 10,
-                        ),
-
-                        /// Property Name
-                        Text(
-                          propertyData.name,
-                          style: VilladexTextStyles().getSecondaryTextStyle(),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-
-                /// Address
-                Positioned(
-                  top: MediaQuery.of(context).size.height * .315,
-                  child: SizedBox(
-                    height: 30,
-                    width: MediaQuery.of(context).size.width,
-                    child: Marquee(
-                      text: fullAddress,
-                      style: VilladexTextStyles().getTertiaryTextStyle(),
-                      blankSpace: 50,
-                      velocity: 30,
-                      pauseAfterRound: const Duration(milliseconds: 15000),
-                      decelerationCurve: Curves.decelerate,
-                      decelerationDuration: const Duration(milliseconds: 3000),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            /// Rest of Page
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      // https://www.youtube.com/watch?v=jgGRTC2Uruo - Flutter - How To Scroll Animate An Image Into an App Bar (CustomScrollView Widget)
+      body: CustomScrollView(
+        slivers: [
+          /// Image and App Bar
+          SliverAppBar(
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
                 children: [
-                  /// Recents
+                  /// Image
                   Container(
-                    width: MediaQuery.of(context).size.width * .9,
-                    height: MediaQuery.of(context).size.height * .50,
-                    margin: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: VillaDexColors().accent,
-                      borderRadius: const BorderRadius.all(Radius.circular(25)),
-                    ),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * .35,
+                    child: SvgPicture.asset(assetName, fit: BoxFit.fitWidth),
+                  ),
+
+                  /// Name and Back Button
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InfoPage(),
-                          InfoPage(),
-                          InfoPage(),
-                          Container(
-                            color: Colors.red,
+                          /// Back Button
+                          IconButton(
+                            iconSize: 35,
+                            color: VillaDexColors().accent,
+                            icon: const Icon(
+                              Icons.arrow_back,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+
+                          const SizedBox(
+                            width: 10,
+                          ),
+
+                          /// Property Name
+                          Text(
+                            propertyData.name,
+                            style: VilladexTextStyles().getSecondaryTextStyle(),
                           )
                         ],
+                      ),
+                    ],
+                  ),
+
+                  /// Address
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * .315,
+                    child: SizedBox(
+                      height: 30,
+                      width: MediaQuery.of(context).size.width,
+                      child: Marquee(
+                        text: fullAddress,
+                        style: VilladexTextStyles().getTertiaryTextStyle(),
+                        blankSpace: 50,
+                        velocity: 30,
+                        pauseAfterRound: const Duration(milliseconds: 15000),
+                        decelerationCurve: Curves.decelerate,
+                        decelerationDuration:
+                            const Duration(milliseconds: 3000),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+            automaticallyImplyLeading: false,
+
+            /// Other Options for the app bar
+            backgroundColor: VillaDexColors().background,
+            expandedHeight: MediaQuery.of(context).size.height * .35,
+            floating: true,
+            forceElevated: true,
+            snap: true,
+            elevation: 15,
+          ),
+
+          /// Main Content on the page
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Container(
+                  height: 1000,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: VillaDexColors().background,
+                  ),
+                  child: Column(
+                    children: const [
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
 
       /// Bottom Nav Bar
       bottomNavigationBar: const NavBar(),
+      floatingActionButton: const PropertyMenu(),
     );
   }
 }

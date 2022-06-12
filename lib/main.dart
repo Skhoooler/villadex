@@ -35,10 +35,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       /// Body
       body: home.PropertiesPage(
-        loadData: widget.loadData,
+        loadData: true,
       ),
     );
   }
