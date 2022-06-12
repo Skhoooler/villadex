@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:villadex/Util/nav_bar.dart';
-import 'package:villadex/Style/colors.dart';
 import 'package:villadex/Style/theme.dart' as villadex_theme;
-
-import 'package:villadex/model/database.dart' as db;
-import 'package:villadex/model/address_model.dart';
-
 import 'package:villadex/Routes/properties/properties.dart' as home;
 
 void main() {
@@ -22,13 +16,17 @@ class Villadex extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: villadex_theme.getTheme(),
-      home: const HomePage(),
+      home: const HomePage(
+        loadData: true,
+      ),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final bool loadData;
+
+  const HomePage({Key? key, this.loadData = false}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -37,10 +35,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-
-    return const Scaffold(
+    return Scaffold(
       /// Body
-      body: home.PropertiesPage(),
+      body: home.PropertiesPage(
+        loadData: widget.loadData,
+      ),
     );
   }
 }

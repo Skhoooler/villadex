@@ -105,15 +105,16 @@ class Property {
       rawData = databaseConnection?.rawQuery(sql);
       return rawData?.then((data) => Property.fromJSON(json: data[0]));
     });
-    /*db.DatabaseConnection.database.then(
-            (databaseConnection) =>
-        {
-          rawData = databaseConnection?.rawQuery(sql)
-        });
+  }
 
-    return rawData?.then((data) {
-      return Property.fromJSON(json: data[0]);
-    });*/
+  static Future<List<Property?>?> fetchAll() async {
+    String sql = "SELECT * FROM properties";
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Property.fromJSON(json: json)).toList();
+      });
+    });
   }
 
   String toJSON() {

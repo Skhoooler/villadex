@@ -14,19 +14,25 @@ import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/property_model.dart';
 import 'package:villadex/model/address_model.dart';
 
-List<Widget> _properties = [];
+List<Widget> _properties = [
+  const Center(child: Text("Fetching properties from database..."))
+];
 
 class PropertiesPage extends StatefulWidget {
-  const PropertiesPage({Key? key}) : super(key: key);
+  // If loadData is true, load all properties from the database.
+  // It is false by default
+  final bool loadData;
+
+  const PropertiesPage({
+    Key? key,
+    this.loadData = false,
+  }) : super(key: key);
 
   @override
   State<PropertiesPage> createState() => _PropertiesPageState();
 }
 
 class _PropertiesPageState extends State<PropertiesPage> {
-  _PropertyData data =
-      _PropertyData(name: '', address: '', city: '', state: '', zip: '');
-
   // Get data from text fields
   final _nameController = TextEditingController();
   final _streetAddressController = TextEditingController();
@@ -38,31 +44,40 @@ class _PropertiesPageState extends State<PropertiesPage> {
   // Get images from the user
   final _imagePicker = ImagePicker();
 
-  //File imageFile;
-  @override
-  void initState() {
-    // Load properties from the database
-
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Get all properties from the database synchronously
-    unawaited(
-      db.DatabaseConnection.database.then((databaseConnection) {
-        // Get data from the database
-        try {
-          Property.fetchById(1).then((data) => {
-                _properties.add(
-                  PropertyListItem(property: data!),
-                )
-              });
-        } catch (e) {
-          print("Error with getting all properties >>>>>>>>>>>>>>>>>>>>>>>>>");
-          print(e);
-        }
-      }),
-    );
+    // Load all properties from the database only once, the first time
+    // this widget is called.
+    // Todo: Fix duplicating property bug
+    if (widget.loadData) {
+      // Fetch the properties
+      unawaited(
+        db.DatabaseConnection.database.then((databaseConnection) {
+          // Get data from the database
+          try {
+            Property.fetchAll().then((propertyList) {
+              // Get rid of the "fetching properties message"
+              _properties.removeAt(0);
+
+              // Populate _properties with property data
+              if (propertyList!.isNotEmpty) {
+                for (var element in propertyList) {
+                  if (element != null) {
+                    _properties.add(PropertyListItem(property: element));
+                  }
+                }
+              }
+            });
+          } catch (e) {
+            // If an error occurs, add an error message to properties
+            _properties.add(
+              const Text(
+                  "An Error has occurred loading data from the database"),
+            );
+          }
+        }),
+      );
+    }
 
     return Scaffold(
       /// Body
@@ -130,13 +145,6 @@ class _PropertiesPageState extends State<PropertiesPage> {
                             builder: (builder) => XenPopupCard(
                               borderRadius: 32,
                               cardBgColor: VillaDexColors().background,
-
-                              /// App Bar
-                              /*appBar: const XenCardAppBar(
-                                child: Center(
-                                  child: Text('Add a new property'),
-                                ),
-                              ),*/
 
                               /// Body
                               body: Column(
@@ -350,21 +358,4 @@ class _PropertiesPageState extends State<PropertiesPage> {
 
     super.dispose();
   }
-}
-
-/// Class to temporarily hold information about the properties when it is being
-/// input
-class _PropertyData {
-  String name;
-  String address;
-  String city;
-  String state;
-  String zip;
-
-  _PropertyData(
-      {required this.name,
-      required this.address,
-      required this.city,
-      required this.state,
-      required this.zip});
 }
