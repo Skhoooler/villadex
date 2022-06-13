@@ -45,11 +45,15 @@ class _PropertiesPageState extends State<PropertiesPage> {
   final _imagePicker = ImagePicker();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     // Load all properties from the database only once, the first time
     // this widget is called.
-    // Todo: Fix duplicating property bug
     if (widget.loadData) {
+      // Clear the _properties
+      _properties = [
+        const Center(child: Text("Fetching properties from database..."))
+      ];
+
       // Fetch the properties
       unawaited(
         db.DatabaseConnection.database.then((databaseConnection) {
@@ -78,7 +82,12 @@ class _PropertiesPageState extends State<PropertiesPage> {
         }),
       );
     }
+    super.initState();
+  }
 
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       /// Body
       body: Container(
