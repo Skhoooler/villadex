@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:xen_popup_card/xen_card.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:villadex/Style/text_styles.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
@@ -35,7 +35,8 @@ class PropertiesPage extends StatefulWidget {
 class _PropertiesPageState extends State<PropertiesPage> {
   // Get data from text fields
   final _nameController = TextEditingController();
-  final _streetAddressController = TextEditingController();
+  final _streetAddress1Controller = TextEditingController();
+  final _streetAddress2Controller = TextEditingController();
   final _cityController = TextEditingController();
   final _stateController = TextEditingController();
   final _zipController = TextEditingController();
@@ -85,9 +86,10 @@ class _PropertiesPageState extends State<PropertiesPage> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
     return Scaffold(
       /// Body
       body: Container(
@@ -139,193 +141,336 @@ class _PropertiesPageState extends State<PropertiesPage> {
                           itemBuilder: (context, index) => _properties[index]),
                     ),
 
-                    /// Add property
+                    /// Add property modal
                     Expanded(
                       flex: 1,
                       child: Center(
                         child: IconButton(
-                          icon: Icon(
-                            Icons.add_rounded,
-                            color: VillaDexColors().accent,
-                            size: 40,
-                          ),
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (builder) => XenPopupCard(
-                              borderRadius: 32,
-                              cardBgColor: VillaDexColors().background,
-
-                              /// Body
-                              body: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  /// Image of the Property
-                                  Container(
-                                      /*child: imageFile == null
-                                      ? Container(
-
-                                    ),*/
-                                      ),
-
-                                  /// Name of the Property
-                                  TextFormField(
-                                    controller: _nameController,
-                                    autocorrect: false,
-                                    cursorColor: VillaDexColors().accent,
-                                    maxLines: 1,
-                                    decoration: const InputDecoration(
-                                        labelText: 'Property Name'),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-
-                                  /// Street Address
-                                  TextFormField(
-                                    controller: _streetAddressController,
-                                    autocorrect: false,
-                                    cursorColor: VillaDexColors().accent,
-                                    maxLines: 1,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Street Address',
-                                    ),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-
-                                  /// City
-                                  TextFormField(
-                                    controller: _cityController,
-                                    autocorrect: false,
-                                    cursorColor: VillaDexColors().accent,
-                                    maxLines: 1,
-                                    decoration: const InputDecoration(
-                                      labelText: 'City',
-                                    ),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-
-                                  Row(
-                                    children: [
-                                      /// State
-                                      Flexible(
-                                        child: TextFormField(
-                                          controller: _stateController,
-                                          autocorrect: false,
-                                          cursorColor: VillaDexColors().accent,
-                                          maxLines: 1,
-                                          decoration: const InputDecoration(
-                                            labelText: 'State',
-                                          ),
-                                        ),
-                                      ),
-
-                                      const SizedBox(
-                                        width: 30,
-                                      ),
-
-                                      /// Zip
-                                      Flexible(
-                                        child: TextFormField(
-                                          controller: _zipController,
-                                          autocorrect: false,
-                                          cursorColor: VillaDexColors().accent,
-                                          maxLines: 1,
-                                          decoration: const InputDecoration(
-                                            labelText: 'Zip',
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-
-                                  /// Country
-                                  TextFormField(
-                                    controller: _countryController,
-                                    autocorrect: false,
-                                    cursorColor: VillaDexColors().accent,
-                                    maxLines: 1,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Country',
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              /// Gutter
-                              gutter: XenCardGutter(
-                                shadow: const BoxShadow(spreadRadius: 0),
-                                borderRadius: 32,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 200,
-
-                                      /// Continue Button
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          /// Create the property Object
-                                          Property property = Property(
-                                              name: _nameController.text,
-                                              owner: "Diana Doria",
-                                              // todo: Make this not hard coded
-                                              address: Address(
-                                                  street1:
-                                                      _streetAddressController
-                                                          .text,
-                                                  city: _cityController.text,
-                                                  state: _stateController.text,
-                                                  zip: _zipController.text,
-                                                  country:
-                                                      _countryController.text),
-                                              events: [],
-                                              expenditures: [],
-                                              associates: [],
-                                              earnings: []);
-
-                                          /// Add the property Item to the database
-                                          property.insert();
-                                          property.address.insert();
-
-                                          /// Set the state of the widget with a new PropertyListItem
-                                          setState(() {
-                                            // Add the entry to the _properties list
-                                            _properties.add(PropertyListItem(
-                                              property: property,
-                                            ));
-                                          });
-
-                                          /// Clear the Text Controllers
-                                          _nameController.clear();
-                                          _streetAddressController.clear();
-                                          _cityController.clear();
-                                          _stateController.clear();
-                                          _zipController.clear();
-                                          _countryController.clear();
-
-                                          // Return to the main view
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Continue'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            icon: Icon(
+                              Icons.add_rounded,
+                              color: VillaDexColors().accent,
+                              size: 40,
                             ),
-                          ),
-                        ),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      height: 500,
+                                      color: VillaDexColors().background,
+                                      child: Center(
+                                        child: SingleChildScrollView(
+                                          child: Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                /// Add a new property
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 6.0,
+                                                      horizontal: 12),
+                                                  child: Text(
+                                                    "Add a new property",
+                                                    style: VilladexTextStyles()
+                                                        .getSecondaryTextStyle(),
+                                                  ),
+                                                ),
+
+                                                /// Name of the Property
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 6.0,
+                                                      horizontal: 12),
+                                                  child: TextFormField(
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return 'Please enter a property name';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    controller: _nameController,
+                                                    autocorrect: false,
+                                                    cursorColor:
+                                                        VillaDexColors().accent,
+                                                    maxLines: 1,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText:
+                                                                'Property Name'),
+                                                  ),
+                                                ),
+
+                                                /// Street Address 1
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 6.0,
+                                                      horizontal: 12),
+                                                  child: TextFormField(
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return 'Please enter an address';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    controller:
+                                                        _streetAddress1Controller,
+                                                    autocorrect: false,
+                                                    cursorColor:
+                                                        VillaDexColors().accent,
+                                                    maxLines: 1,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      labelText:
+                                                          'Street Address',
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                /// Street Address 2
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 6.0,
+                                                      horizontal: 12),
+                                                  child: TextFormField(
+                                                    validator: (value) {
+                                                      return null;
+                                                    },
+                                                    controller:
+                                                        _streetAddress2Controller,
+                                                    autocorrect: false,
+                                                    cursorColor:
+                                                        VillaDexColors().accent,
+                                                    maxLines: 1,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText:
+                                                                'Street Address 2'),
+                                                  ),
+                                                ),
+
+                                                /// City
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 6.0,
+                                                      horizontal: 12),
+                                                  child: TextFormField(
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return 'Please enter a city';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    controller: _cityController,
+                                                    autocorrect: false,
+                                                    cursorColor:
+                                                        VillaDexColors().accent,
+                                                    maxLines: 1,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      labelText: 'City',
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                /// State and Zip Code
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 6.0,
+                                                      horizontal: 12),
+                                                  child: Row(
+                                                    children: [
+                                                      /// State
+                                                      Flexible(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 6.0),
+                                                          child: TextFormField(
+                                                            validator: (value) {
+                                                              return null;
+                                                            },
+                                                            controller:
+                                                                _stateController,
+                                                            autocorrect: false,
+                                                            cursorColor:
+                                                                VillaDexColors()
+                                                                    .accent,
+                                                            maxLines: 1,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              labelText:
+                                                                  'State',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                      /// Zip
+                                                      Flexible(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 6.0),
+                                                          child: TextFormField(
+                                                            validator: (value) {
+                                                              return null;
+                                                            },
+                                                            controller:
+                                                                _zipController,
+                                                            autocorrect: false,
+                                                            cursorColor:
+                                                                VillaDexColors()
+                                                                    .accent,
+                                                            maxLines: 1,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              labelText: 'Zip',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+                                                /// Country
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 6.0,
+                                                      horizontal: 12),
+                                                  child: TextFormField(
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return 'Please enter a city';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    controller:
+                                                        _countryController,
+                                                    autocorrect: false,
+                                                    cursorColor:
+                                                        VillaDexColors().accent,
+                                                    maxLines: 1,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      labelText: 'Country',
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                // Continue Button
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                    left: 6.0,
+                                                    right: 6.0,
+                                                    top: 6.0,
+                                                    bottom:
+                                                        MediaQuery.of(context)
+                                                                .viewInsets
+                                                                .bottom +
+                                                            6,
+                                                  ),
+                                                  child: ElevatedButton(
+                                                      child: const Text(
+                                                          'Continue'),
+                                                      onPressed: () {
+                                                        if (_formKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          /// Create the property Object
+                                                          Property property =
+                                                              Property(
+                                                                  name:
+                                                                      _nameController
+                                                                          .text,
+                                                                  owner:
+                                                                      "Diana Doria",
+                                                                  // todo: Make this not hard coded
+                                                                  address: Address(
+                                                                      street1:
+                                                                          _streetAddress1Controller
+                                                                              .text,
+                                                                      street2:
+                                                                          _streetAddress2Controller
+                                                                              .text,
+                                                                      city: _cityController
+                                                                          .text,
+                                                                      state: _stateController
+                                                                          .text,
+                                                                      zip: _zipController
+                                                                          .text,
+                                                                      country:
+                                                                          _countryController
+                                                                              .text),
+                                                                  events: [],
+                                                                  expenditures: [],
+                                                                  associates: [],
+                                                                  earnings: []);
+
+                                                          /// Add the property Item to the database
+                                                          // todo: Uncomment this when it is ready
+                                                          //property.insert();
+                                                          //property.address.insert();
+
+                                                          /// Set the state of the widget with a new PropertyListItem
+                                                          setState(() {
+                                                            // Add the entry to the _properties list
+                                                            _properties.add(
+                                                                PropertyListItem(
+                                                              property:
+                                                                  property,
+                                                            ));
+                                                          });
+
+                                                          /// Clear the Text Controllers
+                                                          _nameController
+                                                              .clear();
+                                                          _streetAddress1Controller
+                                                              .clear();
+                                                          _streetAddress2Controller
+                                                              .clear();
+                                                          _cityController
+                                                              .clear();
+                                                          _stateController
+                                                              .clear();
+                                                          _zipController
+                                                              .clear();
+                                                          _countryController
+                                                              .clear();
+
+                                                          // Return to the main view
+                                                          Navigator.pop(
+                                                              context);
+                                                        }
+                                                      }),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            }),
                       ),
                     ),
                   ],
@@ -359,7 +504,8 @@ class _PropertiesPageState extends State<PropertiesPage> {
   void dispose() {
     // Get rid of text controller when the widget is disposed
     _nameController.dispose();
-    _streetAddressController.dispose();
+    _streetAddress1Controller.dispose();
+    _streetAddress2Controller.dispose();
     _cityController.dispose();
     _stateController.dispose();
     _zipController.dispose();

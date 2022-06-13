@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
 
@@ -141,4 +142,5 @@ class Property {
   int get key => _primaryKey ?? 0;
 
   Address get address => _address;
+
 }
