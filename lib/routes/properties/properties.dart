@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:villadex/Style/text_styles.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/Style/colors.dart';
 import 'package:villadex/routes/properties/property_list_item.dart';
+import 'package:villadex/Style/text_styles.dart';
 
 import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/property_model.dart';

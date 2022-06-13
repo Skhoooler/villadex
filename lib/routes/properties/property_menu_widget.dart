@@ -3,6 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:villadex/Style/colors.dart';
 
+import 'forms/earning.dart';
+import 'forms/expenditure.dart';
+import 'forms/associate.dart';
+import 'forms/event.dart';
+
 const double buttonSize = 70;
 
 // https://www.youtube.com/watch?v=EdJ-43J7HgQ
@@ -65,12 +70,32 @@ class _PropertyMenu extends State<PropertyMenu>
             /// Make the buttons do something
             if (icon == Icons.monetization_on) {
               // Add Earning
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return EarningForm().get();
+                  });
             } else if (icon == Icons.shopping_bag) {
               // Add Expenditure
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ExpenditureForm().get();
+                  });
             } else if (icon == Icons.event) {
               // Add Event
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return EventForm().get();
+                  });
             } else if (icon == Icons.person) {
               // Add Associate
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AssociateForm().get();
+                  });
             }
           },
         ),
