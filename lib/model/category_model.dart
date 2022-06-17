@@ -57,6 +57,16 @@ class Category {
     });
   }
 
+  static Future<List<Category?>?> fetchAll() async {
+    String sql = "SELECT * FROM categories";
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Category.fromJSON(json: json)).toList();
+      });
+    });
+  }
+
   String toJSON() {
     return jsonEncode({
       'name': name,
@@ -72,4 +82,6 @@ class Category {
   int get key => _primaryKey ?? 0;
 
   int get parentKey => _parentKey ?? 0;
+
+
 }

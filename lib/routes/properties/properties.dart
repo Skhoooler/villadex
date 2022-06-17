@@ -6,13 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
-import 'package:villadex/Style/colors.dart';
+import '../../style/colors.dart';
 import 'package:villadex/routes/properties/property_list_item.dart';
 import 'package:villadex/Style/text_styles.dart';
 
 import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/property_model.dart';
 import 'package:villadex/model/address_model.dart';
+
+
 
 List<Widget> _properties = [
   const Center(child: Text("Fetching properties from database..."))
@@ -93,7 +95,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
     return Scaffold(
       /// Body
       body: Container(
-        color: VillaDexColors().background,
+        color: VilladexColors().background,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -113,7 +115,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                   textScaleFactor: 2.0,
                   style: GoogleFonts.montserrat(
                     textStyle: TextStyle(
-                      color: VillaDexColors().accent,
+                      color: VilladexColors().accent,
                       fontSize: 20,
                       fontWeight: FontWeight.w300,
                       fontStyle: FontStyle.italic,
@@ -128,7 +130,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
               flex: 11,
               child: Container(
                 width: MediaQuery.of(context).size.width * .93,
-                color: VillaDexColors().background,
+                color: VilladexColors().background,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -148,7 +150,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                         child: IconButton(
                             icon: Icon(
                               Icons.add_rounded,
-                              color: VillaDexColors().accent,
+                              color: VilladexColors().accent,
                               size: 40,
                             ),
                             onPressed: () {
@@ -158,7 +160,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                   builder: (BuildContext context) {
                                     return Container(
                                       height: 500,
-                                      color: VillaDexColors().background,
+                                      color: VilladexColors().background,
                                       child: Center(
                                         child: SingleChildScrollView(
                                           child: Form(
@@ -200,7 +202,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                     controller: _nameController,
                                                     autocorrect: false,
                                                     cursorColor:
-                                                        VillaDexColors().accent,
+                                                        VilladexColors().accent,
                                                     maxLines: 1,
                                                     decoration:
                                                         const InputDecoration(
@@ -227,7 +229,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                         _streetAddress1Controller,
                                                     autocorrect: false,
                                                     cursorColor:
-                                                        VillaDexColors().accent,
+                                                        VilladexColors().accent,
                                                     maxLines: 1,
                                                     decoration:
                                                         const InputDecoration(
@@ -251,7 +253,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                         _streetAddress2Controller,
                                                     autocorrect: false,
                                                     cursorColor:
-                                                        VillaDexColors().accent,
+                                                        VilladexColors().accent,
                                                     maxLines: 1,
                                                     decoration:
                                                         const InputDecoration(
@@ -277,7 +279,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                     controller: _cityController,
                                                     autocorrect: false,
                                                     cursorColor:
-                                                        VillaDexColors().accent,
+                                                        VilladexColors().accent,
                                                     maxLines: 1,
                                                     decoration:
                                                         const InputDecoration(
@@ -309,7 +311,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                                 _stateController,
                                                             autocorrect: false,
                                                             cursorColor:
-                                                                VillaDexColors()
+                                                                VilladexColors()
                                                                     .accent,
                                                             maxLines: 1,
                                                             decoration:
@@ -336,7 +338,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                                 _zipController,
                                                             autocorrect: false,
                                                             cursorColor:
-                                                                VillaDexColors()
+                                                                VilladexColors()
                                                                     .accent,
                                                             maxLines: 1,
                                                             decoration:
@@ -368,7 +370,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                         _countryController,
                                                     autocorrect: false,
                                                     cursorColor:
-                                                        VillaDexColors().accent,
+                                                        VilladexColors().accent,
                                                     maxLines: 1,
                                                     decoration:
                                                         const InputDecoration(

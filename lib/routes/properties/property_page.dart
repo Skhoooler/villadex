@@ -48,7 +48,7 @@ class PropertyPage extends StatelessWidget {
                           /// Back Button
                           IconButton(
                             iconSize: 35,
-                            color: VillaDexColors().accent,
+                            color: VilladexColors().accent,
                             icon: const Icon(
                               Icons.arrow_back,
                             ),
@@ -95,12 +95,12 @@ class PropertyPage extends StatelessWidget {
             automaticallyImplyLeading: false,
 
             /// Other Options for the app bar
-            backgroundColor: VillaDexColors().background,
+            backgroundColor: VilladexColors().background,
             expandedHeight: MediaQuery.of(context).size.height * .35,
             floating: true,
             forceElevated: true,
             snap: true,
-            elevation: 15,
+            elevation: 0,
           ),
 
           /// Main Content on the page
@@ -111,7 +111,7 @@ class PropertyPage extends StatelessWidget {
                   height: 1000,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color: VillaDexColors().background,
+                    color: VilladexColors().background,
                   ),
                   child: Column(
                     children: const [

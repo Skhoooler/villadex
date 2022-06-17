@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import 'package:villadex/Style/colors.dart';
 import 'package:villadex/Style/text_styles.dart';
+
+import 'colors.dart';
 
 /// Theming for the entire app
 ThemeData getTheme() {
@@ -25,22 +26,22 @@ ThemeData getTheme() {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(40),
         borderSide: BorderSide(
-          color: VillaDexColors().primary,
+          color: VilladexColors().primary,
           width: 2.0,
         ),
       ),
       labelStyle: TextStyle(
-        color: VillaDexColors().secondary
+        color: VilladexColors().secondary
       ),
 
       // Error
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: VillaDexColors().error,
+          color: VilladexColors().error,
           width: 2.0,
         ),
       ),
-      errorStyle: TextStyle(color: VillaDexColors().error),
+      errorStyle: TextStyle(color: VilladexColors().error),
       errorMaxLines: 2,
     ),
   );
@@ -56,22 +57,22 @@ CalendarStyle getCalendarStyle() {
     /// Cell Decoration
     todayDecoration: ShapeDecoration(
       shape: const CircleBorder(),
-      color: VillaDexColors().primaryGradient,
+      color: VilladexColors().primaryGradient,
     ),
 
     /// TextStyles
     defaultTextStyle: VilladexTextStyles().getCalendarTextStyle(),
     disabledTextStyle: VilladexTextStyles().getCalendarTextStyle().copyWith(
-          color: VillaDexColors().error,
+          color: VilladexColors().error,
         ),
     holidayTextStyle: VilladexTextStyles()
         .getCalendarTextStyle()
-        .copyWith(color: VillaDexColors().blue),
+        .copyWith(color: VilladexColors().blue),
     outsideTextStyle: VilladexTextStyles()
         .getCalendarTextStyle()
-        .copyWith(color: VillaDexColors().calendarBackgroundText),
+        .copyWith(color: VilladexColors().calendarBackgroundText),
     weekendTextStyle: VilladexTextStyles().getCalendarTextStyle().copyWith(
-        color: VillaDexColors().calendarBackgroundAccent,
+        color: VilladexColors().calendarBackgroundAccent,
         fontWeight: FontWeight.w900),
   );
 }

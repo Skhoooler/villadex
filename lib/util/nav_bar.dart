@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:villadex/Style/colors.dart';
-
 import 'package:villadex/Routes/properties/properties.dart' as properties;
 import 'package:villadex/Routes/finances.dart' as finances;
 import 'package:villadex/Routes/scheduling.dart' as scheduling;
 import 'package:villadex/Routes/marketing.dart' as marketing;
+
+import '../style/colors.dart';
 
 /// NAV BAR
 /// Bottom Navigation bar. It is included in every page of the app
@@ -53,40 +53,40 @@ class _NavBarState extends State<NavBar> {
       items: [
         /// Properties
         BottomNavigationBarItem(
-          backgroundColor: VillaDexColors().background,
+          backgroundColor: VilladexColors().background,
           icon: Icon(
             Icons.home,
-            color: VillaDexColors().accent,
+            color: VilladexColors().accent,
           ),
           label: 'Properties',
         ),
 
         /// Finances
         BottomNavigationBarItem(
-          backgroundColor: VillaDexColors().background,
+          backgroundColor: VilladexColors().background,
           icon: Icon(
             Icons.attach_money_rounded,
-            color: VillaDexColors().accent,
+            color: VilladexColors().accent,
           ),
           label: 'Finances',
         ),
 
         /// Calendar
         BottomNavigationBarItem(
-          backgroundColor: VillaDexColors().background,
+          backgroundColor: VilladexColors().background,
           icon: Icon(
             Icons.event_rounded,
-            color: VillaDexColors().accent,
+            color: VilladexColors().accent,
           ),
           label: 'Calendar',
         ),
 
         /// Marketing
         BottomNavigationBarItem(
-          backgroundColor: VillaDexColors().background,
+          backgroundColor: VilladexColors().background,
           icon: Icon(
             Icons.group_rounded,
-            color: VillaDexColors().accent,
+            color: VilladexColors().accent,
           ),
           label: 'Marketing',
         )

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
-import 'package:villadex/Style/colors.dart';
+import '../style/colors.dart';
 import 'package:villadex/Util/Finances/pie_chart.dart' as chart;
 
 class FinancesPage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _FinancesPageState extends State<FinancesPage> {
     return Scaffold(
       /// Body
       body: Container(
-        color: VillaDexColors().background,
+        color: VilladexColors().background,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,47 +69,47 @@ class _FinancesPageState extends State<FinancesPage> {
       switch (i) {
         case 0:
           return PieChartSectionData(
-            color: VillaDexColors().pieChartOne,
+            color: VilladexColors().pieChartOne,
             value: 40,
             title: '40%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
-                color: VillaDexColors().pieChartText),
+                color: VilladexColors().pieChartText),
           );
         case 1:
           return PieChartSectionData(
-            color: VillaDexColors().pieChartTwo,
+            color: VilladexColors().pieChartTwo,
             value: 30,
             title: '30%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
-                color: VillaDexColors().pieChartText),
+                color: VilladexColors().pieChartText),
           );
         case 2:
           return PieChartSectionData(
-            color: VillaDexColors().pieChartThree,
+            color: VilladexColors().pieChartThree,
             value: 15,
             title: '15%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
-                color: VillaDexColors().pieChartText),
+                color: VilladexColors().pieChartText),
           );
         case 3:
           return PieChartSectionData(
-            color: VillaDexColors().pieChartFour,
+            color: VilladexColors().pieChartFour,
             value: 15,
             title: '15%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
-                color: VillaDexColors().pieChartText),
+                color: VilladexColors().pieChartText),
           );
         default:
           throw Error();

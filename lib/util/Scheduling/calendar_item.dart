@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import 'package:villadex/Style/colors.dart';
 import 'package:villadex/Style/theme.dart';
+
+import '../../style/colors.dart';
 
 class CalendarItem extends StatefulWidget {
   const CalendarItem(
@@ -53,7 +54,7 @@ class _CalendarItemState extends State<CalendarItem> {
           Container(
             height: 50,
             width: 50,
-            color: VillaDexColors().primary,
+            color: VilladexColors().primary,
           ),
         ],
       ),

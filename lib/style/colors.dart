@@ -5,7 +5,7 @@
 
 import 'package:flutter/material.dart';
 
-class VillaDexColors {
+class VilladexColors {
   /// Main Colors
   Color primary    = const Color(0xFF85D523);
   Color secondary  = const Color(0xFF204525);

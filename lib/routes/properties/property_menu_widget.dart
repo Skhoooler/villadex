@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:villadex/Style/colors.dart';
 
+import '../../style/colors.dart';
 import 'forms/earning.dart';
 import 'forms/expenditure.dart';
 import 'forms/associate.dart';
@@ -56,8 +56,8 @@ class _PropertyMenu extends State<PropertyMenu>
 
           /// This may cause problems! For now it solves them though...
           elevation: 0,
-          backgroundColor: VillaDexColors().accent,
-          splashColor: VillaDexColors().primary,
+          backgroundColor: VilladexColors().accent,
+          splashColor: VilladexColors().primary,
           child: Icon(icon, color: Colors.white, size: 45),
           onPressed: () {
             /// Expand and retract the buttons
@@ -80,7 +80,7 @@ class _PropertyMenu extends State<PropertyMenu>
               showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return ExpenditureForm().get();
+                    return ExpenditureForm().get(context);
                   });
             } else if (icon == Icons.event) {
               // Add Event

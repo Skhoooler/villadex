@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:villadex/Util/Scheduling/calendar_item.dart';
 import 'package:villadex/Util/Scheduling/calendar.dart';
 import 'package:villadex/Util/nav_bar.dart';
-import 'package:villadex/Style/colors.dart';
+
+import '../style/colors.dart';
 
 class SchedulingPage extends StatefulWidget {
   const SchedulingPage({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _SchedulingPageState extends State<SchedulingPage> {
     return Scaffold(
       /// Body
       body: Container(
-        color: VillaDexColors().background,
+        color: VilladexColors().background,
         child: Column(
           children: [
             VilladexCalendar(),
@@ -36,7 +37,7 @@ class _SchedulingPageState extends State<SchedulingPage> {
 
             /// Add new item
             IconButton(
-              color: VillaDexColors().accent,
+              color: VilladexColors().accent,
               onPressed: () {
                 setState(() {
                   _calendarItems.add(CalendarItem(

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:villadex/Util/Scheduling/calendar_item.dart';
 
-import 'package:villadex/Style/colors.dart';
 import 'package:villadex/Style/theme.dart';
+import '../../style/colors.dart';
 
 class VilladexCalendar extends StatefulWidget {
   const VilladexCalendar({Key? key}) : super(key: key);
@@ -26,8 +26,8 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            VillaDexColors().calendarBackground,
-            VillaDexColors().background
+            VilladexColors().calendarBackground,
+            VilladexColors().background
           ],
           begin: const Alignment(0.0, -1),
           end: const Alignment(0.0, .9),

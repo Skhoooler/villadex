@@ -1,7 +1,8 @@
 // Returns a form for adding an earning
 import 'package:flutter/material.dart';
-import 'package:villadex/Style/colors.dart';
 import 'package:villadex/Style/text_styles.dart';
+
+import '../../../style/colors.dart';
 
 class EarningForm {
   final _formKey = GlobalKey<FormState>();
@@ -15,7 +16,7 @@ class EarningForm {
   get() {
     return Container(
       height: 500,
-      color: VillaDexColors().background,
+      color: VilladexColors().background,
       child: Center(
         child: SingleChildScrollView(
           child: Form(

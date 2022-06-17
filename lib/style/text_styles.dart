@@ -10,7 +10,7 @@ class VilladexTextStyles {
   TextStyle getSecondaryTextStyle() {
     return GoogleFonts.openSans(
       textStyle: TextStyle(
-        color: VillaDexColors().text,
+        color: VilladexColors().text,
         fontWeight: FontWeight.w600,
         fontSize: 25
       )
@@ -21,7 +21,7 @@ class VilladexTextStyles {
   TextStyle getTertiaryTextStyle() {
     return GoogleFonts.openSans(
       textStyle: TextStyle(
-        color: VillaDexColors().text,
+        color: VilladexColors().text,
         fontWeight: FontWeight.w400,
         fontSize: 20,
       ),
@@ -32,7 +32,7 @@ class VilladexTextStyles {
   TextStyle getCalendarTextStyle() {
     return GoogleFonts.abel(
       textStyle: TextStyle(
-        color: VillaDexColors().text,
+        color: VilladexColors().text,
         fontWeight: FontWeight.w500
       )
     );

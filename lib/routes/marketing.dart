@@ -17,7 +17,7 @@ class _MarketingPageState extends State<MarketingPage> {
     return Scaffold(
       /// Body
       body: Container(
-        color: VillaDexColors().background,
+        color: VilladexColors().background,
         child: Column(
           children: [
           ],
