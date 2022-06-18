@@ -44,6 +44,9 @@ ThemeData getTheme() {
       errorStyle: TextStyle(color: VilladexColors().error),
       errorMaxLines: 2,
     ),
+
+    highlightColor: VilladexColors().primary,
+    splashColor: VilladexColors().accent,
   );
 }
 

@@ -31,95 +31,103 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         /// Select existing Categories
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              primary: VilladexColors().primary,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 6,
-              ),
-              onPrimary:
-                  VilladexTextStyles().getTertiaryTextStyleWhite().color),
-          onPressed: () {
-            // Show the dialog, then reset the state of the button
-            showDialog(
-                context: context,
-                builder: (context) {
-                  // Show a dialog
-                  return AlertDialog(
-                    title: const Text("Select a Category"),
-                    content: Container(
-                      width: MediaQuery.of(context).size.width * .75,
-                      height: MediaQuery.of(context).size.height * .5,
-                      decoration: BoxDecoration(
-                        color: VilladexColors().background2,
-                        border: Border.all(
-                          color: VilladexColors().accent,
-                          width: 5,
+        SizedBox(
+          width: MediaQuery.of(context).size.width * .75,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: VilladexColors().primary,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                onPrimary:
+                    VilladexTextStyles().getTertiaryTextStyleWhite().color),
+            onPressed: () {
+              // Show the dialog, then reset the state of the button
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    // Show a dialog
+                    return AlertDialog(
+                      title: const Text("Select a Category"),
+                      content: Container(
+                        width: MediaQuery.of(context).size.width * .75,
+                        height: MediaQuery.of(context).size.height * .5,
+                        decoration: BoxDecoration(
+                          //color: VilladexColors().background2,
+                          border: Border.all(
+                            color: VilladexColors().accent,
+                            width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      // Fetch all of the Categories from the database and build
-                      // a Listview from them
-                      child: FutureBuilder<List<Category?>?>(
-                        future: Category.fetchAll(),
-                        builder: (context, snapshot) {
-                          List<Widget> data = [];
+                        // Fetch all of the Categories from the database and build
+                        // a Listview from them
+                        child: FutureBuilder<List<Category?>?>(
+                          future: Category.fetchAll(),
+                          builder: (context, snapshot) {
+                            // todo: Fix the bug where the ListTile does not change color on click
+                            List<Widget> data = [];
 
-                          if (snapshot.hasData) {
-                            data = snapshot.data?.map((category) {
-                                  return ListTile(
-                                    title: Text(category?.name ?? "Error"),
-                                    focusColor: VilladexColors().primary,
-                                    hoverColor: VilladexColors().secondary,
-                                    selectedColor: VilladexTextStyles()
-                                        .getTertiaryTextStyleWhite()
-                                        .color,
-                                    tileColor:
-                                        selectedState[category?.name] ?? false
-                                            ? VilladexColors().primary
-                                            : VilladexColors().background2, // If it is selected, set the tile to green
-                                    textColor: VilladexColors().text,
-                                    selected:
-                                        selectedState[category?.name] ?? false,
-                                    enabled: true,
-                                    onTap: (() {
-                                      setState(() {
-                                        // Flip the state of the list tile's selected property
-                                        if (selectedState[category?.name] ==
-                                            true) {
-                                          selectedState[category?.name ?? ""] =
-                                              false;
-                                        } else {
-                                          selectedState[category?.name ?? ""] =
-                                              true;
-                                        }
-                                        selectedCategory =
-                                            category?.name ?? "Error";
-                                      });
-                                    }),
-                                  );
-                                }).toList() ??
-                                [
-                                  const ListTile(
-                                    title: Text("No Data"),
-                                  )
-                                ];
-                          }
+                            if (snapshot.hasData) {
+                              // Fill out selectedState Hashmap
+                              snapshot.data?.map((category) =>
+                                  selectedState[category?.name ?? ""] = false);
 
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return data[index];
-                              });
-                        },
+                              // Create a list of ListTiles from the data
+                              data = snapshot.data?.map((category) {
+                                    return ListTile(
+                                      title: Text(category?.name ?? "Error"),
+                                      focusColor: VilladexColors().primary,
+                                      hoverColor: VilladexColors().secondary,
+                                      selectedColor: VilladexTextStyles()
+                                          .getTertiaryTextStyleWhite()
+                                          .color,
+                                      selectedTileColor:
+                                          VilladexColors().primary,
+                                      textColor: VilladexColors().text,
+                                      selected:
+                                          selectedState[category?.name] ?? false,
+                                      enabled: true,
+                                      onTap: (() {
+                                        setState(() {
+                                          // Flip the state of the list tile's selected property
+                                          if (selectedState[category?.name] ==
+                                              true) {
+                                            selectedState[
+                                                category?.name ?? ""] = false;
+                                          } else {
+                                            selectedState[
+                                                category?.name ?? ""] = true;
+                                          }
+
+                                          selectedCategory =
+                                              category?.name ?? "Error";
+                                        });
+                                      }),
+                                    );
+                                  }).toList() ??
+                                  [
+                                    const ListTile(
+                                      title: Text("No Data"),
+                                    )
+                                  ];
+                            }
+
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return data[index];
+                                });
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                });
-          },
-          child: Text(selectedCategory),
+                    );
+                  });
+            },
+            child: Text(selectedCategory),
+          ),
         ),
 
         /// Add a new Category
