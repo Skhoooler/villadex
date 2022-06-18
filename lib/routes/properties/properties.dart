@@ -14,8 +14,6 @@ import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/property_model.dart';
 import 'package:villadex/model/address_model.dart';
 
-
-
 List<Widget> _properties = [
   const Center(child: Text("Fetching properties from database..."))
 ];
@@ -53,9 +51,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
     // this widget is called.
     if (widget.loadData) {
       // Clear the _properties
-      _properties = [
-        const Center(child: Text("Fetching properties from database..."))
-      ];
+      _properties = [const Center(child: Text("Fetching properties..."))];
 
       // Fetch the properties
       unawaited(
@@ -200,6 +196,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                       return null;
                                                     },
                                                     controller: _nameController,
+                                                    textCapitalization: TextCapitalization.words,
                                                     autocorrect: false,
                                                     cursorColor:
                                                         VilladexColors().accent,
@@ -227,6 +224,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                     },
                                                     controller:
                                                         _streetAddress1Controller,
+                                                    textCapitalization: TextCapitalization.words,
                                                     autocorrect: false,
                                                     cursorColor:
                                                         VilladexColors().accent,
@@ -251,6 +249,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                     },
                                                     controller:
                                                         _streetAddress2Controller,
+                                                    textCapitalization: TextCapitalization.words,
                                                     autocorrect: false,
                                                     cursorColor:
                                                         VilladexColors().accent,
@@ -277,6 +276,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                       return null;
                                                     },
                                                     controller: _cityController,
+                                                    textCapitalization: TextCapitalization.words,
                                                     autocorrect: false,
                                                     cursorColor:
                                                         VilladexColors().accent,
@@ -309,6 +309,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                             },
                                                             controller:
                                                                 _stateController,
+                                                            textCapitalization: TextCapitalization.characters,
                                                             autocorrect: false,
                                                             cursorColor:
                                                                 VilladexColors()
@@ -334,6 +335,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                             validator: (value) {
                                                               return null;
                                                             },
+                                                            keyboardType: TextInputType.number,
                                                             controller:
                                                                 _zipController,
                                                             autocorrect: false,
@@ -368,6 +370,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                     },
                                                     controller:
                                                         _countryController,
+                                                    textCapitalization: TextCapitalization.words ,
                                                     autocorrect: false,
                                                     cursorColor:
                                                         VilladexColors().accent,
@@ -429,9 +432,8 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                                   earnings: []);
 
                                                           /// Add the property Item to the database
-                                                          // todo: Uncomment this when it is ready
-                                                          //property.insert();
-                                                          //property.address.insert();
+                                                          property.insert();
+                                                          property.address.insert();
 
                                                           /// Set the state of the widget with a new PropertyListItem
                                                           setState(() {
