@@ -6,7 +6,11 @@ import '../../../model/category_model.dart';
 import '../../../style/colors.dart';
 
 class CategoryInteractor extends StatefulWidget {
-  const CategoryInteractor({Key? key}) : super(key: key);
+  // Used to send data back to the parent
+  final callback;
+
+  const CategoryInteractor({Key? key, required this.callback})
+      : super(key: key);
 
   @override
   _CategoryInteractorState createState() => _CategoryInteractorState();
@@ -61,6 +65,7 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
+
                         // Fetch all of the Categories from the database and build
                         // a Listview from them
                         child: FutureBuilder<List<Category?>?>(
@@ -86,8 +91,8 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                       selectedTileColor:
                                           VilladexColors().primary,
                                       textColor: VilladexColors().text,
-                                      selected:
-                                          selectedState[category?.name] ?? false,
+                                      selected: selectedState[category?.name] ??
+                                          false,
                                       enabled: true,
                                       onTap: (() {
                                         setState(() {
@@ -101,8 +106,14 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                                 category?.name ?? ""] = true;
                                           }
 
+                                          /// Set the display on the button
                                           selectedCategory =
                                               category?.name ?? "Error";
+
+                                          /// Send back a Category to the parent
+                                          // todo: Send back a list of Categories
+                                          widget.callback(Category(
+                                              name: category?.name ?? "Error"));
                                         });
                                       }),
                                     );

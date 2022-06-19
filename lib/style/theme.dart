@@ -15,6 +15,13 @@ ThemeData getTheme() {
     }),
 
     /// Decoration for TextFields
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: VilladexColors().primary,
+      selectionColor: VilladexColors().primary,
+      selectionHandleColor: VilladexColors().primary,
+    ),
+
+    /// Decoration for TextFields
     inputDecorationTheme: InputDecorationTheme(
 
       isDense: true,

@@ -114,8 +114,7 @@ class PropertyPage extends StatelessWidget {
                     color: VilladexColors().background,
                   ),
                   child: Column(
-                    children: const [
-                    ],
+                    children: const [],
                   ),
                 ),
               ],
@@ -126,7 +125,9 @@ class PropertyPage extends StatelessWidget {
 
       /// Bottom Nav Bar
       bottomNavigationBar: const NavBar(),
-      floatingActionButton: const PropertyMenu(),
+      floatingActionButton: PropertyMenu(
+        propertyKey: propertyData.key,
+      ),
     );
   }
 }

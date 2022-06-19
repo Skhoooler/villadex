@@ -32,6 +32,7 @@ class VilladexColors {
 
   /// Other
   Color error = const Color(0xFFFD0E0E);
-  Color blue  = const Color(0xff0293ee);
+  Color blue  = const Color(0xFF0293EE);
+  Color money = const Color(0xFF118C4F);
 
 }

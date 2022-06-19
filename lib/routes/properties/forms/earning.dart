@@ -4,7 +4,14 @@ import 'package:villadex/Style/text_styles.dart';
 
 import '../../../style/colors.dart';
 
-class EarningForm {
+class EarningForm extends StatefulWidget {
+  const EarningForm({Key? key}) : super(key: key);
+
+  @override
+  State<EarningForm> createState() => _EarningFormState();
+}
+
+class _EarningFormState extends State<EarningForm> {
   final _formKey = GlobalKey<FormState>();
 
   final _nameController = TextEditingController();
@@ -13,7 +20,8 @@ class EarningForm {
   // Add category here?
   // Add date here?
 
-  get() {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       height: 500,
       color: VilladexColors().background,

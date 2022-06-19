@@ -15,7 +15,9 @@ const double buttonSize = 70;
 
 /// Property Menu creates several buttons to give the user options
 class PropertyMenu extends StatefulWidget {
-  const PropertyMenu({Key? key}) : super(key: key);
+  final int propertyKey;
+
+  const PropertyMenu({Key? key, required this.propertyKey}) : super(key: key);
 
   @override
   State<PropertyMenu> createState() => _PropertyMenu();
@@ -71,30 +73,34 @@ class _PropertyMenu extends State<PropertyMenu>
             if (icon == Icons.monetization_on) {
               // Add Earning
               showModalBottomSheet(
+                  isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return EarningForm().get();
+                    return const EarningForm();
                   });
             } else if (icon == Icons.shopping_bag) {
               // Add Expenditure
               showModalBottomSheet(
+                  isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return ExpenditureForm().get(context);
+                    return ExpenditureForm(propertyKey: widget.propertyKey,);
                   });
             } else if (icon == Icons.event) {
               // Add Event
               showModalBottomSheet(
+                  isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return EventForm().get();
+                    return const EventForm();
                   });
             } else if (icon == Icons.person) {
               // Add Associate
               showModalBottomSheet(
+                  isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return AssociateForm().get();
+                    return const AssociateForm();
                   });
             }
           },

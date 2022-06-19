@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:villadex/Style/text_styles.dart';
 import '../../../style/colors.dart';
 
-class AssociateForm {
+class AssociateForm extends StatefulWidget {
+  const AssociateForm({Key? key}) : super(key: key);
+
+  @override
+  State<AssociateForm> createState() => _AssociateFormState();
+}
+
+class _AssociateFormState extends State<AssociateForm> {
   final _formKey = GlobalKey<FormState>();
 
-
-  get() {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       height: 500,
       color: VilladexColors().background,

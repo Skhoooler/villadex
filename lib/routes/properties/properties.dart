@@ -175,7 +175,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                                                       vertical: 6.0,
                                                       horizontal: 12),
                                                   child: Text(
-                                                    "Add a new property",
+                                                    "Add a new Property",
                                                     style: VilladexTextStyles()
                                                         .getSecondaryTextStyle(),
                                                   ),
