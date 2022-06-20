@@ -121,7 +121,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                   ),
                 ),
 
-                /// Add a price and the number of units
+                /// Add a price, the number of units, and if its paid
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 6.0,
@@ -131,8 +131,9 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                     children: [
                       /// Add a Price
                       Flexible(
+                        flex: 6,
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 6.0),
+                          padding: const EdgeInsets.only(right: 6.0, left: 6.0),
                           child: TextFormField(
                             validator: (value) {
                               // if the value is empty
@@ -175,8 +176,9 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
 
                       /// Add a number of units
                       Flexible(
+                        flex: 6,
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 6.0),
+                          padding: const EdgeInsets.only(right: 3.0, left: 6.0),
                           child: TextFormField(
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -201,6 +203,46 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                           ),
                         ),
                       ),
+
+                      /// Checkmark if it is paid
+                      Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(right: 6.0, left: 3.0),
+                            child: Wrap(
+                              direction: Axis.vertical,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: -15,
+                              children: [
+                                Checkbox(
+                                  value: isPaid,
+                                  hoverColor: VilladexColors().primary,
+                                  // Takes a function to set the fill color
+                                  fillColor: MaterialStateProperty.resolveWith(
+                                      (states) {
+                                    // If the checkbox is in any of these states
+                                    const Set<MaterialState> possibleStates =
+                                        <MaterialState>{
+                                      MaterialState.pressed,
+                                      MaterialState.hovered,
+                                      MaterialState.selected,
+                                    };
+                                    if (states.any(possibleStates.contains)) {
+                                      return VilladexColors().primary;
+                                    }
+                                    return VilladexColors().accent;
+                                  }),
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isPaid = value ?? false;
+                                    });
+                                  },
+                                ),
+                                const Text("Paid"),
+                              ],
+                            ),
+                          ))
                     ],
                   ),
                 ),
@@ -229,6 +271,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                           description: _descriptionController.text,
                           category: _category,
                           expenditureDate: _date,
+                          isPaid: isPaid,
                           associates: [],
                           //todo: Add associates
                           propertyKey: widget.propertyKey,

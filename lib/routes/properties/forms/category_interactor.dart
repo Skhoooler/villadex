@@ -95,23 +95,19 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                           false,
                                       enabled: true,
                                       onTap: (() {
+                                        // Set the state of each entry to false
+                                        selectedState.entries.map((e) =>
+                                        selectedState[e.key] = false);
+
                                         setState(() {
-                                          // Flip the state of the list tile's selected property
-                                          if (selectedState[category?.name] ==
-                                              true) {
-                                            selectedState[
-                                                category?.name ?? ""] = false;
-                                          } else {
-                                            selectedState[
-                                                category?.name ?? ""] = true;
-                                          }
+                                          /// Set the state of the selected category to true
+                                          selectedState[category?.name ?? ""] = true;
 
                                           /// Set the display on the button
                                           selectedCategory =
                                               category?.name ?? "Error";
 
                                           /// Send back a Category to the parent
-                                          // todo: Send back a list of Categories
                                           widget.callback(Category(
                                               name: category?.name ?? "Error"));
                                         });
