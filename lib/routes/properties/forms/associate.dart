@@ -4,7 +4,8 @@ import 'package:villadex/Style/text_styles.dart';
 import '../../../style/colors.dart';
 
 class AssociateForm extends StatefulWidget {
-  const AssociateForm({Key? key}) : super(key: key);
+  final int propertyKey;
+  const AssociateForm({Key? key, required this.propertyKey}) : super(key: key);
 
   @override
   State<AssociateForm> createState() => _AssociateFormState();

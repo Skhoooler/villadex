@@ -71,7 +71,6 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                         child: FutureBuilder<List<Category?>?>(
                           future: Category.fetchAll(),
                           builder: (context, snapshot) {
-                            // todo: Fix the bug where the ListTile does not change color on click
                             List<Widget> data = [];
 
                             if (snapshot.hasData) {
@@ -97,19 +96,24 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                       onTap: (() {
                                         // Set the state of each entry to false
                                         selectedState.entries.map((e) =>
-                                        selectedState[e.key] = false);
+                                            selectedState[e.key] = false);
 
                                         setState(() {
                                           /// Set the state of the selected category to true
-                                          selectedState[category?.name ?? ""] = true;
+                                          selectedState[category?.name ?? ""] =
+                                              true;
 
                                           /// Set the display on the button
                                           selectedCategory =
                                               category?.name ?? "Error";
 
                                           /// Send back a Category to the parent
-                                          widget.callback(Category(
-                                              name: category?.name ?? "Error"));
+                                          widget.callback(
+                                            category ??
+                                                Category(
+                                                    name: category?.name ??
+                                                        "Error"),
+                                          );
 
                                           Navigator.pop(context);
                                         });
@@ -117,18 +121,55 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                     );
                                   }).toList() ??
                                   [
-                                    const ListTile(
-                                      title: Text("No Data"),
+                                    ListTile(
+                                      title: const Text("Hello There"),
+                                      onTap: () {
+                                        setState(() {
+                                          /// Set the display on the button
+                                          selectedCategory = "None";
+
+                                          /// Send back a Category to the parent
+                                          widget.callback(
+                                            Category(name: "None"),
+                                          );
+
+                                          /// Return to the main page
+                                          Navigator.pop(context);
+                                        });
+                                      },
                                     )
                                   ];
+
+                              /// Add a none to the beginning of the list of ListTiles
+                              data.insert(
+                                  0,
+                                  ListTile(
+                                    title: const Text("None"),
+                                    focusColor: VilladexColors().primary,
+                                    hoverColor: VilladexColors().secondary,
+                                    selectedColor: VilladexTextStyles()
+                                        .getTertiaryTextStyleWhite()
+                                        .color,
+                                    selectedTileColor: VilladexColors().primary,
+                                    textColor: VilladexColors().text,
+                                    enabled: true,
+                                    onTap: () {
+                                      setState(() {
+                                        selectedCategory = "None";
+                                        widget.callback(Category(name: "None"));
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                  ));
                             }
 
                             return ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: data.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return data[index];
-                                });
+                              shrinkWrap: true,
+                              itemCount: data.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return data[index];
+                              },
+                            );
                           },
                         ),
                       ),
@@ -223,6 +264,7 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
     );
   }
 
+  /// Get rid of old controllers
   @override
   void dispose() {
     // Get rid of text controllers when the widget is disposed

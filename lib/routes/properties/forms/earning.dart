@@ -6,7 +6,8 @@ import '../../../model/category_model.dart';
 import '../../../style/colors.dart';
 
 class EarningForm extends StatefulWidget {
-  const EarningForm({Key? key}) : super(key: key);
+  final int propertyKey;
+  const EarningForm({Key? key, required this.propertyKey}) : super(key: key);
 
   @override
   State<EarningForm> createState() => _EarningFormState();
@@ -19,7 +20,7 @@ class _EarningFormState extends State<EarningForm> {
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
   bool isPaid = false;
-  Category _category = Category(name: "Blank");
+  Category _category = Category(name: "None");
   DateTime _date = DateTime.now();
 
   @override
@@ -52,5 +53,15 @@ class _EarningFormState extends State<EarningForm> {
         ),
       ),
     );
+  }
+
+  /// Get rid of old controllers
+  @override
+  void dispose() {
+    super.dispose();
+
+    _nameController.dispose();
+    _amountController.dispose();
+    _descriptionController.dispose();
   }
 }

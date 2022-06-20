@@ -4,7 +4,9 @@ import 'package:villadex/Style/text_styles.dart';
 import '../../../style/colors.dart';
 
 class EventForm extends StatefulWidget {
-  const EventForm({Key? key}) : super(key: key);
+  final int propertyKey;
+
+  const EventForm({Key? key, required this.propertyKey}) : super(key: key);
 
   @override
   State<EventForm> createState() => _EventFormState();

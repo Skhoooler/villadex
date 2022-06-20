@@ -83,6 +83,17 @@ class Associate {
     });
   }
 
+  static Future<List<Associate?>?> fetchAll() async {
+    String sql = "SELECT * FROM associates";
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Associate.fromJSON(json: json)).toList() ??
+        List<Associate>.empty();
+      });
+    });
+  }
+
   String toJSON() {
     return jsonEncode({
       'associate_id': _primaryKey,

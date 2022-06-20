@@ -76,7 +76,9 @@ class _PropertyMenu extends State<PropertyMenu>
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return const EarningForm();
+                    return EarningForm(
+                      propertyKey: widget.propertyKey,
+                    );
                   });
             } else if (icon == Icons.shopping_bag) {
               // Add Expenditure
@@ -84,7 +86,9 @@ class _PropertyMenu extends State<PropertyMenu>
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return ExpenditureForm(propertyKey: widget.propertyKey,);
+                    return ExpenditureForm(
+                      propertyKey: widget.propertyKey,
+                    );
                   });
             } else if (icon == Icons.event) {
               // Add Event
@@ -92,7 +96,9 @@ class _PropertyMenu extends State<PropertyMenu>
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return const EventForm();
+                    return EventForm(
+                      propertyKey: widget.propertyKey,
+                    );
                   });
             } else if (icon == Icons.person) {
               // Add Associate
@@ -100,7 +106,9 @@ class _PropertyMenu extends State<PropertyMenu>
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return const AssociateForm();
+                    return AssociateForm(
+                      propertyKey: widget.propertyKey,
+                    );
                   });
             }
           },

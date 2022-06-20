@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:villadex/Style/text_styles.dart';
 import 'package:villadex/model/associate_model.dart';
 import 'package:villadex/model/expenditure_model.dart';
+import 'package:villadex/routes/properties/forms/associate_interactor.dart';
 import 'package:villadex/routes/properties/forms/date_selector.dart';
 import '../../../model/category_model.dart';
 import '../../../style/colors.dart';
@@ -29,7 +30,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
   bool isPaid = false;
   List<Associate> associates = []; // todo: implement Associates
   DateTime _date = DateTime.now();
-  Category _category = Category(name: "Blank");
+  Category _category = Category(name: "None");
 
   @override
   Widget build(BuildContext context) {
@@ -252,6 +253,12 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                   callback: _setCategory,
                 ),
 
+                /// Add Associates
+                AssociateInteractor(
+                  callback: _setAssociates,
+                  propertyKey: widget.propertyKey,
+                ),
+
                 /// Continue Button
                 Padding(
                   padding: EdgeInsets.only(
@@ -309,5 +316,21 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
     setState(() {
       _category = category;
     });
+  }
+
+  /// Gets the Associates from the AssociateInteractor child widget
+  _setAssociates(List<Associate> associate) {
+    associates = associate;
+  }
+
+  /// Get rid of old controllers
+  @override
+  void dispose() {
+    super.dispose();
+
+    _nameController.dispose();
+    _amountController.dispose();
+    _numberUnitsController.dispose();
+    _descriptionController.dispose();
   }
 }
