@@ -26,7 +26,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
   final _amountController = TextEditingController();
   final _numberUnitsController = TextEditingController();
   final _descriptionController = TextEditingController();
-  bool isPaid = false; // todo: Implement isPaid
+  bool isPaid = false;
   List<Associate> associates = []; // todo: implement Associates
   DateTime _date = DateTime.now();
   Category _category = Category(name: "Blank");

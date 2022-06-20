@@ -76,7 +76,7 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
 
                             if (snapshot.hasData) {
                               // Fill out selectedState Hashmap
-                              snapshot.data?.map((category) =>
+                              snapshot.data?.forEach((category) =>
                                   selectedState[category?.name ?? ""] = false);
 
                               // Create a list of ListTiles from the data
@@ -110,6 +110,8 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                           /// Send back a Category to the parent
                                           widget.callback(Category(
                                               name: category?.name ?? "Error"));
+
+                                          Navigator.pop(context);
                                         });
                                       }),
                                     );

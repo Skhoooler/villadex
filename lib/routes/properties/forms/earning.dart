@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:villadex/Style/text_styles.dart';
 
+import '../../../model/category_model.dart';
 import '../../../style/colors.dart';
 
 class EarningForm extends StatefulWidget {
@@ -17,8 +18,9 @@ class _EarningFormState extends State<EarningForm> {
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
-  // Add category here?
-  // Add date here?
+  bool isPaid = false;
+  Category _category = Category(name: "Blank");
+  DateTime _date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
