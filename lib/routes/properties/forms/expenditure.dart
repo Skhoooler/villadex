@@ -79,7 +79,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                           },
                           controller: _nameController,
                           textCapitalization: TextCapitalization.words,
-                          autocorrect: true,
+                          autocorrect: false,
                           cursorColor: VilladexColors().accent,
                           maxLines: 1,
                           decoration: const InputDecoration(

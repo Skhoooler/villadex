@@ -17,7 +17,7 @@ class DatabaseConnection {
   /// Getter for the database
   static Future<Database?> get database async {
     // If _database is null, set it equal to the return value of _initDB
-    _database ??= await _initDB('database8');
+    _database ??= await _initDB('database10');
 
     return _database;
   }
@@ -102,7 +102,9 @@ class DatabaseConnection {
       property_id INTEGER NOT NULL,
       dateCreated TEXT NOT NULL,
 
-      name TEXT NOT NULL,
+      firstName TEXT NOT NULL,
+      middleName TEXT,
+      lastName TEXT NOT NULL,
 
       contact TEXT,
       role TEXT,
@@ -112,7 +114,7 @@ class DatabaseConnection {
       );''');
 
     /// CREATE CONTACTS TABLE
-    batch.execute(''' CREATE TABLE contact (
+    /*batch.execute(''' CREATE TABLE contact (
       contact_id INTEGER PRIMARY KEY,
       associate_id INTEGER NOT NULL,
       dateCreated TEXT NOT NULL,
@@ -122,7 +124,7 @@ class DatabaseConnection {
       address TEXT,
       FOREIGN KEY (associate_id)
         REFERENCES associates (associate_id)
-      );''');
+      );''');*/
 
     /// CREATE ADDRESSES TABLE
     batch.execute(''' CREATE TABLE addresses (

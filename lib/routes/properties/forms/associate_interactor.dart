@@ -76,11 +76,13 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                           if (snapshot.hasData) {
                             // Fill out selectedState Hashmap
                             snapshot.data?.forEach((associate) =>
-                            selectedState[associate?.name ?? ""] = false);
+                                selectedState[associate?.firstName ?? ""] =
+                                    false);
 
                             data = snapshot.data?.map((associate) {
                                   return ListTile(
-                                    title: Text(associate?.name ?? "Error"),
+                                    title:
+                                        Text(associate?.firstName ?? "Error"),
                                     focusColor: VilladexColors().primary,
                                     hoverColor: VilladexColors().secondary,
                                     selectedColor: VilladexTextStyles()
@@ -88,28 +90,33 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                                         .color,
                                     selectedTileColor: VilladexColors().primary,
                                     textColor: VilladexColors().text,
-                                    selected: selectedState[associate?.name] ?? false,
+                                    selected:
+                                        selectedState[associate?.firstName] ??
+                                            false,
                                     enabled: true,
                                     onTap: (() {
                                       // Set the state of each entry to false
-                                      selectedState.entries.map((e) =>
-                                      selectedState[e.key] = false);
+                                      selectedState.entries.map(
+                                          (e) => selectedState[e.key] = false);
 
                                       setState(() {
                                         /// Set the state of the selected category to true
-                                        selectedState[associate?.name ?? ""] =
-                                        true;
+                                        selectedState[
+                                            associate?.firstName ?? ""] = true;
 
                                         /// Set the display on the button
                                         selectedAssociate =
-                                            associate?.name ?? "Error";
+                                            associate?.firstName ?? "Error";
 
                                         /// Send the Associate back to the parent
                                         widget.callback([
                                           associate ??
                                               Associate(
-                                                name:
-                                                    associate?.name ?? "Error",
+                                                firstName:
+                                                    associate?.firstName ??
+                                                        "Error",
+                                                lastName: associate?.lastName ??
+                                                    "Error",
                                                 propertyKey: widget.propertyKey,
                                               )
                                         ]);
@@ -131,7 +138,8 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                                         /// Send the Associate back to the parent
                                         widget.callback([
                                           Associate(
-                                            name: "None",
+                                            firstName: "None",
+                                            lastName: "None",
                                             propertyKey: widget.propertyKey,
                                           )
                                         ]);
@@ -161,7 +169,8 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                                       selectedAssociate = "None";
                                       widget.callback([
                                         Associate(
-                                            name: "None",
+                                            firstName: "None",
+                                            lastName: "None",
                                             propertyKey: widget.propertyKey),
                                       ]);
                                       Navigator.pop(context);

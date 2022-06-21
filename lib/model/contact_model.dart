@@ -8,7 +8,7 @@ import 'package:villadex/model/database.dart' as db;
 class Contact {
   /// Constructors
   Contact({
-    required int associateKey,
+    int? associateKey,
     this.phoneNumber = '',
     this.email = '',
     this.address,
@@ -41,7 +41,7 @@ class Contact {
   Address? address;
 
   final int? _primaryKey;
-  final int _associateKey;
+  final int? _associateKey;
   final DateTime _dateCreated;
 
   /// Methods
@@ -72,13 +72,14 @@ class Contact {
   }
 
   String toJSON() {
+    String addressJSON = address?.toJSON() ?? "";
     return jsonEncode({
       'contact_id': _primaryKey,
       'associate_id': _associateKey,
       'dateCreated': _dateCreated.toIso8601String(),
       'phoneNumber': phoneNumber,
       'email': email,
-      'address': address?.toJSON(),
+      'address': addressJSON,
     });
   }
 
@@ -86,6 +87,4 @@ class Contact {
   DateTime get dateCreated => _dateCreated;
 
   int get key => _primaryKey ?? 0;
-
-  int get associateKey => _associateKey;
 }

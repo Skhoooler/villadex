@@ -8,7 +8,9 @@ import 'package:villadex/model/contact_model.dart';
 class Associate {
   /// Constructors
   Associate({
-    required this.name,
+    required this.firstName,
+    this.middleName,
+    required this.lastName,
     this.contact,
     this.role = '',
     List<Expenditure>? payments,
@@ -19,7 +21,9 @@ class Associate {
         payments = payments ?? [];
 
   Associate.existing({
-    required this.name,
+    required this.firstName,
+    this.middleName,
+    required this.lastName,
     required this.contact,
     this.role = '',
     List<Expenditure>? payments,
@@ -32,7 +36,9 @@ class Associate {
         payments = payments ?? [];
 
   Associate.fromJSON({required Map<String, dynamic> json})
-      : name = json['name'],
+      : firstName = json['firstName'],
+        middleName = json['middleName'] ?? [],
+        lastName = json['lastName'],
         role = json['owner'],
         payments = jsonDecode(json['payments'])
             .map((data) => Expenditure.fromJSON(json: data))
@@ -43,7 +49,9 @@ class Associate {
         _dateCreated = DateTime.parse(json['dateCreated']);
 
   /// Data
-  final String name;
+  final String firstName;
+  final String? middleName;
+  final String lastName;
   final String? role;
   List<Expenditure?>? payments;
   final Contact? contact;
@@ -54,12 +62,16 @@ class Associate {
 
   /// Methods
   Future<void> insert() async {
+    String contactJSON = contact?.toJSON() ?? "";
+
     Map<String, dynamic> data = {
       'associate_id': _primaryKey,
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String(),
-      'name': name,
-      'contact': contact?.toJSON,
+      'firstName': firstName,
+      'middleName': middleName,
+      'lastName': lastName,
+      'contact': contactJSON,
       'role': role,
       // JSON encode the list of expenditure objects. Turn each object into json, turn that
       // into a list and then json encode it.
@@ -88,19 +100,21 @@ class Associate {
 
     return db.DatabaseConnection.database.then((databaseConnection) {
       return databaseConnection?.rawQuery(sql).then((data) {
-        return data.map((json) => Associate.fromJSON(json: json)).toList() ??
-        List<Associate>.empty();
+        return data.map((json) => Associate.fromJSON(json: json)).toList();
       });
     });
   }
 
   String toJSON() {
+    String contactJSON = contact?.toJSON() ?? "";
     return jsonEncode({
       'associate_id': _primaryKey,
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String(),
-      'name': name,
-      'contact': contact?.toJSON,
+      'firstName': firstName,
+      'middleName': middleName,
+      'lastName': lastName,
+      'contact': contactJSON,
       'role': role,
       // JSON encode the list of expenditure objects. Turn each object into json, turn that
       // into a list and then json encode it.
