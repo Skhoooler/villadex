@@ -28,7 +28,8 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
   final _numberUnitsController = TextEditingController();
   final _descriptionController = TextEditingController();
   bool isPaid = false;
-  List<Associate> associates = []; // todo: implement Associates
+  Associate associates =
+      Associate(firstName: "None", lastName: "None", propertyKey: -1);
   DateTime _date = DateTime.now();
   Category _category = Category(name: "None");
 
@@ -319,7 +320,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
   }
 
   /// Gets the Associates from the AssociateInteractor child widget
-  _setAssociates(List<Associate> associate) {
+  _setAssociates(Associate associate) {
     associates = associate;
   }
 

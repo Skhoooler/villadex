@@ -37,13 +37,14 @@ class Associate {
 
   Associate.fromJSON({required Map<String, dynamic> json})
       : firstName = json['firstName'],
-        middleName = json['middleName'] ?? [],
+        middleName = json['middleName'] ?? "",
         lastName = json['lastName'],
-        role = json['owner'],
+        role = json['role'],
         payments = jsonDecode(json['payments'])
             .map((data) => Expenditure.fromJSON(json: data))
             .toList(),
-        contact = Contact.fromJSON(json: json['contact']),
+        contact = null,
+        //contact = Contact.fromJSON(json: jsonDecode(json['contact'])),
         _primaryKey = json['associate_id'],
         _propertyKey = json['property_id'],
         _dateCreated = DateTime.parse(json['dateCreated']);
@@ -79,8 +80,8 @@ class Associate {
           payments?.map((expenditure) => expenditure?.toJSON()).toList())
     };
 
-    db.DatabaseConnection.database.then(
-        (databaseConnection) => {databaseConnection?.insert('associates', data)});
+    db.DatabaseConnection.database.then((databaseConnection) =>
+        {databaseConnection?.insert('associates', data)});
   }
 
   static Future<Associate?> fetchById(int id) async {

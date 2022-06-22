@@ -58,7 +58,6 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                         width: MediaQuery.of(context).size.width * .75,
                         height: MediaQuery.of(context).size.height * .5,
                         decoration: BoxDecoration(
-                          //color: VilladexColors().background2,
                           border: Border.all(
                             color: VilladexColors().accent,
                             width: 5,
@@ -122,7 +121,7 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                   }).toList() ??
                                   [
                                     ListTile(
-                                      title: const Text("Hello There"),
+                                      title: const Text("None"),
                                       onTap: () {
                                         setState(() {
                                           /// Set the display on the button
@@ -139,29 +138,28 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                       },
                                     )
                                   ];
-
-                              /// Add a none to the beginning of the list of ListTiles
-                              data.insert(
-                                  0,
-                                  ListTile(
-                                    title: const Text("None"),
-                                    focusColor: VilladexColors().primary,
-                                    hoverColor: VilladexColors().secondary,
-                                    selectedColor: VilladexTextStyles()
-                                        .getTertiaryTextStyleWhite()
-                                        .color,
-                                    selectedTileColor: VilladexColors().primary,
-                                    textColor: VilladexColors().text,
-                                    enabled: true,
-                                    onTap: () {
-                                      setState(() {
-                                        selectedCategory = "None";
-                                        widget.callback(Category(name: "None"));
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                  ));
                             }
+                            /// Add a none to the beginning of the list of ListTiles
+                            data.insert(
+                                0,
+                                ListTile(
+                                  title: const Text("None"),
+                                  focusColor: VilladexColors().primary,
+                                  hoverColor: VilladexColors().secondary,
+                                  selectedColor: VilladexTextStyles()
+                                      .getTertiaryTextStyleWhite()
+                                      .color,
+                                  selectedTileColor: VilladexColors().primary,
+                                  textColor: VilladexColors().text,
+                                  enabled: true,
+                                  onTap: () {
+                                    setState(() {
+                                      selectedCategory = "None";
+                                      widget.callback(Category(name: "None"));
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                ));
 
                             return ListView.builder(
                               shrinkWrap: true,

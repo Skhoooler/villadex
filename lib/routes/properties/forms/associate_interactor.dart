@@ -59,7 +59,6 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                       width: MediaQuery.of(context).size.width * .75,
                       height: MediaQuery.of(context).size.height * .5,
                       decoration: BoxDecoration(
-                        //color: VilladexColors().background2,
                         border: Border.all(
                           color: VilladexColors().accent,
                           width: 5,
@@ -67,6 +66,7 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                         borderRadius: BorderRadius.circular(10),
                       ),
 
+                      // todo: This is not working!
                       /// Fetch all of the Associates from the database
                       child: FutureBuilder<List<Associate?>?>(
                         future: Associate.fetchAll(),
@@ -150,34 +150,31 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                                     },
                                   )
                                 ];
-
-                            /// Add a none to the beginning of the list
-                            data.insert(
-                                0,
-                                ListTile(
-                                  title: const Text("None"),
-                                  focusColor: VilladexColors().primary,
-                                  hoverColor: VilladexColors().secondary,
-                                  selectedColor: VilladexTextStyles()
-                                      .getTertiaryTextStyleWhite()
-                                      .color,
-                                  selectedTileColor: VilladexColors().primary,
-                                  textColor: VilladexColors().text,
-                                  enabled: true,
-                                  onTap: () {
-                                    setState(() {
-                                      selectedAssociate = "None";
-                                      widget.callback([
-                                        Associate(
-                                            firstName: "None",
-                                            lastName: "None",
-                                            propertyKey: widget.propertyKey),
-                                      ]);
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                ));
                           }
+                          /// Add a none to the beginning of the list
+                          data.insert(
+                              0,
+                              ListTile(
+                                title: const Text("None"),
+                                focusColor: VilladexColors().primary,
+                                hoverColor: VilladexColors().secondary,
+                                selectedColor: VilladexTextStyles()
+                                    .getTertiaryTextStyleWhite()
+                                    .color,
+                                selectedTileColor: VilladexColors().primary,
+                                textColor: VilladexColors().text,
+                                enabled: true,
+                                onTap: () {
+                                  setState(() {
+                                    selectedAssociate = "None";
+                                    widget.callback(Associate(
+                                        firstName: "None",
+                                        lastName: "None",
+                                        propertyKey: widget.propertyKey));
+                                    Navigator.pop(context);
+                                  });
+                                },
+                              ));
 
                           return ListView.builder(
                             shrinkWrap: true,

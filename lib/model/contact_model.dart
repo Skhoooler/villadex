@@ -30,7 +30,7 @@ class Contact {
   Contact.fromJSON({required Map<String, dynamic> json})
       : phoneNumber = json['phoneNumber'],
         email = json['email'],
-        address = Address.fromJSON(json: json['address']),
+        address = Address.fromJSON(json: jsonDecode(json['address'])),
         _primaryKey = json['contact_id'],
         _associateKey = json['associate_id'],
         _dateCreated = DateTime.parse(json['dateCreated']);

@@ -17,7 +17,7 @@ class DatabaseConnection {
   /// Getter for the database
   static Future<Database?> get database async {
     // If _database is null, set it equal to the return value of _initDB
-    _database ??= await _initDB('database10');
+    _database ??= await _initDB('database11');
 
     return _database;
   }
