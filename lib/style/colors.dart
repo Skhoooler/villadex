@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 
 class VilladexColors {
   /// Main Colors
-  Color primary     = const Color(0xFF85D523);
-  Color secondary   = const Color(0xFF204525);
-  Color background  = const Color(0xFFDBD4D2);
-  Color background2 = const Color(0xFFE6E6E6);
-  Color accent      = const Color(0xFF695958);
-  Color text        = const Color(0xFF030000);
+  Color primary     = const Color(0xFF4D9DE0);// const Color(0xFF85D523);
+  Color secondary   = const Color(0xFFE0904D);
+  Color background  = const Color(0xFFf4eeea); //const Color(0xFFDBD4D2);
+  Color background2 = const Color(0xFFf6f1ee);
+  Color accent      = const Color(0xFF79553F);//const Color(0xFF2C0703);
+  Color text        = const Color(0xFF2C0703); //const Color(0xFF030000);
   Color textFaded   = const Color(0x74030000);
 
   /// Gradients

@@ -26,7 +26,7 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            VilladexColors().calendarBackground,
+            VilladexColors().primary,
             VilladexColors().background
           ],
           begin: const Alignment(0.0, -1),

@@ -4,7 +4,7 @@ import 'package:villadex/Util/Scheduling/calendar_item.dart';
 import 'package:villadex/Util/Scheduling/calendar.dart';
 import 'package:villadex/Util/nav_bar.dart';
 
-import '../style/colors.dart';
+import '../../style/colors.dart';
 
 class SchedulingPage extends StatefulWidget {
   const SchedulingPage({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class _SchedulingPageState extends State<SchedulingPage> {
         color: VilladexColors().background,
         child: Column(
           children: [
-            VilladexCalendar(),
+            const VilladexCalendar(),
 
             /// Calendar Items
             Column(

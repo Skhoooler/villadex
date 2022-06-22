@@ -308,6 +308,7 @@ class _AssociateFormState extends State<AssociateForm> {
                   child: ElevatedButton(
                     child: const Text('Continue'),
                     onPressed: (() {
+                      // todo: Make Address be a popup alertDialog
                       if (_formKey.currentState!.validate()) {
                         Associate associate = Associate(
                           firstName: _firstNameController.text,

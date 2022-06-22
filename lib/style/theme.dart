@@ -38,7 +38,7 @@ ThemeData getTheme() {
         ),
       ),
       labelStyle: TextStyle(
-        color: VilladexColors().secondary
+        color: VilladexColors().text
       ),
 
       // Error
