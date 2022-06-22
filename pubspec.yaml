@@ -32,12 +32,12 @@ dependencies:
   google_fonts:
   fl_chart:
   table_calendar:
-  xen_popup_card:
   image_picker:
   flutter_svg:
   marquee:
   sqflite:
   email_validator:
+  pdf:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

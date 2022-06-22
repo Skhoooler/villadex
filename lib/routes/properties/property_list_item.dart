@@ -11,9 +11,11 @@ class PropertyListItem extends StatefulWidget {
   final Property property;
   final callback;
 
-  const PropertyListItem(
-      {required this.property, required this.callback, Key? key,})
-      : super(key: key);
+  const PropertyListItem({
+    required this.property,
+    required this.callback,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<PropertyListItem> createState() => _PropertyListItemState();
@@ -25,10 +27,7 @@ class _PropertyListItemState extends State<PropertyListItem> {
 
   @override
   Widget build(BuildContext context) {
-    double textMaxWidth = MediaQuery
-        .of(context)
-        .size
-        .width * .54;
+    double textMaxWidth = MediaQuery.of(context).size.width * .54;
     const String assetName = 'lib/res/default_house.svg';
 
     return GestureDetector(
@@ -47,7 +46,6 @@ class _PropertyListItemState extends State<PropertyListItem> {
           mainAxisAlignment: MainAxisAlignment.start,
           //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             /// Image
             SizedBox(
               width: 150,
@@ -68,7 +66,6 @@ class _PropertyListItemState extends State<PropertyListItem> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Builder(
-
                   /// Name of Property
                   builder: (context) {
                     if (_willTextOverflow(
@@ -83,7 +80,7 @@ class _PropertyListItemState extends State<PropertyListItem> {
                         pauseAfterRound: const Duration(milliseconds: 2000),
                         decelerationCurve: Curves.decelerate,
                         decelerationDuration:
-                        const Duration(milliseconds: 2500),
+                            const Duration(milliseconds: 2500),
                       );
                     } else {
                       return SizedBox(
@@ -116,7 +113,7 @@ class _PropertyListItemState extends State<PropertyListItem> {
                         pauseAfterRound: const Duration(milliseconds: 3000),
                         decelerationCurve: Curves.decelerate,
                         decelerationDuration:
-                        const Duration(milliseconds: 2500),
+                            const Duration(milliseconds: 2500),
                       );
                     } else {
                       return SizedBox(
@@ -157,7 +154,7 @@ class _PropertyListItemState extends State<PropertyListItem> {
                         pauseAfterRound: const Duration(milliseconds: 3000),
                         decelerationCurve: Curves.decelerate,
                         decelerationDuration:
-                        const Duration(milliseconds: 2500),
+                            const Duration(milliseconds: 2500),
                       );
                     } else {
                       return SizedBox(
@@ -190,7 +187,7 @@ class _PropertyListItemState extends State<PropertyListItem> {
                         pauseAfterRound: const Duration(milliseconds: 3000),
                         decelerationCurve: Curves.decelerate,
                         decelerationDuration:
-                        const Duration(milliseconds: 2500),
+                            const Duration(milliseconds: 2500),
                       );
                     } else {
                       return SizedBox(
@@ -220,8 +217,7 @@ class _PropertyListItemState extends State<PropertyListItem> {
       text: TextSpan(text: text, style: style),
       maxLines: 1,
       textDirection: TextDirection.ltr,
-    )
-      ..layout(minWidth: 0, maxWidth: marqueeWidth);
+    )..layout(minWidth: 0, maxWidth: marqueeWidth);
 
     return textPainter.didExceedMaxLines;
   }

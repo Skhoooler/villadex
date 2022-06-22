@@ -5,13 +5,14 @@ import 'package:marquee/marquee.dart';
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/model/property_model.dart';
 import 'package:villadex/routes/properties/menu%20options/delete_property.dart';
+import 'package:villadex/routes/properties/menu%20options/edit_property_attributes.dart';
 import 'package:villadex/style/colors.dart';
 import 'package:villadex/style/text_styles.dart';
 
 import 'property_menu_widget.dart';
 
 /// Menu items
-enum Menu { editProperty, deleteProperty, associates, createReport }
+enum Menu { editProperty, deleteProperty, createReport }
 
 class PropertyPage extends StatefulWidget {
   final Property propertyData;
@@ -91,9 +92,21 @@ class _PropertyPageState extends State<PropertyPage> {
                               iconSize: 35,
                               onSelected: (Menu item) {
                                 setState(() {
+                                  /// Edit Property
                                   if (item == Menu.editProperty) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditPropertyAttributes(
+                                          propertyId: widget.propertyData.key,
+                                          name: widget.propertyData.name,
+                                        ),
+                                      ),
+                                    );
+
+                                    /// Create Report
                                   } else if (item == Menu.createReport) {
-                                  } else if (item == Menu.associates) {
+                                    /// Delete Property
                                   } else if (item == Menu.deleteProperty) {
                                     showDialog(
                                         context: context,
@@ -111,10 +124,6 @@ class _PropertyPageState extends State<PropertyPage> {
                                 const PopupMenuItem<Menu>(
                                   value: Menu.editProperty,
                                   child: Text("Edit Property"),
-                                ),
-                                const PopupMenuItem<Menu>(
-                                  value: Menu.associates,
-                                  child: Text("Edit Associates"),
                                 ),
                                 const PopupMenuItem<Menu>(
                                   value: Menu.createReport,
