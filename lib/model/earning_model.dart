@@ -55,11 +55,11 @@ class Earning {
     Map<String, dynamic> data = {
       'name': name,
       'description': description,
-      'date': earningDate,
+      'date': earningDate.toIso8601String().trim(),
       'category': category?.toJSON(),
       'amount': amount,
       'property_id': _propertyKey,
-      'dateCreated': _dateCreated,
+      'dateCreated': _dateCreated.toIso8601String().trim(),
     };
 
     db.DatabaseConnection.database.then(

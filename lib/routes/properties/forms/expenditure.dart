@@ -74,7 +74,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                         child: TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please give the expenditure a name';
+                              return 'Please give the expenditure a title';
                             }
                             return null;
                           },
@@ -84,7 +84,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                           cursorColor: VilladexColors().accent,
                           maxLines: 1,
                           decoration: const InputDecoration(
-                              labelText: 'Expenditure Name'),
+                              labelText: 'Expenditure Title'),
                         ),
                       ),
                     ),
