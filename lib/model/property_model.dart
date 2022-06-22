@@ -49,13 +49,17 @@ class Property {
       : name = json['name'],
         owner = json['owner'],
         calendar = jsonDecode(json['calendar'])
-            .forEach((data) => Event.fromJSON(json: data)) ?? [],
+                .forEach((data) => Event.fromJSON(json: data)) ??
+            [],
         expenditures = jsonDecode(json['expenditures'])
-            .forEach((data) => Expenditure.fromJSON(json: data)) ?? [],
+                .forEach((data) => Expenditure.fromJSON(json: data)) ??
+            [],
         associates = jsonDecode(json['associates'])
-            .forEach((data) => Associate.fromJSON(json: data)) ?? [],
+                .forEach((data) => Associate.fromJSON(json: data)) ??
+            [],
         earnings = jsonDecode(json['earnings'])
-            .forEach((data) => Earning.fromJSON(json: data)) ?? [],
+                .forEach((data) => Earning.fromJSON(json: data)) ??
+            [],
         _address = Address.fromJSON(json: jsonDecode(json['location'])),
         //Address.fromJSON(json: jsonDecode(json['location'])),
         _primaryKey = json['property_id'],
@@ -118,6 +122,13 @@ class Property {
     });
   }
 
+  static Future<void> deleteById(int id) async {
+    db.DatabaseConnection.database.then((databaseConnection) {
+      databaseConnection
+          ?.rawDelete('DELETE FROM properties WHERE property_id = ?', [id]);
+    });
+  }
+
   String toJSON() {
     return jsonEncode({
       'name': name,
@@ -142,5 +153,4 @@ class Property {
   int get key => _primaryKey ?? 0;
 
   Address get address => _address;
-
 }

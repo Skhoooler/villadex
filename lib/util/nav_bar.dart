@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:villadex/Routes/properties/properties.dart' as properties;
 import 'package:villadex/Routes/finances.dart' as finances;
-import 'package:villadex/Routes/scheduling.dart' as scheduling;
+import '../routes/scheduling/scheduling.dart' as scheduling;
 import 'package:villadex/Routes/marketing.dart' as marketing;
 
 import '../style/colors.dart';

@@ -4,20 +4,29 @@ import 'package:marquee/marquee.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/model/property_model.dart';
+import 'package:villadex/routes/properties/menu%20options/delete_property.dart';
 import 'package:villadex/style/colors.dart';
 import 'package:villadex/style/text_styles.dart';
 
 import 'property_menu_widget.dart';
 
-class PropertyPage extends StatelessWidget {
-  const PropertyPage({Key? key, required this.propertyData}) : super(key: key);
+/// Menu items
+enum Menu { editProperty, deleteProperty, associates, createReport }
 
+class PropertyPage extends StatefulWidget {
   final Property propertyData;
 
+  const PropertyPage({Key? key, required this.propertyData}) : super(key: key);
+
+  @override
+  State<PropertyPage> createState() => _PropertyPageState();
+}
+
+class _PropertyPageState extends State<PropertyPage> {
   @override
   Widget build(BuildContext context) {
     const String assetName = 'lib/res/default_house.svg';
-    final String fullAddress = propertyData.address.fullAddress;
+    final String fullAddress = widget.propertyData.address.fullAddress;
 
     return Scaffold(
       // https://www.youtube.com/watch?v=jgGRTC2Uruo - Flutter - How To Scroll Animate An Image Into an App Bar (CustomScrollView Widget)
@@ -29,7 +38,7 @@ class PropertyPage extends StatelessWidget {
               background: Stack(
                 children: [
                   /// Image
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * .35,
                     child: SvgPicture.asset(assetName, fit: BoxFit.fitWidth),
@@ -42,7 +51,7 @@ class PropertyPage extends StatelessWidget {
                         height: 15,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           /// Back Button
@@ -63,9 +72,65 @@ class PropertyPage extends StatelessWidget {
 
                           /// Property Name
                           Text(
-                            propertyData.name,
+                            widget.propertyData.name,
                             style: VilladexTextStyles().getSecondaryTextStyle(),
-                          )
+                          ),
+
+                          /// Set it to be on the other side of the screen
+                          const Spacer(),
+
+                          /// Menu
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: PopupMenuButton<Menu>(
+                              color: VilladexColors().background,
+                              icon: Icon(
+                                Icons.menu,
+                                color: VilladexColors().accent,
+                              ),
+                              iconSize: 35,
+                              onSelected: (Menu item) {
+                                setState(() {
+                                  if (item == Menu.editProperty) {
+                                  } else if (item == Menu.createReport) {
+                                  } else if (item == Menu.associates) {
+                                  } else if (item == Menu.deleteProperty) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return DeleteProperty(
+                                            propertyKey:
+                                                widget.propertyData.key,
+                                          );
+                                        });
+                                  }
+                                });
+                              },
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry<Menu>>[
+                                const PopupMenuItem<Menu>(
+                                  value: Menu.editProperty,
+                                  child: Text("Edit Property"),
+                                ),
+                                const PopupMenuItem<Menu>(
+                                  value: Menu.associates,
+                                  child: Text("Edit Associates"),
+                                ),
+                                const PopupMenuItem<Menu>(
+                                  value: Menu.createReport,
+                                  child: Text("Create Report"),
+                                ),
+                                PopupMenuItem(
+                                  value: Menu.deleteProperty,
+                                  child: Text(
+                                    "Delete Property",
+                                    style: TextStyle(
+                                        color: VilladexColors().error),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -126,7 +191,7 @@ class PropertyPage extends StatelessWidget {
       /// Bottom Nav Bar
       bottomNavigationBar: const NavBar(),
       floatingActionButton: PropertyMenu(
-        propertyKey: propertyData.key,
+        propertyKey: widget.propertyData.key,
       ),
     );
   }

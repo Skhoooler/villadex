@@ -67,7 +67,7 @@ CalendarStyle getCalendarStyle() {
     /// Cell Decoration
     todayDecoration: ShapeDecoration(
       shape: const CircleBorder(),
-      color: VilladexColors().primaryGradient,
+      color: VilladexColors().primary,
     ),
 
     /// TextStyles
@@ -77,12 +77,12 @@ CalendarStyle getCalendarStyle() {
         ),
     holidayTextStyle: VilladexTextStyles()
         .getCalendarTextStyle()
-        .copyWith(color: VilladexColors().blue),
+        .copyWith(color: VilladexColors().accent),
     outsideTextStyle: VilladexTextStyles()
         .getCalendarTextStyle()
         .copyWith(color: VilladexColors().calendarBackgroundText),
     weekendTextStyle: VilladexTextStyles().getCalendarTextStyle().copyWith(
-        color: VilladexColors().calendarBackgroundAccent,
+        color: VilladexColors().secondary,
         fontWeight: FontWeight.w900),
   );
 }

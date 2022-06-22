@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,21 +6,11 @@ import 'package:villadex/routes/properties/forms/property_address_interactor.dar
 import '../../style/colors.dart';
 import 'package:villadex/routes/properties/property_list_item.dart';
 
-import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/property_model.dart';
 
-List<Widget> _properties = [
-  const Center(child: Text("Fetching properties from database..."))
-];
-
 class PropertiesPage extends StatefulWidget {
-  // If loadData is true, load all properties from the database.
-  // It is false by default
-  final bool loadData;
-
   const PropertiesPage({
     Key? key,
-    this.loadData = false,
   }) : super(key: key);
 
   @override
@@ -30,45 +18,6 @@ class PropertiesPage extends StatefulWidget {
 }
 
 class _PropertiesPageState extends State<PropertiesPage> {
-  @override
-  void initState() {
-    // Load all properties from the database only once, the first time
-    // this widget is called.
-    if (widget.loadData) {
-      // Clear the _properties
-      _properties = [const Center(child: Text("Fetching properties..."))];
-
-      // Fetch the properties
-      unawaited(
-        db.DatabaseConnection.database.then((databaseConnection) {
-          // Get data from the database
-          try {
-            Property.fetchAll().then((propertyList) {
-              // Get rid of the "fetching properties message"
-              _properties.removeAt(0);
-
-              // Populate _properties with property data
-              if (propertyList!.isNotEmpty) {
-                for (var element in propertyList) {
-                  if (element != null) {
-                    _properties.add(PropertyListItem(property: element));
-                  }
-                }
-              }
-            });
-          } catch (e) {
-            // If an error occurs, add an error message to properties
-            _properties.add(
-              const Text(
-                  "An Error has occurred loading data from the database"),
-            );
-          }
-        }),
-      );
-    }
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,18 +60,52 @@ class _PropertiesPageState extends State<PropertiesPage> {
                 width: MediaQuery.of(context).size.width * .93,
                 color: VilladexColors().background,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     /// Property List
-                    Expanded(
-                      flex: 8,
-                      child: ListView.builder(
-                          itemCount: _properties.length,
-                          itemBuilder: (context, index) => _properties[index]),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * .95,
+                      height: MediaQuery.of(context).size.height * .6,
+                      child: FutureBuilder<List<Property?>?>(
+                          future: Property.fetchAll(),
+                          builder: (context, snapshot) {
+                            List<Widget> data = [];
+
+                            /// If there are properties in the database
+                            if (snapshot.hasData) {
+                              data = snapshot.data?.map((property) {
+                                    return PropertyListItem(
+                                      property: property!,
+                                      callback: reload,
+                                    );
+                                  }).toList() ??
+                                  [];
+
+                              /// If you are waiting for the properties to fetch
+                            } else {
+                              data = [
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * .2,
+                                  height: MediaQuery.of(context).size.height * .2,
+                                  child: CircularProgressIndicator(
+                                    color: VilladexColors().primary,
+                                  ),
+                                )
+                              ];
+                            }
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return data[index];
+                                });
+                          }),
                     ),
 
-                    /// Add property modal
+
+                    /// Add property pop up modal
                     Expanded(
                       flex: 1,
                       child: Center(
@@ -130,7 +113,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                             icon: Icon(
                               Icons.add_rounded,
                               color: VilladexColors().accent,
-                              size: 40,
+                              size: 50,
                             ),
                             onPressed: () {
                               showModalBottomSheet(
@@ -164,15 +147,18 @@ class _PropertiesPageState extends State<PropertiesPage> {
 
   /// Gets the Property from the PropertyAddressInteractor child widget
   _setProperty(Property property) {
-    setState(() {
-      _properties.add(PropertyListItem(property: property));
+    /// Add the property Item to the database
+    property.insert();
+    property.address.insert();
 
-      /// Add the property Item to the database
-      property.insert();
-      property.address.insert();
+    setState(() {});
 
-      /// Return to the main view
-      Navigator.pop(context);
-    });
+    /// Return to the main view
+    Navigator.pop(context);
+  }
+
+  /// Reset the page
+  void reload() {
+    setState(() {});
   }
 }
