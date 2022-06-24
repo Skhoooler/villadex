@@ -124,7 +124,6 @@ class _EditPropertyState extends State<EditProperty> {
               delegate: SliverChildListDelegate(
                 [
                   Container(
-                    //height: 1000,
                     width: MediaQuery.of(context).size.width,
                     color: VilladexColors().background,
                     child: Form(
@@ -303,31 +302,6 @@ class _EditPropertyState extends State<EditProperty> {
                                 child: const Text('Update'),
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    /*Address newAddress = Address.existing(
-                                        street1: _streetAddress1Controller.text,
-                                        street2: _streetAddress2Controller.text,
-                                        city: _cityController.text,
-                                        state: _stateController.text,
-                                        zip: _zipController.text,
-                                        country: _countryController.text,
-                                        dateCreated:
-                                            property.address.dateCreated,
-                                        primaryKey: property.address.key,
-                                        propertyKey: property.key);
-
-                                    Property newProperty = Property.existing(
-                                      name: _nameController.text ?? "",
-                                      owner: "Diana Doria",
-                                      //todo: Update this
-                                      address: newAddress,
-                                      calendar: property.calendar,
-                                      expenditures: property.expenditures,
-                                      associates: property.associates,
-                                      earnings: property.earnings,
-                                      primaryKey: property.key,
-                                      dateCreated: property.dateCreated,
-                                    );*/
-
                                     property.name = _nameController.text;
                                     property.address.street1 = _streetAddress1Controller.text;
                                     property.address.street2 = _streetAddress2Controller.text;

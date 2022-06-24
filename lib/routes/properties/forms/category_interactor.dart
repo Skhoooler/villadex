@@ -203,7 +203,7 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                         child: TextFormField(
                           controller: _newCategoryController,
                           textCapitalization: TextCapitalization.characters,
-                          autocorrect: false,
+                          autocorrect: true,
                           cursorColor: VilladexColors().accent,
                           maxLines: 1,
                           decoration: const InputDecoration(

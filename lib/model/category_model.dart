@@ -76,6 +76,29 @@ class Category {
     });
   }
 
+  Future<void> update() async {
+    Map<String, dynamic> data = {
+      'name': name,
+      'dateCreated': _dateCreated.toIso8601String()
+    };
+
+    db.DatabaseConnection.database.then((databaseConnection) {
+      databaseConnection?.update(
+        'categories',
+        data,
+        where: 'category_id = ?',
+        whereArgs: [_primaryKey],
+      );
+    });
+  }
+
+  static Future<void> deleteById(int id) async {
+    db.DatabaseConnection.database.then((databaseConnection) {
+      databaseConnection
+          ?.rawDelete('DELETE FROM categories WHERE category_id = ?', [id]);
+    });
+  }
+
   String toJSON() {
     return jsonEncode({
       'name': name,

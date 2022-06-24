@@ -88,7 +88,7 @@ class _EditPropertyAttributesState extends State<EditPropertyAttributes> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => EditCategories(
-                        propertyId: widget.propertyId,
+                        propertyKey: widget.propertyId,
                       ),
                     ),
                   );
@@ -193,6 +193,7 @@ class _EditPropertyOption extends StatelessWidget {
           /// Text
           Text(
             text,
+            maxLines: 1,
             overflow: TextOverflow.fade,
             style: VilladexTextStyles().getSecondaryTextStyle(),
           )
