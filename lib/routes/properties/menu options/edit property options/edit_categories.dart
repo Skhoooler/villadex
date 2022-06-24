@@ -53,10 +53,14 @@ class _EditCategoriesState extends State<EditCategories> {
                 ),
               ],
             ),
+
+
           ],
         ),
       ),
       bottomNavigationBar: const NavBar(),
     );
   }
+
+
 }

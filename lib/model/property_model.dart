@@ -31,17 +31,13 @@ class Property {
     required this.name,
     required Address address,
     required this.owner,
-    List<Event>? events,
-    List<Expenditure>? expenditures,
-    List<Associate>? associates,
-    List<Earning>? earnings,
+    required this.calendar,
+    required this.expenditures,
+    required this.associates,
+    required this.earnings,
     required int? primaryKey,
     required DateTime dateCreated,
-  })  : calendar = events ?? [],
-        expenditures = expenditures ?? [],
-        associates = associates ?? [],
-        earnings = earnings ?? [],
-        _address = address,
+  })  : _address = address,
         _primaryKey = primaryKey,
         _dateCreated = dateCreated;
 
@@ -100,6 +96,33 @@ class Property {
           databaseConnection?.insert('properties', data,
               conflictAlgorithm: ConflictAlgorithm.replace)
         });
+  }
+
+  Future<void> update() async {
+    Map<String, dynamic> data = {
+      // SQFlite sets the primary key
+      'name': name,
+      'owner': owner,
+      'calendar':
+          json.encode(calendar.map((event) => event?.toJSON()).toList()),
+      'expenditures': json.encode(
+          expenditures.map((expenditure) => expenditure?.toJSON()).toList()),
+      'associates': json
+          .encode(associates.map((associate) => associate?.toJSON()).toList()),
+      'earnings':
+          json.encode(earnings.map((earning) => earning?.toJSON()).toList()),
+      'location': address.toJSON(),
+      'dateCreated': _dateCreated.toIso8601String().trim()
+    };
+
+    db.DatabaseConnection.database.then((databaseConnection) {
+      databaseConnection?.update(
+        'properties',
+        data,
+        where: 'property_id = ?',
+        whereArgs: [_primaryKey],
+      );
+    });
   }
 
   static Future<Property?> fetchById(int id) async {

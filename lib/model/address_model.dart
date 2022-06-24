@@ -47,12 +47,12 @@ class Address {
         _dateCreated = DateTime.parse(json['dateCreated']);
 
   /// Data
-  final String street1;
-  final String street2;
-  final String city;
-  final String state;
-  final String zip;
-  final String country;
+  String street1;
+  String street2;
+  String city;
+  String state;
+  String zip;
+  String country;
 
   int _primaryKey;
   final int? _propertyId;
@@ -73,8 +73,31 @@ class Address {
       'country': country
     };
 
-    db.DatabaseConnection.database.then(
-        (databaseConnection) => {databaseConnection?.insert('addresses', data)});
+    db.DatabaseConnection.database.then((databaseConnection) =>
+        {databaseConnection?.insert('addresses', data)});
+  }
+
+  Future<void> update() async {
+    Map<String, dynamic> data = {
+      // SQFlite sets the primaryKey
+      'property_id': _propertyId,
+      'associate_id': _associateId,
+      'dateCreated': _dateCreated.toIso8601String(),
+      'street1': street1,
+      'street2': street2,
+      'city': city,
+      'zip': zip,
+      'country': country
+    };
+
+    db.DatabaseConnection.database.then((databaseConnection) {
+      databaseConnection?.update(
+        'addresses',
+        data,
+        where: 'address_id = ?',
+        whereArgs: [_primaryKey],
+      );
+    });
   }
 
   static Future<Address?> fetchById(int id) async {
@@ -86,6 +109,13 @@ class Address {
 
     return rawData?.then((data) {
       return Address.fromJSON(json: data[0]);
+    });
+  }
+
+  static Future<void> deleteById(int id) async {
+    db.DatabaseConnection.database.then((databaseConnection) {
+      databaseConnection
+          ?.rawDelete('DELETE FROM addresses WHERE address_id = ?', [id]);
     });
   }
 

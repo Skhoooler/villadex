@@ -59,7 +59,7 @@ class _EditPropertyAttributesState extends State<EditPropertyAttributes> {
 
                 /// Page Name
                 Text(
-                  "Edit your Property",
+                  "Edit Property",
                   style: VilladexTextStyles().getSecondaryTextStyle(),
                 ),
               ],
@@ -148,7 +148,7 @@ class _EditPropertyAttributesState extends State<EditPropertyAttributes> {
                     color: iconColor,
                     size: 45,
                   ),
-                  text: "Property",
+                  text: widget.name,
                 ),
               ),
             ),
@@ -193,6 +193,7 @@ class _EditPropertyOption extends StatelessWidget {
           /// Text
           Text(
             text,
+            overflow: TextOverflow.fade,
             style: VilladexTextStyles().getSecondaryTextStyle(),
           )
         ],
