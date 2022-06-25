@@ -112,7 +112,7 @@ class _EditPropertyAttributesState extends State<EditPropertyAttributes> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => EditAssociates(
-                        propertyId: widget.propertyId,
+                        propertyKey: widget.propertyId,
                       ),
                     ),
                   );

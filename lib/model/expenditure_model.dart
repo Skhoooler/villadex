@@ -45,11 +45,10 @@ class Expenditure {
         numUnits = json['numberUnits'],
         isPaid = json['isPaid'] == 0 ? false : true,
         description = json['description'],
-        category = json['category'],
+        category = Category.fromJSON(json: jsonDecode(json['category'])),
         expenditureDate = DateTime.parse(json['date']),
-        associates = jsonDecode(json['associates'])
-            .map((data) => Associate.fromJSON(json: data))
-            .toList(),
+        associates = jsonDecode(json['associates'] ?? [])
+            .forEach((data) => Associate.fromJSON(json: data)),
         _primaryKey = json['expenditure_id'],
         _propertyKey = json['property_id'],
         _dateCreated = DateTime.parse(json['dateCreated']);
@@ -84,6 +83,17 @@ class Expenditure {
 
     db.DatabaseConnection.database.then((databaseConnection) =>
         {databaseConnection?.insert('expenditures', data)});
+  }
+
+  static Future<List<Expenditure?>?> fetchUnpaid(int propertyId) async {
+    String sql =
+        "SELECT * FROM expenditures WHERE isPaid = 0 and property_id = $propertyId";
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Expenditure.fromJSON(json: json)).toList();
+      });
+    });
   }
 
   static Future<Expenditure?> fetchById(int id) async {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marquee/marquee.dart';
@@ -8,6 +10,7 @@ import 'package:villadex/routes/properties/menu%20options/delete_property.dart';
 import 'package:villadex/routes/properties/menu%20options/edit_property_attributes.dart';
 import 'package:villadex/style/colors.dart';
 import 'package:villadex/style/text_styles.dart';
+import 'property_page_widgets.dart' as content;
 
 import 'property_menu_widget.dart';
 
@@ -97,7 +100,8 @@ class _PropertyPageState extends State<PropertyPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => EditPropertyAttributes(
+                                        builder: (context) =>
+                                            EditPropertyAttributes(
                                           propertyId: widget.propertyData.key,
                                           name: widget.propertyData.name,
                                         ),
@@ -171,9 +175,10 @@ class _PropertyPageState extends State<PropertyPage> {
             /// Other Options for the app bar
             backgroundColor: VilladexColors().background,
             expandedHeight: MediaQuery.of(context).size.height * .35,
-            floating: true,
+            floating: false,
             forceElevated: true,
-            snap: true,
+            snap: false,
+            pinned: false,
             elevation: 0,
           ),
 
@@ -182,15 +187,24 @@ class _PropertyPageState extends State<PropertyPage> {
             delegate: SliverChildListDelegate(
               [
                 Container(
-                  height: 1000,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: VilladexColors().background,
+                  color: VilladexColors().background,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        content.UnpaidExpenditures(
+                          property: widget.propertyData,
+                        ),
+                        content.Profits(
+                          property: widget.propertyData,
+                        ),
+                        content.MainExpenditures(
+                          property: widget.propertyData,
+                        )
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    children: const [],
-                  ),
-                ),
+                )
               ],
             ),
           ),

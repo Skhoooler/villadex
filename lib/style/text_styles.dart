@@ -3,18 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:villadex/style/colors.dart';
 
 class VilladexTextStyles {
-
   /// Main TextStyle
 
   /// Secondary TextStyle
   TextStyle getSecondaryTextStyle() {
     return GoogleFonts.openSans(
-      textStyle: TextStyle(
-        color: VilladexColors().text,
-        fontWeight: FontWeight.w600,
-        fontSize: 25
-      )
-    );
+        textStyle: TextStyle(
+            color: VilladexColors().text,
+            fontWeight: FontWeight.w600,
+            fontSize: 25));
   }
 
   /// Tertiary TextStyle
@@ -39,13 +36,21 @@ class VilladexTextStyles {
     );
   }
 
+  /// Quaternary TextStyle
+  TextStyle getQuaternaryTextStyle() {
+    return GoogleFonts.ebGaramond(
+      textStyle: TextStyle(
+        color: VilladexColors().text,
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+      ),
+    );
+  }
+
   /// Calendar TextStyle
   TextStyle getCalendarTextStyle() {
     return GoogleFonts.abel(
-      textStyle: TextStyle(
-        color: VilladexColors().text,
-        fontWeight: FontWeight.w500
-      )
-    );
+        textStyle: TextStyle(
+            color: VilladexColors().text, fontWeight: FontWeight.w500));
   }
 }
