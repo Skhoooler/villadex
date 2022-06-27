@@ -108,6 +108,29 @@ class Expenditure {
     });
   }
 
+  Future<void> update() async {
+    Map<String, dynamic> data = {
+      'name': name,
+      'amount': amount, 'numberUnits': numUnits,
+      'isPaid': isPaid ? 1 : 0, // Set boolean to one or zero
+      'description': description,
+      'category': category.toJSON(),
+      'date': expenditureDate.toIso8601String(),
+      'associates': associates.toString(),
+      'property_id': _propertyKey,
+      'dateCreated': _dateCreated.toIso8601String()
+    };
+
+    db.DatabaseConnection.database.then((databaseConnection) {
+      databaseConnection?.update(
+        'expenditures',
+        data,
+        where: 'expenditure_id = ?',
+        whereArgs: [_primaryKey],
+      );
+    });
+  }
+
   String toJSON() {
     return jsonEncode({
       'name': name,
@@ -131,4 +154,6 @@ class Expenditure {
   int get key => _primaryKey ?? 0;
 
   int get propertyKey => _propertyKey;
+
+  String get total => (amount * numUnits).toStringAsFixed(2);
 }

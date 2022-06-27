@@ -10,7 +10,9 @@ import 'package:villadex/routes/properties/menu%20options/delete_property.dart';
 import 'package:villadex/routes/properties/menu%20options/edit_property_attributes.dart';
 import 'package:villadex/style/colors.dart';
 import 'package:villadex/style/text_styles.dart';
-import 'property_page_widgets.dart' as content;
+import 'main page widgets/main_expenditures.dart';
+import 'main page widgets/profits.dart';
+import 'main page widgets/unpaid_expenditures.dart';
 
 import 'property_menu_widget.dart';
 
@@ -192,13 +194,13 @@ class _PropertyPageState extends State<PropertyPage> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        content.UnpaidExpenditures(
+                        UnpaidExpenditures(
                           property: widget.propertyData,
                         ),
-                        content.Profits(
+                        Profits(
                           property: widget.propertyData,
                         ),
-                        content.MainExpenditures(
+                        MainExpenditures(
                           property: widget.propertyData,
                         )
                       ],
