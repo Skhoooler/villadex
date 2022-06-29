@@ -36,7 +36,7 @@ class _PropertyListItemState extends State<PropertyListItem> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  PropertyPage(propertyData: widget.property)),
+                  PropertyPage(property: widget.property)),
         );
       },
       child: Container(

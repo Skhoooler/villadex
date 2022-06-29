@@ -96,6 +96,16 @@ class Expenditure {
     });
   }
 
+  static Future<List<Expenditure?>?> fetchAll() async {
+    String sql = "SELECT * FROM expenditures";
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Expenditure.fromJSON(json: json)).toList();
+      });
+    });
+  }
+
   static Future<Expenditure?> fetchById(int id) async {
     String sql = "SELECT * FROM expenditures WHERE expenditure_id = $id";
 

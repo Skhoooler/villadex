@@ -78,6 +78,16 @@ class Earning {
     });
   }
 
+  static Future<List<Earning?>?> fetchAll() async {
+    String sql = "SELECT * FROM earnings";
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Earning.fromJSON(json: json)).toList();
+      });
+    });
+  }
+
   String toJSON() {
     return jsonEncode({
       'name': name,

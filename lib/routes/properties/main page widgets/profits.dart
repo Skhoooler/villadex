@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:fl_chart/fl_chart.dart';
+
 import '../../../Style/colors.dart';
 import '../../../Style/text_styles.dart';
 import '../../../model/property_model.dart';
+import '../../../model/expenditure_model.dart';
+import '../../../model/earning_model.dart';
 
 //////////////////////////////////////////////////////////////
 /// Displays the net and gross profits of the property
@@ -37,10 +41,43 @@ class _ProfitState extends State<Profits> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              /// Title
               Center(
                 child: Text(
                   "Profits",
                   style: VilladexTextStyles().getTertiaryTextStyle(),
+                ),
+              ),
+
+              /// Body
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    color: VilladexColors().background2,
+                    child: FutureBuilder(
+                      future: Future.wait(
+                          [Expenditure.fetchAll(), Earning.fetchAll()]),
+                      builder:
+                          (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                        // Snapshot[0] = Expenditure
+                        // Snapshot[1] = Earning
+                        if (snapshot.hasData) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: LineChart(LineChartData(
+                              lineBarsData: [LineChartBarData(spots: [],),],
+                            )),
+                          );
+                        }
+
+                        return Text(
+                          "Loading data...",
+                          style: VilladexTextStyles().getSecondaryTextStyle(),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               )
             ],

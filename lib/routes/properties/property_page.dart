@@ -8,6 +8,7 @@ import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/model/property_model.dart';
 import 'package:villadex/routes/properties/menu%20options/delete_property.dart';
 import 'package:villadex/routes/properties/menu%20options/edit_property_attributes.dart';
+import 'package:villadex/routes/properties/menu%20options/generate_report.dart';
 import 'package:villadex/style/colors.dart';
 import 'package:villadex/style/text_styles.dart';
 import 'main page widgets/main_expenditures.dart';
@@ -20,9 +21,9 @@ import 'property_menu_widget.dart';
 enum Menu { editProperty, deleteProperty, createReport }
 
 class PropertyPage extends StatefulWidget {
-  final Property propertyData;
+  final Property property;
 
-  const PropertyPage({Key? key, required this.propertyData}) : super(key: key);
+  const PropertyPage({Key? key, required this.property}) : super(key: key);
 
   @override
   State<PropertyPage> createState() => _PropertyPageState();
@@ -32,7 +33,7 @@ class _PropertyPageState extends State<PropertyPage> {
   @override
   Widget build(BuildContext context) {
     const String assetName = 'lib/res/default_house.svg';
-    final String fullAddress = widget.propertyData.address.fullAddress;
+    final String fullAddress = widget.property.address.fullAddress;
 
     return Scaffold(
       // https://www.youtube.com/watch?v=jgGRTC2Uruo - Flutter - How To Scroll Animate An Image Into an App Bar (CustomScrollView Widget)
@@ -78,7 +79,7 @@ class _PropertyPageState extends State<PropertyPage> {
 
                           /// Property Name
                           Text(
-                            widget.propertyData.name,
+                            widget.property.name,
                             style: VilladexTextStyles().getSecondaryTextStyle(),
                           ),
 
@@ -104,22 +105,29 @@ class _PropertyPageState extends State<PropertyPage> {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             EditPropertyAttributes(
-                                          propertyId: widget.propertyData.key,
-                                          name: widget.propertyData.name,
+                                          propertyId: widget.property.key,
+                                          name: widget.property.name,
                                         ),
                                       ),
                                     );
 
                                     /// Create Report
                                   } else if (item == Menu.createReport) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ReportGenerator(
+                                                  property: widget.property,
+                                                )));
+
                                     /// Delete Property
                                   } else if (item == Menu.deleteProperty) {
                                     showDialog(
                                         context: context,
                                         builder: (context) {
                                           return DeleteProperty(
-                                            propertyKey:
-                                                widget.propertyData.key,
+                                            propertyKey: widget.property.key,
                                           );
                                         });
                                   }
@@ -194,14 +202,14 @@ class _PropertyPageState extends State<PropertyPage> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        UnpaidExpenditures(
-                          property: widget.propertyData,
-                        ),
                         Profits(
-                          property: widget.propertyData,
+                          property: widget.property,
+                        ),
+                        UnpaidExpenditures(
+                          property: widget.property,
                         ),
                         MainExpenditures(
-                          property: widget.propertyData,
+                          property: widget.property,
                         )
                       ],
                     ),
@@ -216,7 +224,7 @@ class _PropertyPageState extends State<PropertyPage> {
       /// Bottom Nav Bar
       bottomNavigationBar: const NavBar(),
       floatingActionButton: PropertyMenu(
-        propertyKey: widget.propertyData.key,
+        propertyKey: widget.property.key,
       ),
     );
   }
