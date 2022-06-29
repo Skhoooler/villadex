@@ -9,6 +9,7 @@ import 'package:villadex/model/property_model.dart';
 import 'package:villadex/routes/properties/menu%20options/delete_property.dart';
 import 'package:villadex/routes/properties/menu%20options/edit_property_attributes.dart';
 import 'package:villadex/routes/properties/menu%20options/generate_report.dart';
+import 'package:villadex/routes/properties/menu%20options/generate_report_options.dart';
 import 'package:villadex/style/colors.dart';
 import 'package:villadex/style/text_styles.dart';
 import 'main page widgets/main_expenditures.dart';
@@ -117,7 +118,7 @@ class _PropertyPageState extends State<PropertyPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ReportGenerator(
+                                                GenerateReportOptions(
                                                   property: widget.property,
                                                 )));
 

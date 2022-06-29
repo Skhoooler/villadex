@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:villadex/model/cash_flow.dart';
 
 import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/address_model.dart';
@@ -176,4 +177,41 @@ class Property {
   int get key => _primaryKey ?? 0;
 
   Address get address => _address;
+
+  /*Future<List<double>> getCashFlowByDate(DateTime start, DateTime end) async {
+    List<Expenditure?> expenditures =
+        await Expenditure.fetchAllByProperty(_primaryKey ?? 0) ?? [];
+    List<Earning?> earnings = await Earning.fetchAll() ?? [];
+
+    Map<int, List<CashFlow>> result
+  }*/
+/*if (month <= 0 || month > 12) {
+      return [];
+    }
+
+    List<Expenditure?> expenditures = await Expenditure.fetchAllByProperty(_primaryKey) ?? [];
+    List<Earning?> earnings = await Earning.fetchAll() ?? [];
+
+    double totalExpenditures = 0;
+    double totalEarnings = 0;
+
+    for (var expenditure in expenditures) {
+      if (expenditure != null) {
+        if (month ==
+            int.parse(DateFormat('M').format(expenditure.expenditureDate))) {
+          totalExpenditures += expenditure.numericTotal;
+        }
+      }
+    }
+
+    for (var earning in earnings) {
+      if (earning != null) {
+        if (month == int.parse(DateFormat('M').format(earning.earningDate))) {
+          totalExpenditures += earning.amount;
+        }
+      }
+    }
+
+    return [totalExpenditures, totalEarnings];
+  }*/
 }

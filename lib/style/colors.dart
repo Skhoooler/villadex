@@ -4,6 +4,7 @@
 /// here to change them throughout the project
 
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
 
 class VilladexColors {
   /// Main Colors
@@ -35,4 +36,10 @@ class VilladexColors {
   Color blue = const Color(0xFF0293EE);
   Color money = const Color(0xFF118C4F);
   Color oddRow = const Color(0xFFc4def5);
+
+  /// PDF Colors
+  // This caused a stack overflow for some reason. I put the colors in the generate report file
+  /*PdfColor pdfPrimary = PdfColor.fromInt(VilladexColors().primary.value);
+  PdfColor pdfOddRow = PdfColor.fromInt(VilladexColors().oddRow.value);
+  PdfColor pdfWhiteText = PdfColor.fromInt(VilladexColors().background.value);*/
 }

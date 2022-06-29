@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -8,16 +9,27 @@ import 'package:intl/intl.dart';
 import 'package:printing/printing.dart';
 
 import '../../../style/colors.dart';
+import '../../../style/text_styles.dart';
 
 import '../../../Util/nav_bar.dart';
 import '../../../model/earning_model.dart';
 import '../../../model/expenditure_model.dart';
 import '../../../model/property_model.dart';
+import '../../../model/category_model.dart' as vd;
 
 class ReportGenerator extends StatefulWidget {
   final Property property;
+  final DateTime startDate;
+  final DateTime endDate;
+  final Map<String, dynamic> options;
 
-  const ReportGenerator({required this.property, Key? key}) : super(key: key);
+  const ReportGenerator({
+    required this.property,
+    required this.startDate,
+    required this.endDate,
+    required this.options,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ReportGenerator> createState() => _ReportGeneratorState();
@@ -28,6 +40,7 @@ class _ReportGeneratorState extends State<ReportGenerator> {
   Widget build(BuildContext context) {
     return Scaffold(
       /// Body
+      // todo: Add a back arrow to the previous page
       body: Container(
         //width: MediaQuery.of(context).size.width * .35,
         //height: MediaQuery.of(context).size.height * .7,
@@ -42,18 +55,15 @@ class _ReportGeneratorState extends State<ReportGenerator> {
     );
   }
 
+  ///////////////////////////////////////////////////////////////////////
   /// Generates a PDF file
+  ///////////////////////////////////////////////////////////////////////
+
+  PdfColor pdfPrimary = PdfColor.fromInt(VilladexColors().primary.value);
+  PdfColor pdfOddRow = PdfColor.fromInt(VilladexColors().oddRow.value);
+  PdfColor pdfWhiteText = PdfColor.fromInt(VilladexColors().background.value);
+
   Future<Uint8List> _generateReport() async {
-    /// Set font sizes
-    double title = 40;
-    double heading1 = 25;
-    double text = 12;
-
-    /// Set Colors (since VilladexColors won't work here)
-    PdfColor primary = PdfColor.fromInt(VilladexColors().primary.value);
-    PdfColor oddRow = PdfColor.fromInt(VilladexColors().oddRow.value);
-    PdfColor whiteText = PdfColor.fromInt(VilladexColors().background.value);
-
     /// Create Headers for Tables
     const expenditureHeaders = [
       'Name',
@@ -62,6 +72,13 @@ class _ReportGeneratorState extends State<ReportGenerator> {
       'Price',
       'Number',
       'Total',
+    ];
+
+    const earningHeaders = [
+      'Name',
+      'Date',
+      'Category',
+      'Amount',
     ];
 
     //todo: Only fetch all from property
@@ -82,28 +99,59 @@ class _ReportGeneratorState extends State<ReportGenerator> {
 
     /// Create Expenditure and Earning Data Points
     List<_ExpenditureDataPoint> expenditureData = expenditures
-        .map(
-          (item) => _ExpenditureDataPoint(
-            item?.name ?? "",
-            item?.category.name ?? "",
-            DateFormat('yMd').format(item?.expenditureDate ?? DateTime.now()),
-            item?.numUnits.toString() ?? "",
-            "\$${item?.amount.toStringAsFixed(2)}" ?? "",
-            "\$${(item?.numUnits ?? 0 * item!.amount).toStringAsFixed(2)}",
-          ),
-        )
+        .map((item) => _ExpenditureDataPoint(
+            expenditure: item ??
+                Expenditure(
+                    name: "",
+                    expenditureDate: DateTime.now(),
+                    category: vd.Category(name: ""),
+                    amount: 0,
+                    numUnits: 0,
+                    propertyKey: widget.property.key)))
         .toList();
+
+    List<_EarningDataPoint> earningData = earnings
+        .map((item) => _EarningDataPoint(
+            earning: item ??
+                Earning(
+                    name: "",
+                    earningDate: DateTime.now(),
+                    category: vd.Category(name: ""),
+                    amount: 0,
+                    propertyKey: widget.property.key)))
+        .toList();
+
+    /// Create Graphs
+    // Profits
+    /*final profitsChart = pw.Chart(
+      right: pw.ChartLegend(),
+      grid: pw.CartesianGrid(
+        //todo: Make this programmatic
+        xAxis: pw.FixedAxis([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]), /// Months
+        yAxis: pw.FixedAxis([0, 20, 40, 60, 80, 100], divisions: true),
+      ),
+      datasets: [pw.LineDataSet(
+        legend: 'Profits',
+        drawSurface: true,
+        isCurved: true,
+        drawPoints: false,
+        color: pdfPrimary,
+        data: List<pw.PointChartValue>.generate(length, (index) => null)
+      )]
+    );*/
 
     /// Create base report
     final report = pw.Document(
         title:
-            "${widget.property.name} report ${DateFormat.yMMMMd('en_US').format(DateTime.now())}",
+            "${widget.property.name} report ${DateFormat.yMMMMd('en_US').format(widget.startDate)} to ${DateFormat.yMMMMd('en_US').format(widget.endDate)}",
         author: "Villadex",
         compress: true,
-        version: PdfVersion.pdf_1_5);
+        version: PdfVersion.pdf_1_5,
+        pageMode: PdfPageMode.thumbs);
 
     /// Fill out the report
-    report.addPage(pw.Page(
+    report.addPage(
+      pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
           return pw.Column(
@@ -114,11 +162,8 @@ class _ReportGeneratorState extends State<ReportGenerator> {
                 child: pw.FittedBox(
                   child: pw.Center(
                     child: pw.Text(
-                      "${widget.property.name} Report ${DateFormat.yMMMMd('en_US').format(DateTime.now())}",
-                      style: pw.TextStyle(
-                        font: pw.Font.helveticaBold(),
-                        fontSize: title,
-                      ),
+                      "${widget.property.name} report ${DateFormat.yMMMMd('en_US').format(widget.startDate)} to ${DateFormat.yMMMMd('en_US').format(widget.endDate)}",
+                      style: VilladexTextStyles().getPDFTitle(),
                       overflow: pw.TextOverflow.visible,
                       maxLines: 2,
                     ),
@@ -126,21 +171,66 @@ class _ReportGeneratorState extends State<ReportGenerator> {
                 ),
               ),
 
-              /// Spacing
+              pw.SizedBox(height: 10),
+
+              /// Owner
+              pw.Center(
+                child: pw.Text(
+                  "${widget.property.owner}",
+                  style: VilladexTextStyles().getPDFSubtitle(),
+                ),
+              ),
+
+              /// Address
+              // Street
+              pw.Center(
+                child: pw.Text(
+                  "${widget.property.address.street1} ${widget.property.address.street2}",
+                  style: VilladexTextStyles().getPDFSubtitle(),
+                ),
+              ),
+
+              // City, state, zip
+              pw.Center(
+                child: pw.Text(
+                  "${widget.property.address.city}, ${widget.property.address.state} ${widget.property.address.zip}",
+                  style: VilladexTextStyles().getPDFSubtitle(),
+                ),
+              ),
+
+              pw.Center(
+                child: pw.Text(
+                  widget.property.address.country,
+                  style: VilladexTextStyles().getPDFSubtitle(),
+                ),
+              ),
+
               pw.SizedBox(height: 20),
 
-              /// Expenditures
-              // Heading
+              ///General Information
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.start,
                 children: [
-                  pw.Text(
-                    "Expenditures",
-                    style: pw.TextStyle(
-                      font: pw.Font.helvetica(),
-                      fontSize: heading1,
-                    ),
-                  ),
+                  pw.Text("Profits",
+                      style: VilladexTextStyles().getPDFHeading1()),
+                ],
+              ),
+
+              pw.SizedBox(height: 20),
+
+              pw.Row(children: [
+                /// Data
+                pw.Column()
+
+                /// Graph
+              ])
+
+              /// Earnings
+              /*pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                children: [
+                  pw.Text("Earnings",
+                      style: VilladexTextStyles().getPDFHeading1()),
                 ],
               ),
 
@@ -149,15 +239,63 @@ class _ReportGeneratorState extends State<ReportGenerator> {
 
               // Table
               pw.Table.fromTextArray(
-                /// Decoration
+                // Decoration
                 headerDecoration: pw.BoxDecoration(
                   borderRadius:
                       const pw.BorderRadius.all(pw.Radius.circular(2)),
-                  color: primary,
+                  color: pdfPrimary, //VilladexColors().pdfPrimary,
                 ),
 
                 oddRowDecoration: pw.BoxDecoration(
-                  color: oddRow,
+                  color: pdfOddRow, //VilladexColors().pdfOddRow,
+                ),
+
+                cellAlignments: {
+                  0: pw.Alignment.centerLeft,
+                  1: pw.Alignment.centerLeft,
+                  2: pw.Alignment.centerLeft,
+                  3: pw.Alignment.centerLeft,
+
+                },
+
+                /// Get Headers
+                headers: List<String>.generate(earningHeaders.length,
+                    (col) => earningHeaders[col]),
+
+                /// Get Data
+                data: List<List<String>>.generate(
+                  earningData.length,
+                  (row) => List<String>.generate(earningHeaders.length,
+                      (col) => earningData[row].getIndex(col)),
+                ),
+              ),
+
+              pw.SizedBox(height: 20),
+
+              /// Expenditures
+              // Heading
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                children: [
+                  pw.Text("Expenditures",
+                      style: VilladexTextStyles().getPDFHeading1()),
+                ],
+              ),
+
+              // Spacing
+              pw.SizedBox(height: 15),
+
+              // Table
+              pw.Table.fromTextArray(
+                // Decoration
+                headerDecoration: pw.BoxDecoration(
+                  borderRadius:
+                      const pw.BorderRadius.all(pw.Radius.circular(2)),
+                  color: pdfPrimary, //VilladexColors().pdfPrimary,
+                ),
+
+                oddRowDecoration: pw.BoxDecoration(
+                  color: pdfOddRow, //VilladexColors().pdfOddRow,
                 ),
 
                 cellAlignments: {
@@ -180,23 +318,56 @@ class _ReportGeneratorState extends State<ReportGenerator> {
                       (col) => expenditureData[row].getIndex(col)),
                 ),
               ),
+
+              pw.SizedBox(height: 20),*/
             ],
           );
-        }));
+        },
+      ),
+    );
 
     return report.save();
   }
 }
 
+class _EarningDataPoint {
+  _EarningDataPoint({required Earning earning})
+      : name = earning.name,
+        category = earning.category?.name ?? "",
+        date = DateFormat('yMd').format(earning.earningDate),
+        amount = "\$${earning.amount.toStringAsFixed(2)}",
+        rawData = earning;
+
+  final String name;
+  final String category;
+  final String date;
+  final String amount;
+  final Earning rawData;
+
+  String getIndex(int index) {
+    switch (index) {
+      case 0:
+        return name;
+      case 1:
+        return date;
+      case 2:
+        return category;
+      case 3:
+        return amount;
+    }
+    return '';
+  }
+}
+
 class _ExpenditureDataPoint {
-  const _ExpenditureDataPoint(
-    this.name,
-    this.category,
-    this.date,
-    this.number,
-    this.price,
-    this.total,
-  );
+  _ExpenditureDataPoint({required Expenditure expenditure})
+      : name = expenditure.name,
+        category = expenditure.category.name,
+        date = DateFormat('yMd').format(expenditure.expenditureDate),
+        price = "\$${expenditure.amount.toStringAsFixed(2)}",
+        number = expenditure.numUnits.toString(),
+        total = "\$${expenditure.total}",
+        rawData = expenditure;
 
   final String name;
   final String category;
@@ -204,6 +375,7 @@ class _ExpenditureDataPoint {
   final String price;
   final String number;
   final String total;
+  final Expenditure rawData;
 
   String getIndex(int index) {
     switch (index) {

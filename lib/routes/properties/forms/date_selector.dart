@@ -6,14 +6,16 @@ import 'package:intl/intl.dart';
 class DateSelector extends StatefulWidget {
   // Used to send data back to the parent
   final callback;
+  final String displayText;
 
-  const DateSelector({Key? key, required this.callback}) : super(key: key);
+  const DateSelector({Key? key, required this.callback, this.displayText = "Date"}) : super(key: key);
 
   @override
   State<DateSelector> createState() => _DateSelectorState();
 }
 
 class _DateSelectorState extends State<DateSelector> {
+  bool dateSelected = false;
   String display = "Date";
   DateTime selectedDate = DateTime.now();
 
@@ -40,7 +42,7 @@ class _DateSelectorState extends State<DateSelector> {
           onPressed: (() {
             _selectDate(context);
           }),
-          child: Text(display),
+          child: Text(dateSelected ? display : widget.displayText)//Text(display),
         ),
       ),
     );
@@ -59,6 +61,7 @@ class _DateSelectorState extends State<DateSelector> {
     // Set the display to the selected Date
     if (display != selectedDate.toString()) {
       setState(() {
+        dateSelected = true;
         display = DateFormat('yMd').format(selectedDate);
       });
     }

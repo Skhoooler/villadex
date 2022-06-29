@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:villadex/model/associate_model.dart';
+import 'package:villadex/model/cash_flow.dart';
 import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/category_model.dart';
 
-class Expenditure {
+class Expenditure extends CashFlow {
   /// Constructors
   Expenditure({
     required this.name,
@@ -119,6 +120,16 @@ class Expenditure {
     });
   }
 
+  static Future<List<Expenditure?>?> fetchAllByProperty(int id) async {
+    String sql = "SELECT * FROM expenditures WHERE property_id = $id";
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Expenditure.fromJSON(json: json)).toList();
+      });
+    });
+  }
+
   Future<void> update() async {
     Map<String, dynamic> data = {
       'name': name,
@@ -167,4 +178,6 @@ class Expenditure {
   int get propertyKey => _propertyKey;
 
   String get total => (amount * numUnits).toStringAsFixed(2);
+
+  double get numericTotal => (amount * numUnits);
 }
