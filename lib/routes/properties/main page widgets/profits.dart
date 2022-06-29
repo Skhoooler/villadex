@@ -62,14 +62,14 @@ class _ProfitState extends State<Profits> {
                           (context, AsyncSnapshot<List<dynamic>> snapshot) {
                         // Snapshot[0] = Expenditure
                         // Snapshot[1] = Earning
-                        if (snapshot.hasData) {
+                        /*if (snapshot.hasData) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: LineChart(LineChartData(
                               lineBarsData: [LineChartBarData(spots: [],),],
                             )),
                           );
-                        }
+                        }*/
 
                         return Text(
                           "Loading data...",
