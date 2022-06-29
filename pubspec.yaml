@@ -38,6 +38,7 @@ dependencies:
   sqflite:
   email_validator:
   pdf:
+  printing:
   shared_preferences:
 
   # The following adds the Cupertino Icons font to your application.

@@ -32,8 +32,8 @@ class Earning {
   Earning.fromJSON({required Map<String, dynamic> json})
       : name = json['name'],
         description = json['description'],
-        earningDate = json['date'],
-        category = json['category'],
+        earningDate = DateTime.parse(json['date']),
+        category = Category.fromJSON(json: jsonDecode(json['category'])),
         amount = json['amount'],
         _primaryKey = json['earning_id'],
         _propertyKey = json['property_id'],
@@ -71,7 +71,7 @@ class Earning {
 
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
-            (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
+        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Earning.fromJSON(json: data[0]);
@@ -100,6 +100,7 @@ class Earning {
       'dateCreated': _dateCreated.toIso8601String()
     });
   }
+
   /// Getters
   DateTime get dateCreated => _dateCreated;
 

@@ -48,7 +48,8 @@ class Expenditure {
         category = Category.fromJSON(json: jsonDecode(json['category'])),
         expenditureDate = DateTime.parse(json['date']),
         associates = jsonDecode(json['associates'] ?? [])
-            .forEach((data) => Associate.fromJSON(json: data)),
+                ?.forEach((data) => Associate.fromJSON(json: data)) ??
+            [],
         _primaryKey = json['expenditure_id'],
         _propertyKey = json['property_id'],
         _dateCreated = DateTime.parse(json['dateCreated']);
