@@ -61,7 +61,7 @@ class VilladexTextStyles {
   final double _subtitle = 20;
   final double _heading1 = 30;
   final double _heading2 = 25;
-  final double _text = 12;
+  final double _text = 18;
 
   /// PDF Title
   pw.TextStyle getPDFTitle() {
@@ -98,8 +98,8 @@ class VilladexTextStyles {
   /// PDF Regular Text
   pw.TextStyle getPDFText() {
     return pw.TextStyle(
-      font: pw.Font.helveticaBold(),
-      fontSize: _heading1,
+      font: pw.Font.times(),
+      fontSize: _text,
     );
   }
 }

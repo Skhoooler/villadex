@@ -177,9 +177,13 @@ class Property {
 
   Address get address => _address;
 
+  /// Returns a list of change in income (previous income + (earning - expenditures)) by
+  /// taking two DateTime objects (a starting point, and an ending point)
+  /// and an optional interval (defaults to monthly)
   Future<List<double>> getIncomeByInterval(DateTime start, DateTime end,
       {DataInterval interval = DataInterval.monthly}) async {
-    List<double> data = []; // Return value
+    List<double> data = [0]; // Return value. It has a 0 in it to help calculations
+                             // later on. It gets removed at the end.
     int dayInterval; // Interval to search in
 
     /// Set up the interval to select data from
@@ -233,14 +237,16 @@ class Property {
       });
 
       /// Add to the data list
-      data.add(earningTotal - expenditureTotal);
+      data.add((data.last + (earningTotal - expenditureTotal)));
 
       /// Increment intervalStart and intervalEnd
       intervalStart = intervalStart.add(Duration(days: dayInterval));
       intervalEnd = intervalEnd.add(Duration(days: dayInterval));
       firstLoop = false;
     }
+    data.removeAt(0); // Get rid of the leading 0 at the start of the list
 
+    print(data);
     return data;
   }
 }

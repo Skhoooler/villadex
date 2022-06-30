@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:typed_data';
+import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -16,6 +17,7 @@ import '../../../model/earning_model.dart';
 import '../../../model/expenditure_model.dart';
 import '../../../model/property_model.dart';
 import '../../../model/category_model.dart' as vd;
+import 'generate_report_options.dart';
 
 class ReportGenerator extends StatefulWidget {
   final Property property;
@@ -58,14 +60,14 @@ class _ReportGeneratorState extends State<ReportGenerator> {
   ///////////////////////////////////////////////////////////////////////
   /// Generates a PDF file
   ///////////////////////////////////////////////////////////////////////
-
-  PdfColor pdfPrimary = PdfColor.fromInt(VilladexColors().primary.value);
-  PdfColor pdfOddRow = PdfColor.fromInt(VilladexColors().oddRow.value);
-  PdfColor pdfWhiteText = PdfColor.fromInt(VilladexColors().background.value);
-
   Future<Uint8List> _generateReport() async {
+    /// Set up colors for the PDF
+    PdfColor pdfPrimary = PdfColor.fromInt(VilladexColors().primary.value);
+    PdfColor pdfOddRow = PdfColor.fromInt(VilladexColors().oddRow.value);
+    PdfColor pdfWhiteText = PdfColor.fromInt(VilladexColors().background.value);
 
-    widget.property.getIncomeByInterval(widget.startDate, widget.endDate, interval: widget.options["Interval"]);
+    String startDate = DateFormat.yMMMMd('en_US').format(widget.startDate);
+    String endDate = DateFormat.yMMMMd('en_US').format(widget.endDate);
 
     /// Create Headers for Tables
     const expenditureHeaders = [
@@ -125,28 +127,72 @@ class _ReportGeneratorState extends State<ReportGenerator> {
         .toList();
 
     /// Create Graphs
+    // Get income data
+    List<double> income = await widget.property.getIncomeByInterval(
+        widget.startDate, widget.endDate,
+        interval: widget.options["Interval"]);
+
+    // Set up the Axis for the graph
+    List<int> xAxis = [
+      1,
+      income.length,
+      (income.length * .5).floor(),
+      (income.length * .75).floor(),
+      (income.length * .25).floor(),
+    ];
+
+    List<int> yAxis = [
+      // Give some spacing between the graph and the bottom
+      income.reduce(min) < 0 ? 0 : (income.reduce(min) * .5).floor(),
+      income[0].floor(),
+      income.reduce(max).floor(),
+      income.reduce(min).floor(),
+      ((income.reduce(max) + income.reduce(min)) / 2).floor(),
+    ];
+
+    // Sort the axis into ascending order (least to greatest)
+    xAxis.sort((a, b) => a.compareTo(b));
+    yAxis.sort((a, b) => a.compareTo(b));
+
     // Profits
-    /*final profitsChart = pw.Chart(
-      right: pw.ChartLegend(),
-      grid: pw.CartesianGrid(
-        //todo: Make this programmatic
-        xAxis: pw.FixedAxis([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]), /// Months
-        yAxis: pw.FixedAxis([0, 20, 40, 60, 80, 100], divisions: true),
-      ),
-      datasets: [pw.LineDataSet(
-        legend: 'Profits',
-        drawSurface: true,
-        isCurved: true,
-        drawPoints: false,
-        color: pdfPrimary,
-        data: List<pw.PointChartValue>.generate(length, (index) => null)
-      )]
-    );*/
+    final profitsChart = pw.Chart(
+        title: pw.Text("Income from $startDate to $endDate",
+            style: VilladexTextStyles().getPDFText()),
+        //right: pw.ChartLegend(),
+        bottom: pw.Text(
+          _getInterval(),
+          style: VilladexTextStyles().getPDFText(),
+        ),
+        grid: pw.CartesianGrid(
+          //todo: Make this programmatic
+          xAxis: pw.FixedAxis(
+            xAxis,
+            divisions: true,
+          ),
+
+          yAxis: pw.FixedAxis(
+            yAxis,
+            divisions: true,
+          ),
+        ),
+        datasets: [
+          pw.LineDataSet(
+              legend: 'Profits',
+              drawSurface: false,
+              isCurved: true,
+              drawPoints: true,
+              pointSize: 6,
+              color: pdfPrimary,
+              data: List<pw.PointChartValue>.generate(
+                  income.length,
+                  (index) =>
+                      pw.PointChartValue(index.toDouble() + 1, income[index])))
+        ]);
 
     /// Create base report
     final report = pw.Document(
         title:
-            "${widget.property.name} report ${DateFormat.yMMMMd('en_US').format(widget.startDate)} to ${DateFormat.yMMMMd('en_US').format(widget.endDate)}",
+            "${widget.property.name} report $startDate to ${DateFormat.yMMMMd('en_US').format(widget.endDate)}",
         author: "Villadex",
         compress: true,
         version: PdfVersion.pdf_1_5,
@@ -223,9 +269,18 @@ class _ReportGeneratorState extends State<ReportGenerator> {
 
               pw.Row(children: [
                 /// Data
-                pw.Column()
+                pw.Expanded(
+                  child: pw.Column(
+                    children: [
+                      // Gross Profit
+                      pw.Text("Gross Profit",
+                          style: VilladexTextStyles().getPDFText()),
+                    ],
+                  ),
+                ),
 
                 /// Graph
+                pw.Expanded(flex: 2, child: profitsChart),
               ])
 
               /// Earnings
@@ -330,6 +385,24 @@ class _ReportGeneratorState extends State<ReportGenerator> {
     );
 
     return report.save();
+  }
+
+  String _getInterval() {
+    switch (widget.options["Interval"]) {
+      case DataInterval.weekly:
+        return "Week";
+      case DataInterval.biWeekly:
+        return "Two Weeks";
+      case DataInterval.monthly:
+        return "Month";
+      case DataInterval.biYearly:
+        return "6 Months";
+      case DataInterval.yearly:
+        return "Year";
+      case DataInterval.yearToDate:
+        return "Year to Date";
+    }
+    return "Error";
   }
 }
 
