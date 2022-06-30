@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:villadex/model/cash_flow.dart';
 import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/category_model.dart';
 
-class Earning extends CashFlow {
+class Earning {
   /// Constructors
   Earning({
     required this.name,

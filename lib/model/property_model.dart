@@ -1,7 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
-import 'package:intl/intl.dart';
-import 'package:villadex/model/cash_flow.dart';
 
 import 'package:villadex/model/database.dart' as db;
 import 'package:villadex/model/address_model.dart';
@@ -9,6 +7,7 @@ import 'package:villadex/model/event_model.dart';
 import 'package:villadex/model/expenditure_model.dart';
 import 'package:villadex/model/earning_model.dart';
 import 'package:villadex/model/associate_model.dart';
+import '../routes/properties/menu options/generate_report_options.dart';
 
 class Property {
   /// Constructors
@@ -178,40 +177,70 @@ class Property {
 
   Address get address => _address;
 
-  /*Future<List<double>> getCashFlowByDate(DateTime start, DateTime end) async {
+  Future<List<double>> getIncomeByInterval(DateTime start, DateTime end,
+      {DataInterval interval = DataInterval.monthly}) async {
+    List<double> data = []; // Return value
+    int dayInterval; // Interval to search in
+
+    /// Set up the interval to select data from
+    if (interval == DataInterval.weekly) {
+      dayInterval = 7;
+    } else if (interval == DataInterval.biWeekly) {
+      dayInterval = 14;
+    } else if (interval == DataInterval.biYearly) {
+      dayInterval = 181;
+    } else if (interval == DataInterval.yearly) {
+      dayInterval = 365;
+    } else if (interval == DataInterval.yearToDate) {
+      dayInterval = start.difference(end).inDays;
+    } else {
+      dayInterval = 30; // Monthly interval is default
+    }
+
+    /// Fetch expenditures and earnings from database
     List<Expenditure?> expenditures =
         await Expenditure.fetchAllByProperty(_primaryKey ?? 0) ?? [];
     List<Earning?> earnings = await Earning.fetchAll() ?? [];
 
-    Map<int, List<CashFlow>> result
-  }*/
-/*if (month <= 0 || month > 12) {
-      return [];
+    /// Get all data points
+    DateTime intervalStart = start;
+    DateTime intervalEnd = start.add(Duration(days: dayInterval));
+    bool firstLoop = true; // So it will loop at least once
+    while (intervalEnd.isBefore(end) || firstLoop) {
+      double expenditureTotal = 0;
+      double earningTotal = 0;
+
+      /// Loop through expenditures
+      expenditures
+          // Select expenditures that are between intervalStart and intervalEnd
+          .where((expenditure) =>
+              (expenditure?.expenditureDate.isBefore(intervalEnd) ?? false) &&
+              (expenditure?.expenditureDate.isAfter(intervalStart) ?? false))
+          // For each selected, add their total to the expenditure total
+          .forEach((expenditure) {
+        expenditureTotal += expenditure?.numericTotal ?? 0;
+      });
+
+      /// Loop through earnings
+      earnings
+          // Select earnings that are between intervalStart and intervalEnd
+          .where((earning) =>
+              (earning?.earningDate.isBefore(intervalEnd) ?? false) &&
+              (earning?.earningDate.isAfter(intervalStart) ?? false))
+          // For each selected, add their total to the earning total
+          .forEach((earning) {
+        earningTotal += earning?.amount ?? 0;
+      });
+
+      /// Add to the data list
+      data.add(earningTotal - expenditureTotal);
+
+      /// Increment intervalStart and intervalEnd
+      intervalStart = intervalStart.add(Duration(days: dayInterval));
+      intervalEnd = intervalEnd.add(Duration(days: dayInterval));
+      firstLoop = false;
     }
 
-    List<Expenditure?> expenditures = await Expenditure.fetchAllByProperty(_primaryKey) ?? [];
-    List<Earning?> earnings = await Earning.fetchAll() ?? [];
-
-    double totalExpenditures = 0;
-    double totalEarnings = 0;
-
-    for (var expenditure in expenditures) {
-      if (expenditure != null) {
-        if (month ==
-            int.parse(DateFormat('M').format(expenditure.expenditureDate))) {
-          totalExpenditures += expenditure.numericTotal;
-        }
-      }
-    }
-
-    for (var earning in earnings) {
-      if (earning != null) {
-        if (month == int.parse(DateFormat('M').format(earning.earningDate))) {
-          totalExpenditures += earning.amount;
-        }
-      }
-    }
-
-    return [totalExpenditures, totalEarnings];
-  }*/
+    return data;
+  }
 }

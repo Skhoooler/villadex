@@ -64,6 +64,9 @@ class _ReportGeneratorState extends State<ReportGenerator> {
   PdfColor pdfWhiteText = PdfColor.fromInt(VilladexColors().background.value);
 
   Future<Uint8List> _generateReport() async {
+
+    widget.property.getIncomeByInterval(widget.startDate, widget.endDate, interval: widget.options["Interval"]);
+
     /// Create Headers for Tables
     const expenditureHeaders = [
       'Name',

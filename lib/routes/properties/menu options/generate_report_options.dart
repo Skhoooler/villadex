@@ -27,7 +27,7 @@ class _GenerateReportOptionsState extends State<GenerateReportOptions> {
   Map<String, dynamic> options = {
     "Expenditures": true,
     "Earnings": true,
-    "Data Interval": DataInterval.weekly,
+    "Interval": DataInterval.weekly,
   };
 
   String selectedInterval = "Weekly";
@@ -79,7 +79,7 @@ class _GenerateReportOptionsState extends State<GenerateReportOptions> {
             /// Select Dates
             Center(
               child: Text(
-                "Select Start  and End Date",
+                "Select Start and End Date",
                 style: VilladexTextStyles().getTertiaryTextStyle(),
               ),
             ),
@@ -103,17 +103,17 @@ class _GenerateReportOptionsState extends State<GenerateReportOptions> {
               value: selectedInterval,
               onChanged: (String? newValue) {
                 if (newValue == "Weekly") {
-                  options["Data Interval"] = DataInterval.weekly;
+                  options["Interval"] = DataInterval.weekly;
                 } else if (newValue == "Bi-Weekly") {
-                  options["Data Interval"] = DataInterval.biWeekly;
+                  options["Interval"] = DataInterval.biWeekly;
                 } else if (newValue == "Monthly") {
-                  options["Data Interval"] = DataInterval.monthly;
+                  options["Interval"] = DataInterval.monthly;
                 } else if (newValue == "Bi-Yearly") {
-                  options["Data Interval"] = DataInterval.biYearly;
+                  options["Interval"] = DataInterval.biYearly;
                 } else if (newValue == "Yearly") {
-                  options["Data Interval"] = DataInterval.yearly;
+                  options["Interval"] = DataInterval.yearly;
                 } else if (newValue == "Year-To-Date") {
-                  options["Data Interval"] = DataInterval.yearToDate;
+                  options["Interval"] = DataInterval.yearToDate;
                 }
 
                 setState(() {
