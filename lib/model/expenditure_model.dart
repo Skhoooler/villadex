@@ -120,7 +120,12 @@ class Expenditure {
   }
 
   static Future<List<Expenditure?>?> fetchAllByProperty(int id) async {
-    String sql = "SELECT * FROM expenditures WHERE property_id = $id";
+    String sql;
+    if (id < 0) {
+      sql = "SELECT * FROM expenditure";
+    } else {
+      sql = "SELECT * FROM expenditures WHERE property_id = $id";
+    }
 
     return db.DatabaseConnection.database.then((databaseConnection) {
       return databaseConnection?.rawQuery(sql).then((data) {

@@ -7,7 +7,6 @@ import 'package:villadex/model/event_model.dart';
 import 'package:villadex/model/expenditure_model.dart';
 import 'package:villadex/model/earning_model.dart';
 import 'package:villadex/model/associate_model.dart';
-import '../routes/properties/menu options/generate_report_options.dart';
 
 class Property {
   /// Constructors
@@ -176,77 +175,4 @@ class Property {
   int get key => _primaryKey ?? 0;
 
   Address get address => _address;
-
-  /// Returns a list of change in income (previous income + (earning - expenditures)) by
-  /// taking two DateTime objects (a starting point, and an ending point)
-  /// and an optional interval (defaults to monthly)
-  Future<List<double>> getIncomeByInterval(DateTime start, DateTime end,
-      {DataInterval interval = DataInterval.monthly}) async {
-    List<double> data = [0]; // Return value. It has a 0 in it to help calculations
-                             // later on. It gets removed at the end.
-    int dayInterval; // Interval to search in
-
-    /// Set up the interval to select data from
-    if (interval == DataInterval.weekly) {
-      dayInterval = 7;
-    } else if (interval == DataInterval.biWeekly) {
-      dayInterval = 14;
-    } else if (interval == DataInterval.biYearly) {
-      dayInterval = 181;
-    } else if (interval == DataInterval.yearly) {
-      dayInterval = 365;
-    } else if (interval == DataInterval.yearToDate) {
-      dayInterval = start.difference(end).inDays;
-    } else {
-      dayInterval = 30; // Monthly interval is default
-    }
-
-    /// Fetch expenditures and earnings from database
-    List<Expenditure?> expenditures =
-        await Expenditure.fetchAllByProperty(_primaryKey ?? 0) ?? [];
-    List<Earning?> earnings = await Earning.fetchAll() ?? [];
-
-    /// Get all data points
-    DateTime intervalStart = start;
-    DateTime intervalEnd = start.add(Duration(days: dayInterval));
-    bool firstLoop = true; // So it will loop at least once
-    while (intervalEnd.isBefore(end) || firstLoop) {
-      double expenditureTotal = 0;
-      double earningTotal = 0;
-
-      /// Loop through expenditures
-      expenditures
-          // Select expenditures that are between intervalStart and intervalEnd
-          .where((expenditure) =>
-              (expenditure?.expenditureDate.isBefore(intervalEnd) ?? false) &&
-              (expenditure?.expenditureDate.isAfter(intervalStart) ?? false))
-          // For each selected, add their total to the expenditure total
-          .forEach((expenditure) {
-        expenditureTotal += expenditure?.numericTotal ?? 0;
-      });
-
-      /// Loop through earnings
-      earnings
-          // Select earnings that are between intervalStart and intervalEnd
-          .where((earning) =>
-              (earning?.earningDate.isBefore(intervalEnd) ?? false) &&
-              (earning?.earningDate.isAfter(intervalStart) ?? false))
-          // For each selected, add their total to the earning total
-          .forEach((earning) {
-        earningTotal += earning?.amount ?? 0;
-      });
-
-      /// Add to the data list
-      data.add((data.last + (earningTotal - expenditureTotal)));
-
-      /// Increment intervalStart and intervalEnd
-      intervalStart = intervalStart.add(Duration(days: dayInterval));
-      intervalEnd = intervalEnd.add(Duration(days: dayInterval));
-      firstLoop = false;
-    }
-    data.removeAt(0); // Get rid of the leading 0 at the start of the list
-
-    print(data);
-    return data;
-  }
 }

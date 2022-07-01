@@ -6,8 +6,7 @@ import 'package:villadex/routes/properties/menu%20options/generate_report.dart';
 import '../../../Style/text_styles.dart';
 import '../../../Util/nav_bar.dart';
 import '../../../model/property_model.dart';
-
-enum DataInterval { weekly, biWeekly, monthly, biYearly, yearly, yearToDate }
+import '../../../util/analysis.dart';
 
 class GenerateReportOptions extends StatefulWidget {
   final Property property;
@@ -76,6 +75,7 @@ class _GenerateReportOptionsState extends State<GenerateReportOptions> {
               height: 20,
             ),
 
+            //todo: Fix the bug where the back button doesn't keep the selected dates
             /// Select Dates
             Center(
               child: Text(

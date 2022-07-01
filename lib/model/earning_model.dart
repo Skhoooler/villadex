@@ -88,6 +88,21 @@ class Earning {
     });
   }
 
+  static Future<List<Earning?>?> fetchAllByProperty(int id) async {
+    String sql;
+    if (id < 0) {
+      sql = "SELECT * FROM earnings";
+    } else {
+      sql = "SELECT * FROM earnings WHERE property_id = $id";
+    }
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Earning.fromJSON(json: json)).toList();
+      });
+    });
+  }
+
   String toJSON() {
     return jsonEncode({
       'name': name,
