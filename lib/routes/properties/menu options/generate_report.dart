@@ -161,7 +161,8 @@ class _ReportGeneratorState extends State<ReportGenerator> {
           return pw.Column(
             children: [
               getTitle(),
-              getProfit(gross, net, profitsChart),
+              if (widget.options["Profits"])
+                getProfit(gross, net, profitsChart),
             ],
           );
         },
@@ -169,26 +170,56 @@ class _ReportGeneratorState extends State<ReportGenerator> {
     );
 
     /// Earnings
-    report.addPage(
-      pw.MultiPage(
-        build: (context) {
-          return [
-            getEarnings(analyzer, pdfPrimary, pdfOddRow),
-          ];
-        },
-      ),
-    );
+    if (widget.options["Earnings"]) {
+      report.addPage(
+        pw.MultiPage(
+          build: (context) {
+            return [
+              getEarnings(analyzer, pdfPrimary, pdfOddRow),
+            ];
+          },
+        ),
+      );
+    }
 
     /// Expenditures
-    report.addPage(
-      pw.MultiPage(
-        build: (context) {
-          return [
-            getExpenditures(analyzer, pdfPrimary, pdfOddRow),
-          ];
-        },
-      ),
-    );
+    if (widget.options["Expenditures"]) {
+      report.addPage(
+        pw.MultiPage(
+          build: (context) {
+            return [
+              getExpenditures(analyzer, pdfPrimary, pdfOddRow),
+            ];
+          },
+        ),
+      );
+    }
+
+    /// Events
+    if (widget.options["Events"]) {
+      report.addPage(
+        pw.MultiPage(
+          build: (context) {
+            return [
+              getEvents(),
+            ];
+          },
+        ),
+      );
+    }
+
+    /// Associates
+    if (widget.options["Associates"]) {
+      report.addPage(
+        pw.MultiPage(
+          build: (context) {
+            return [
+              getAssociates(),
+            ];
+          },
+        ),
+      );
+    }
     return report.save();
   }
 
@@ -253,7 +284,6 @@ class _ReportGeneratorState extends State<ReportGenerator> {
               ),
 
               pw.SizedBox(height: 10),
-
             ],
           ),
         ),
@@ -266,9 +296,16 @@ class _ReportGeneratorState extends State<ReportGenerator> {
 
   /// Returns Events
   pw.Widget getEvents() {
-     const headers = ["Name", "Date", "Address"];
+    const headers = ["Name", "Date", "Address"];
 
-    return pw.Column();
+    return pw.Column(children: [pw.Text("Events")]);
+  }
+
+  /// Returns Associates
+  pw.Widget getAssociates() {
+    const headers = ["Name", "Date", "Address"];
+
+    return pw.Column(children: [pw.Text("Associates")]);
   }
 
   /// Returns Earnings
@@ -481,9 +518,9 @@ class _ReportGeneratorState extends State<ReportGenerator> {
 
 class _EventDataPoint {
   _EventDataPoint({required Event event})
-    : name = event.name,
-      address = event.address?.fullAddress ?? "",
-      date = DateFormat('yMd').format(event.date);
+      : name = event.name,
+        address = event.address?.fullAddress ?? "",
+        date = DateFormat('yMd').format(event.date);
 
   final String name;
   final String address;

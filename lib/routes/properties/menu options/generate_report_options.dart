@@ -26,6 +26,9 @@ class _GenerateReportOptionsState extends State<GenerateReportOptions> {
   Map<String, dynamic> options = {
     "Expenditures": true,
     "Earnings": true,
+    "Profits": true,
+    "Associates": false,
+    "Events": false,
     "Interval": DataInterval.weekly,
   };
 
@@ -95,7 +98,7 @@ class _GenerateReportOptionsState extends State<GenerateReportOptions> {
 
             /// Select data frequency
             Text(
-              "Data Interval",
+              "Select Data Interval",
               style: VilladexTextStyles().getTertiaryTextStyle(),
             ),
 
@@ -134,6 +137,111 @@ class _GenerateReportOptionsState extends State<GenerateReportOptions> {
                 );
               }).toList(),
             ),
+
+            /// Select what to include in the report
+            Center(
+              child: Text(
+                "Select Information to Include",
+                style: VilladexTextStyles().getTertiaryTextStyle(),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                /// Profits
+                Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: -15,
+                  children: [
+                    Checkbox(
+                      value: options["Profits"],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          options["Profits"] = value;
+                        });
+                      },
+                    ),
+                    const Text("Profits"),
+                  ],
+                ),
+
+                /// Earnings
+                Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: -15,
+                  children: [
+                    Checkbox(
+                      value: options["Earnings"],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          options["Earnings"] = value;
+                        });
+                      },
+                    ),
+                    const Text("Earnings"),
+                  ],
+                ),
+
+                /// Expenditures
+                Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: -15,
+                  children: [
+                    Checkbox(
+                      value: options["Expenditures"],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          options["Expenditures"] = value;
+                        });
+                      },
+                    ),
+                    const Text("Expenditures"),
+                  ],
+                ),
+
+                /// Events
+                Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: -15,
+                  children: [
+                    Checkbox(
+                      value: options["Events"],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          options["Events"] = value;
+                        });
+                      },
+                    ),
+                    const Text("Events"),
+                  ],
+                ),
+
+                /// Associates
+                Wrap(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: -15,
+                  children: [
+                    Checkbox(
+                      value: options["Associates"],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          options["Associates"] = value;
+                        });
+                      },
+                    ),
+                    const Text("Associates"),
+                  ],
+                ),
+              ],
+            ),
+
+            /// Spacing
+            SizedBox(height: 20),
 
             /// Create Report Button
             ElevatedButton(
