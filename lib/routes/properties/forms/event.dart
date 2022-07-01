@@ -26,7 +26,7 @@ class _EventFormState extends State<EventForm> {
   final _zipController = TextEditingController();
   final _countryController = TextEditingController();
 
-  Address _address = Address(street1: "None", city: "None", country: "None");
+  //Address _address = Address(street1: "None", city: "None", country: "None");
   DateTime _date = DateTime.now();
 
   final _formKey = GlobalKey<FormState>();
@@ -259,6 +259,7 @@ class _EventFormState extends State<EventForm> {
                         Event(
                                 name: _nameController.text,
                                 description: _descriptionController.text,
+                                date: _date,
                                 address: Address(
                                   street1: _streetAddress1Controller.text,
                                   street2: _streetAddress2Controller.text,

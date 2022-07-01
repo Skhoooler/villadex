@@ -17,7 +17,7 @@ class DatabaseConnection {
   /// Getter for the database
   static Future<Database?> get database async {
     // If _database is null, set it equal to the return value of _initDB
-    _database ??= await _initDB('database14');
+    _database ??= await _initDB('database15');
 
     return _database;
   }
@@ -155,6 +155,7 @@ class DatabaseConnection {
 
       description TEXT,
       address TEXT,
+      date TEXT,
 
       FOREIGN KEY (property_id)
         REFERENCES properties (property_id)

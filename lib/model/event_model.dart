@@ -9,6 +9,7 @@ class Event {
   /// Constructors
   Event({
     required this.name,
+    required this.date,
     this.description,
     this.address,
     int? propertyKey,
@@ -21,6 +22,7 @@ class Event {
     required this.name,
     this.description,
     this.address,
+    required this.date,
     int? propertyKey,
     required int primaryKey,
     required DateTime dateCreated,
@@ -33,6 +35,7 @@ class Event {
       : name = json['name'],
         description = json['description'],
         address = Address.fromJSON(json: json['address']),
+        date = DateTime.parse(json['date']),
         _primaryKey = json['event_id'],
         _propertyKey = json['property_id'],
         _dateCreated = DateTime.parse(json['dateCreated']);
@@ -41,6 +44,7 @@ class Event {
   String name;
   String? description;
   Address? address;
+  DateTime date;
 
   final int? _primaryKey;
   final int? _propertyKey;
@@ -51,6 +55,7 @@ class Event {
     Map<String, dynamic> data = {
       'name': name,
       'description': description,
+      'date': date,
       'address': address?.toJSON(),
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String()
@@ -78,6 +83,7 @@ class Event {
       'name': name,
       'description': description,
       'address': address?.toJSON(),
+      'date': date,
       'event_id': _primaryKey,
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String()

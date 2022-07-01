@@ -175,7 +175,7 @@ class VilladexAnalysis {
   }
 
   /// Returns the name of a DataInterval
-  String getIntervalName (DataInterval interval) {
+  static String getIntervalName (DataInterval interval) {
     switch (interval) {
       case DataInterval.weekly:
         return "Week";

@@ -7,6 +7,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 import 'package:printing/printing.dart';
+import 'package:villadex/model/event_model.dart';
 
 import '../../../style/colors.dart';
 import '../../../style/text_styles.dart';
@@ -111,7 +112,7 @@ class _ReportGeneratorState extends State<ReportGenerator> {
             style: VilladexTextStyles().getPDFText()),
         //right: pw.ChartLegend(),
         bottom: pw.Text(
-          analyzer.getIntervalName(widget.options["Interval"]),
+          VilladexAnalysis.getIntervalName(widget.options["Interval"]),
           style: VilladexTextStyles().getPDFText(),
         ),
         grid: pw.CartesianGrid(
@@ -131,7 +132,7 @@ class _ReportGeneratorState extends State<ReportGenerator> {
               legend: 'Profits',
               drawSurface: false,
               isCurved: true,
-              drawPoints: true,
+              drawPoints: false,
               pointSize: 6,
               color: pdfPrimary,
               data: List<pw.PointChartValue>.generate(
@@ -160,7 +161,7 @@ class _ReportGeneratorState extends State<ReportGenerator> {
           return pw.Column(
             children: [
               getTitle(),
-              getProfit(gross, profitsChart),
+              getProfit(gross, net, profitsChart),
             ],
           );
         },
@@ -195,7 +196,9 @@ class _ReportGeneratorState extends State<ReportGenerator> {
   /// PDF COMPONENTS
   ////////////////////////////////////////////////////////////////////
   /// Returns profits
-  pw.Widget getProfit(double gross, pw.Chart profitsChart) {
+  pw.Widget getProfit(double gross, double net, pw.Chart profitsChart) {
+    PdfColor pdfMoney = PdfColor.fromInt(VilladexColors().money.value);
+    PdfColor pdfError = PdfColor.fromInt(VilladexColors().error.value);
     return pw.Column(children: [
       ///Profits
       pw.Row(
@@ -211,11 +214,46 @@ class _ReportGeneratorState extends State<ReportGenerator> {
         /// Data
         pw.Expanded(
           child: pw.Column(
+            mainAxisAlignment: pw.MainAxisAlignment.center,
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
               // Gross Profit
               pw.Text("Gross Profit", style: VilladexTextStyles().getPDFText()),
+              pw.Text(
+                gross > 0
+                    ? "\$${gross.toStringAsFixed(2)}"
+                    : "-\$${(gross * -1).toStringAsFixed(2)}",
+                style: gross > 0
+                    ? VilladexTextStyles().getPDFText().copyWith(
+                          color: pdfMoney,
+                        )
+                    : VilladexTextStyles().getPDFText().copyWith(
+                          color: pdfError,
+                        ),
+              ),
 
-              pw.Text(gross.toStringAsFixed(2)),
+              pw.SizedBox(height: 10),
+
+              // Net Profits
+              pw.Text(
+                "Net Profit",
+                style: VilladexTextStyles().getPDFText(),
+              ),
+              pw.Text(
+                net > 0
+                    ? "\$${net.toStringAsFixed(2)}"
+                    : "-\$${(net * -1).toStringAsFixed(2)}",
+                style: net > 0
+                    ? VilladexTextStyles().getPDFText().copyWith(
+                          color: pdfMoney,
+                        )
+                    : VilladexTextStyles().getPDFText().copyWith(
+                          color: pdfError,
+                        ),
+              ),
+
+              pw.SizedBox(height: 10),
+
             ],
           ),
         ),
@@ -224,6 +262,13 @@ class _ReportGeneratorState extends State<ReportGenerator> {
         pw.Expanded(flex: 2, child: profitsChart),
       ]),
     ]);
+  }
+
+  /// Returns Events
+  pw.Widget getEvents() {
+     const headers = ["Name", "Date", "Address"];
+
+    return pw.Column();
   }
 
   /// Returns Earnings
@@ -431,6 +476,29 @@ class _ReportGeneratorState extends State<ReportGenerator> {
         pw.SizedBox(height: 20),
       ],
     );
+  }
+}
+
+class _EventDataPoint {
+  _EventDataPoint({required Event event})
+    : name = event.name,
+      address = event.address?.fullAddress ?? "",
+      date = DateFormat('yMd').format(event.date);
+
+  final String name;
+  final String address;
+  final String date;
+
+  String getIndex(int index) {
+    switch (index) {
+      case 0:
+        return name;
+      case 1:
+        return date;
+      case 2:
+        return address;
+    }
+    return '';
   }
 }
 
