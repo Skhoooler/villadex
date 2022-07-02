@@ -34,7 +34,7 @@ class Event {
   Event.fromJSON({required Map<String, dynamic> json})
       : name = json['name'],
         description = json['description'],
-        address = Address.fromJSON(json: json['address']),
+        address = Address.fromJSON(json: jsonDecode(json['address'])),
         date = DateTime.parse(json['date']),
         _primaryKey = json['event_id'],
         _propertyKey = json['property_id'],
@@ -55,7 +55,7 @@ class Event {
     Map<String, dynamic> data = {
       'name': name,
       'description': description,
-      'date': date,
+      'date': date.toIso8601String(),
       'address': address?.toJSON(),
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String()
@@ -78,12 +78,37 @@ class Event {
     });
   }
 
+  static Future<List<Event?>?> fetchAllByProperty(int id) async {
+    String sql;
+    if (id < 0) {
+      sql = "SELECT * FROM events";
+    } else {
+      sql = "SELECT * FROM events WHERE property_id = $id";
+    }
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Event.fromJSON(json: json)).toList();
+      });
+    });
+  }
+
+  static Future<List<Event?>?> fetchAll() async {
+    String sql = "SELECT * FROM events";
+
+    return db.DatabaseConnection.database.then((databaseConnection) {
+      return databaseConnection?.rawQuery(sql).then((data) {
+        return data.map((json) => Event.fromJSON(json: json)).toList();
+      });
+    });
+  }
+
   String toJSON() {
     return jsonEncode({
       'name': name,
       'description': description,
       'address': address?.toJSON(),
-      'date': date,
+      'date': date.toIso8601String(),
       'event_id': _primaryKey,
       'property_id': _propertyKey,
       'dateCreated': _dateCreated.toIso8601String()

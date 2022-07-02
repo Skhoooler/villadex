@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:villadex/Util/Scheduling/calendar_item.dart';
-import 'package:villadex/Util/Scheduling/calendar.dart';
 import 'package:villadex/Util/nav_bar.dart';
 
 import '../../style/colors.dart';
+import 'calendar.dart';
+import 'calendar_item.dart';
 
 class SchedulingPage extends StatefulWidget {
   const SchedulingPage({Key? key}) : super(key: key);

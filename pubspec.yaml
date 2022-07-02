@@ -31,7 +31,7 @@ dependencies:
     sdk: flutter
   google_fonts:
   fl_chart:
-  table_calendar:
+  table_calendar: ^3.0.6
   image_picker:
   flutter_svg:
   marquee:

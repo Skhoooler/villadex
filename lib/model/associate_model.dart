@@ -41,8 +41,8 @@ class Associate {
         lastName = json['lastName'],
         role = json['role'],
         payments = jsonDecode(json['payments'])
-            .map((data) => Expenditure.fromJSON(json: data))
-            .toList(),
+                .forEach((data) => Expenditure.fromJSON(json: data)) ??
+            [],
         contact = null,
         //contact = Contact.fromJSON(json: jsonDecode(json['contact'])),
         _primaryKey = json['associate_id'],
