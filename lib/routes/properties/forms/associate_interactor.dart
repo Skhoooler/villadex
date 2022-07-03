@@ -84,7 +84,7 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                                     title:
                                         Text(associate?.firstName ?? "Error"),
                                     focusColor: VilladexColors().primary,
-                                    hoverColor: VilladexColors().secondary,
+                                    hoverColor: VilladexColors().primary,
                                     selectedColor: VilladexTextStyles()
                                         .getTertiaryTextStyleWhite()
                                         .color,
@@ -157,7 +157,7 @@ class _AssociateInteractorState extends State<AssociateInteractor> {
                               ListTile(
                                 title: const Text("None"),
                                 focusColor: VilladexColors().primary,
-                                hoverColor: VilladexColors().secondary,
+                                hoverColor: VilladexColors().primary,
                                 selectedColor: VilladexTextStyles()
                                     .getTertiaryTextStyleWhite()
                                     .color,

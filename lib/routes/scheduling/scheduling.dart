@@ -6,7 +6,7 @@ import '../../style/colors.dart';
 import 'calendar.dart';
 import 'calendar_item.dart';
 
-class SchedulingPage extends StatefulWidget {
+/*class SchedulingPage extends StatefulWidget {
   const SchedulingPage({Key? key}) : super(key: key);
 
   @override
@@ -59,4 +59,4 @@ class _SchedulingPageState extends State<SchedulingPage> {
       bottomNavigationBar: const NavBar(),
     );
   }
-}
+}*/

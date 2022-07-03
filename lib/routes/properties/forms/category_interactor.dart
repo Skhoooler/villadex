@@ -82,7 +82,7 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                     return ListTile(
                                       title: Text(category?.name ?? "Error"),
                                       focusColor: VilladexColors().primary,
-                                      hoverColor: VilladexColors().secondary,
+                                      hoverColor: VilladexColors().primary,
                                       selectedColor: VilladexTextStyles()
                                           .getTertiaryTextStyleWhite()
                                           .color,
@@ -145,7 +145,7 @@ class _CategoryInteractorState extends State<CategoryInteractor> {
                                 ListTile(
                                   title: const Text("None"),
                                   focusColor: VilladexColors().primary,
-                                  hoverColor: VilladexColors().secondary,
+                                  hoverColor: VilladexColors().primary,
                                   selectedColor: VilladexTextStyles()
                                       .getTertiaryTextStyleWhite()
                                       .color,

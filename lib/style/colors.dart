@@ -9,7 +9,7 @@ import 'package:pdf/pdf.dart';
 class VilladexColors {
   /// Main Colors
   Color primary = const Color(0xFF4D9DE0); // const Color(0xFF85D523);
-  Color secondary = const Color(0xFFE0904D);
+  Color fadedPrimary = const Color(0xFF99c7ed);
   Color background = const Color(0xFFf4eeea); //const Color(0xFFDBD4D2);
   Color background2 = const Color(0xFFEAF0F4);
   Color accent = const Color(0xFF79553F); //const Color(0xFF2C0703);
@@ -36,10 +36,4 @@ class VilladexColors {
   Color blue = const Color(0xFF0293EE);
   Color money = const Color(0xFF118C4F);
   Color oddRow = const Color(0xFFc4def5);
-
-  /// PDF Colors
-  // This caused a stack overflow for some reason. I put the colors in the generate report file
-  /*PdfColor pdfPrimary = PdfColor.fromInt(VilladexColors().primary.value);
-  PdfColor pdfOddRow = PdfColor.fromInt(VilladexColors().oddRow.value);
-  PdfColor pdfWhiteText = PdfColor.fromInt(VilladexColors().background.value);*/
 }
