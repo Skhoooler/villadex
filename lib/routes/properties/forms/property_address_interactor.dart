@@ -194,7 +194,7 @@ class _PropertyAddressFormState extends State<PropertyAddressForm> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a city';
+                        return 'Please enter a country';
                       }
                       return null;
                     },

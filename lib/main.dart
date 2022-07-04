@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:villadex/Style/theme.dart' as villadex_theme;
 import 'package:villadex/routes/properties/properties.dart';
+import 'package:villadex/util/splash.dart';
 
 void main() {
+  // Set it to only portrait mode
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(const Villadex());
 }
 
@@ -16,9 +22,10 @@ class Villadex extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: villadex_theme.getTheme(),
-      initialRoute: '/home',
+      //initialRoute: '/home',
+      home: const SplashScreen(),
       routes: {
-        '/home' : (context) => const PropertiesPage(),
+        '/home': (context) => const PropertiesPage(),
       },
     );
   }

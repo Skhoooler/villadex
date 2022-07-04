@@ -9,7 +9,7 @@ import 'package:villadex/model/property_model.dart';
 
 class PropertyListItem extends StatefulWidget {
   final Property property;
-  final callback;
+  final Function callback;
 
   const PropertyListItem({
     required this.property,
@@ -47,159 +47,163 @@ class _PropertyListItemState extends State<PropertyListItem> {
           //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             /// Image
-            SizedBox(
-              width: 150,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  bottomLeft: Radius.circular(32),
-                ),
-                child: SvgPicture.asset(
-                  assetName,
-                  fit: BoxFit.fitWidth,
+            Flexible(
+              child: SizedBox(
+                width: 150,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    bottomLeft: Radius.circular(32),
+                  ),
+                  child: SvgPicture.asset(
+                    assetName,
+                    fit: BoxFit.fitWidth,
+                  ),
                 ),
               ),
             ),
 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Builder(
-                  /// Name of Property
-                  builder: (context) {
-                    if (_willTextOverflow(
-                        text: widget.property.name,
-                        style: nameStyle,
-                        marqueeWidth: textMaxWidth)) {
-                      return Marquee(
-                        text: widget.property.name,
-                        style: nameStyle,
-                        blankSpace: 50,
-                        velocity: 30,
-                        pauseAfterRound: const Duration(milliseconds: 2000),
-                        decelerationCurve: Curves.decelerate,
-                        decelerationDuration:
-                            const Duration(milliseconds: 2500),
-                      );
-                    } else {
-                      return SizedBox(
-                        height: 20,
-                        width: textMaxWidth,
-                        child: Text(widget.property.name, style: nameStyle),
-                      );
-                    }
-                  },
-                ),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Builder(
+                    /// Name of Property
+                    builder: (context) {
+                      if (_willTextOverflow(
+                          text: widget.property.name,
+                          style: nameStyle,
+                          marqueeWidth: textMaxWidth)) {
+                        return Marquee(
+                          text: widget.property.name,
+                          style: nameStyle,
+                          blankSpace: 50,
+                          velocity: 30,
+                          pauseAfterRound: const Duration(milliseconds: 2000),
+                          decelerationCurve: Curves.decelerate,
+                          decelerationDuration:
+                              const Duration(milliseconds: 2500),
+                        );
+                      } else {
+                        return SizedBox(
+                          height: 20,
+                          width: textMaxWidth,
+                          child: Text(widget.property.name, style: nameStyle),
+                        );
+                      }
+                    },
+                  ),
 
-                const Text(""),
+                  const Text(""),
 
-                /// Street Address of Property
-                Builder(
-                  builder: (context) {
-                    if (_willTextOverflow(
-                        text: widget.property.address.street1 +
-                            ' ' +
-                            widget.property.address.street2,
-                        style: addressStyle,
-                        marqueeWidth: textMaxWidth)) {
-                      return Marquee(
-                        text: widget.property.address.street1 +
-                            ' ' +
-                            widget.property.address.street2,
-                        style: addressStyle,
-                        blankSpace: textMaxWidth / 3,
-                        velocity: 37,
-                        pauseAfterRound: const Duration(milliseconds: 3000),
-                        decelerationCurve: Curves.decelerate,
-                        decelerationDuration:
-                            const Duration(milliseconds: 2500),
-                      );
-                    } else {
-                      return SizedBox(
-                        height: 20,
-                        width: textMaxWidth,
-                        child: Text(
-                          widget.property.address.street1 +
+                  /// Street Address of Property
+                  Builder(
+                    builder: (context) {
+                      if (_willTextOverflow(
+                          text: widget.property.address.street1 +
                               ' ' +
                               widget.property.address.street2,
                           style: addressStyle,
-                          maxLines: 1,
-                        ),
-                      );
-                    }
-                  },
-                ),
-
-                /// City, State, Zip
-                Builder(
-                  builder: (context) {
-                    if (_willTextOverflow(
-                        text: widget.property.address.city +
-                            ', ' +
-                            widget.property.address.state +
-                            ' ' +
-                            widget.property.address.zip,
-                        style: addressStyle,
-                        marqueeWidth: textMaxWidth)) {
-                      return Marquee(
-                        text: widget.property.address.city +
-                            ', ' +
-                            widget.property.address.state +
-                            ' ' +
-                            widget.property.address.zip,
-                        style: addressStyle,
-                        blankSpace: 50,
-                        velocity: 37,
-                        pauseAfterRound: const Duration(milliseconds: 3000),
-                        decelerationCurve: Curves.decelerate,
-                        decelerationDuration:
-                            const Duration(milliseconds: 2500),
-                      );
-                    } else {
-                      return SizedBox(
-                        height: 20,
-                        width: textMaxWidth,
-                        child: Text(
-                            widget.property.address.city +
-                                ', ' +
-                                widget.property.address.state +
+                          marqueeWidth: textMaxWidth)) {
+                        return Marquee(
+                          text: widget.property.address.street1 +
+                              ' ' +
+                              widget.property.address.street2,
+                          style: addressStyle,
+                          blankSpace: textMaxWidth / 3,
+                          velocity: 37,
+                          pauseAfterRound: const Duration(milliseconds: 3000),
+                          decelerationCurve: Curves.decelerate,
+                          decelerationDuration:
+                              const Duration(milliseconds: 2500),
+                        );
+                      } else {
+                        return SizedBox(
+                          height: 20,
+                          width: textMaxWidth,
+                          child: Text(
+                            widget.property.address.street1 +
                                 ' ' +
-                                widget.property.address.zip,
-                            style: addressStyle),
-                      );
-                    }
-                  },
-                ),
+                                widget.property.address.street2,
+                            style: addressStyle,
+                            maxLines: 1,
+                          ),
+                        );
+                      }
+                    },
+                  ),
 
-                /// Country
-                Builder(
-                  builder: (context) {
-                    if (_willTextOverflow(
-                        text: widget.property.address.country,
-                        style: addressStyle,
-                        marqueeWidth: textMaxWidth)) {
-                      return Marquee(
-                        text: widget.property.address.country,
-                        style: addressStyle,
-                        blankSpace: 50,
-                        velocity: 37,
-                        pauseAfterRound: const Duration(milliseconds: 3000),
-                        decelerationCurve: Curves.decelerate,
-                        decelerationDuration:
-                            const Duration(milliseconds: 2500),
-                      );
-                    } else {
-                      return SizedBox(
-                        height: 20,
-                        width: textMaxWidth,
-                        child: Text(widget.property.address.country,
-                            style: addressStyle),
-                      );
-                    }
-                  },
-                ),
-              ],
+                  /// City, State, Zip
+                  Builder(
+                    builder: (context) {
+                      if (_willTextOverflow(
+                          text: widget.property.address.city +
+                              ', ' +
+                              widget.property.address.state +
+                              ' ' +
+                              widget.property.address.zip,
+                          style: addressStyle,
+                          marqueeWidth: textMaxWidth)) {
+                        return Marquee(
+                          text: widget.property.address.city +
+                              ', ' +
+                              widget.property.address.state +
+                              ' ' +
+                              widget.property.address.zip,
+                          style: addressStyle,
+                          blankSpace: 50,
+                          velocity: 37,
+                          pauseAfterRound: const Duration(milliseconds: 3000),
+                          decelerationCurve: Curves.decelerate,
+                          decelerationDuration:
+                              const Duration(milliseconds: 2500),
+                        );
+                      } else {
+                        return SizedBox(
+                          height: 20,
+                          width: textMaxWidth,
+                          child: Text(
+                              widget.property.address.city +
+                                  ', ' +
+                                  widget.property.address.state +
+                                  ' ' +
+                                  widget.property.address.zip,
+                              style: addressStyle),
+                        );
+                      }
+                    },
+                  ),
+
+                  /// Country
+                  Builder(
+                    builder: (context) {
+                      if (_willTextOverflow(
+                          text: widget.property.address.country,
+                          style: addressStyle,
+                          marqueeWidth: textMaxWidth)) {
+                        return Marquee(
+                          text: widget.property.address.country,
+                          style: addressStyle,
+                          blankSpace: 50,
+                          velocity: 37,
+                          pauseAfterRound: const Duration(milliseconds: 3000),
+                          decelerationCurve: Curves.decelerate,
+                          decelerationDuration:
+                              const Duration(milliseconds: 2500),
+                        );
+                      } else {
+                        return SizedBox(
+                          height: 20,
+                          width: textMaxWidth,
+                          child: Text(widget.property.address.country,
+                              style: addressStyle),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),

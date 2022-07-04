@@ -64,6 +64,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+
                     /// Property List
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .95,
