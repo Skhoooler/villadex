@@ -7,6 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:villadex/Style/theme.dart';
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/model/event_model.dart';
+import 'package:villadex/routes/scheduling/calendar_item.dart';
 import '../../style/colors.dart';
 
 class VilladexCalendar extends StatefulWidget {
@@ -23,11 +24,7 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
   List<dynamic> _selectedEvents = [];
 
   DateTime _selectedDay = DateTime.now();
-  /*DateTime _focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-
-  late Map<DateTime, List<dynamic>> _events;
-  late List<dynamic> _selectedEvents;*/
+  List<Widget> events = [];
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +59,33 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
                           setState(() {
                             _selectedDay = selectedDay;
                             focusedDay = focusedDay;
+
+                            // On day selected, clear out the events list
+                            events.clear();
+                            // Repopulate it with events on that day
+                            snapshot.data?[_selectedDay]?.forEach((event) {
+                              events.add(
+                                CalendarListItem(
+                                  event: event ??
+                                      Event(
+                                        name: 'Error',
+                                        date: DateTime.now(),
+                                      ),
+                                ),
+                              );
+                            });
                           });
                         },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Center(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: events,
+                            ),
+                          ),
+                        ),
                       )
                     ];
                   }
@@ -79,85 +101,6 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
     );
   }
 
-/*    return Container(
-      decoration: BoxDecoration(
-        color: VilladexColors().background,
-        /*gradient: LinearGradient(
-          colors: [VilladexColors().primary, VilladexColors().background],
-          begin: const Alignment(0.0, -1),
-          end: const Alignment(0.0, 1),
-        ),*/
-      ),
-      padding: const EdgeInsetsDirectional.only(bottom: 50),
-      child: FutureBuilder<List<Event?>?>(
-        future: Event.fetchAll(),
-        builder: (context, snapshot) {
-          List<Widget> children = [];
-
-          /// Fill out the Calendar if there is data
-          if (snapshot.hasData) {
-            children = [
-              TableCalendar(
-                focusedDay: DateTime.now(),
-                firstDay: startCalendar,
-                lastDay: endCalendar,
-                calendarStyle: getCalendarStyle(),
-                headerStyle: getCalendarHeaderStyle(),
-
-                /// Loads Events from the future builder to the calendar
-                /*eventLoader: (DateTime day) {
-                  return snapshot.data?.where(
-                      (event) {
-                        if (event?.date.toUtc().compareTo(day.toUtc()) == 0) {
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      }).toList() ?? [];
-                },*/
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                },
-                calendarFormat: _calendarFormat,
-                onFormatChanged: (format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                },
-              ),
-            ];
-          }
-
-          /// Wait to get events
-          else {
-            children = const <Widget>[
-              SizedBox(
-                width: 60,
-                height: 60,
-                child: CircularProgressIndicator(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('Fetching your events...'),
-              ),
-            ];
-          }
-
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: children,
-          );
-        },
-      ),
-    );
-  }*/
-
   Future<Map<DateTime, List<Event?>>> populateEvents() async {
     List<Event?> eventList = await Event.fetchAll() ?? [];
     _selectedEvents = [];
@@ -167,17 +110,17 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll({
-      for (var event in eventList)
-        // Key
-        event?.date ?? DateTime.now():
-            // Value
-            eventList
-                .where((element) =>
-                    element?.date.toUtc().compareTo(
-                        event?.date.toUtc() ?? DateTime.now().toUtc()) ==
-                    0)
-                .toList()
-    });
+        for (var event in eventList)
+          // Key
+          event?.date ?? DateTime.now():
+              // Value
+              eventList
+                  .where((element) =>
+                      element?.date.toUtc().compareTo(
+                          event?.date.toUtc() ?? DateTime.now().toUtc()) ==
+                      0)
+                  .toList()
+      });
 
     return events;
   }
