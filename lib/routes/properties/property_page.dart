@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marquee/marquee.dart';
@@ -8,10 +6,10 @@ import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/model/property_model.dart';
 import 'package:villadex/routes/properties/menu%20options/delete_property.dart';
 import 'package:villadex/routes/properties/menu%20options/edit_property_attributes.dart';
-import 'package:villadex/routes/properties/menu%20options/generate_report.dart';
 import 'package:villadex/routes/properties/menu%20options/generate_report_options.dart';
 import 'package:villadex/style/colors.dart';
 import 'package:villadex/style/text_styles.dart';
+
 import 'main page widgets/main_expenditures.dart';
 import 'main page widgets/profits.dart';
 import 'main page widgets/unpaid_expenditures.dart';

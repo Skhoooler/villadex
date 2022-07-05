@@ -17,7 +17,7 @@ class VilladexColors {
   Color textFaded = const Color(0x74030000);
 
   /// Gradients
-  Color primaryGradient = const Color(0xFF698F3F);
+  Color primaryGradient = const Color(0xFF4DE0D9);
 
   /// Pie Chart Colors
   Color pieChartText = const Color(0xffffffff);

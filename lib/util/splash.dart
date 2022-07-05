@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:villadex/Style/colors.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../routes/properties/properties.dart';
 
@@ -10,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final int duration = 1500; // Duration of splash screen in milliseconds
+  final int duration = 20000000; // Duration of splash screen in milliseconds
 
   @override
   void initState() {
@@ -20,12 +23,50 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const String logo = 'lib/res/villadexLogo.svg';
+    double iconSize = MediaQuery.of(context).size.width * .25;
+
     return Scaffold(
-      body: Center(
-        child: Container(
-          child: Text(
-            "Splash Screen",
-            style: TextStyle(fontSize: 24),
+      backgroundColor: Colors.transparent,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [VilladexColors().primary, VilladexColors().fadedPrimary],
+              begin: const FractionalOffset(0.0, 0.0),
+              end: const FractionalOffset(2, 2),
+              stops: const [0.0, 1.0],
+              tileMode: TileMode.clamp),
+        ),
+        child: Center(
+          child: Wrap(
+            direction: Axis.vertical,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 0,
+            children: [
+              SizedBox(
+                width: iconSize,
+                height: iconSize,
+                child: SvgPicture.asset(
+                  logo,
+                  color: VilladexColors().background,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              Text(
+                "Villadex",
+                style: GoogleFonts.cormorantGaramond(
+                  textStyle: TextStyle(
+                      color: VilladexColors().background,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 70),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .20,
+              )
+            ],
           ),
         ),
       ),
