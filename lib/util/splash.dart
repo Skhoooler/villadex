@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final int duration = 20000000; // Duration of splash screen in milliseconds
+  final int duration = 2000; // Duration of splash screen in milliseconds
 
   @override
   void initState() {
