@@ -60,7 +60,7 @@ class NotificationService {
           iOS: IOSNotificationDetails(),),
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation
             .wallClockTime,
-        androidAllowWhileIdle: false)
+        androidAllowWhileIdle: false);
   }
 }
 
