@@ -5,7 +5,7 @@ import 'package:villadex/Style/text_styles.dart';
 import 'package:villadex/model/associate_model.dart';
 import 'package:villadex/model/expenditure_model.dart';
 import 'package:villadex/routes/properties/forms/associate_interactor.dart';
-import 'package:villadex/routes/properties/forms/date_selector.dart';
+import 'package:villadex/routes/properties/forms/date_time_selector.dart';
 import '../../../model/category_model.dart';
 import '../../../style/colors.dart';
 import 'category_interactor.dart';
@@ -95,7 +95,7 @@ class _ExpenditureFormState extends State<ExpenditureForm> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 6.0, horizontal: 12.0),
-                        child: DateSelector(
+                        child: DateTimeSelector(
                           callback: _setDateTime,
                         ),
                       ),

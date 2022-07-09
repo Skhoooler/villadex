@@ -5,7 +5,6 @@ import 'dart:async';
 
 import 'package:villadex/model/property_model.dart';
 
-
 class DatabaseConnection {
   //static final DatabaseConnection instance = DatabaseConnection.init();
 
@@ -17,7 +16,7 @@ class DatabaseConnection {
   /// Getter for the database
   static Future<Database?> get database async {
     // If _database is null, set it equal to the return value of _initDB
-    _database ??= await _initDB('database15');
+    _database ??= await _initDB('database19');
 
     return _database;
   }
@@ -27,7 +26,8 @@ class DatabaseConnection {
     final dbPath = await getApplicationDocumentsDirectory();
     final path = join(dbPath.toString(), dbname);
 
-    var dbInstance = await openDatabase(path, version: 1, onCreate: _createDatabase);
+    var dbInstance =
+        await openDatabase(path, version: 1, onCreate: _createDatabase);
 
     return dbInstance;
   }
@@ -152,13 +152,14 @@ class DatabaseConnection {
       dateCreated TEXT NOT NULL,
 
       name TEXT NOT NULL,
-
+      notification INTEGER NOT NULL,
+      
       description TEXT,
       address TEXT,
       date TEXT,
 
       FOREIGN KEY (property_id)
-        REFERENCES properties (property_id)
+      REFERENCES properties (property_id)
       );''');
 
     batch.commit();

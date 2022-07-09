@@ -13,8 +13,8 @@ class Event {
     this.description,
     this.address,
     int? propertyKey,
-  })
-      : _propertyKey = propertyKey,
+    this.notification = false,
+  })  : _propertyKey = propertyKey,
         _primaryKey = null,
         _dateCreated = DateTime.now();
 
@@ -26,8 +26,8 @@ class Event {
     int? propertyKey,
     required int primaryKey,
     required DateTime dateCreated,
-  })
-      : _primaryKey = primaryKey,
+    required this.notification,
+  })  : _primaryKey = primaryKey,
         _propertyKey = propertyKey,
         _dateCreated = dateCreated;
 
@@ -36,6 +36,7 @@ class Event {
         description = json['description'],
         address = Address.fromJSON(json: jsonDecode(json['address'])),
         date = DateTime.parse(json['date']),
+        notification = json['notification'] == 0 ? false : true,
         _primaryKey = json['event_id'],
         _propertyKey = json['property_id'],
         _dateCreated = DateTime.parse(json['dateCreated']);
@@ -45,6 +46,7 @@ class Event {
   String? description;
   Address? address;
   DateTime date;
+  bool notification;
 
   final int? _primaryKey;
   final int? _propertyKey;
@@ -58,11 +60,12 @@ class Event {
       'date': date.toIso8601String(),
       'address': address?.toJSON(),
       'property_id': _propertyKey,
-      'dateCreated': _dateCreated.toIso8601String()
+      'dateCreated': _dateCreated.toIso8601String(),
+      'notification': notification ? 1 : 0
     };
 
     db.DatabaseConnection.database.then(
-            (databaseConnection) => {databaseConnection?.insert('events', data)});
+        (databaseConnection) => {databaseConnection?.insert('events', data)});
   }
 
   static Future<Event?> fetchById(int id) async {
@@ -70,8 +73,7 @@ class Event {
 
     Future<List<Map<String, dynamic>>>? rawData;
     db.DatabaseConnection.database.then(
-            (databaseConnection) =>
-        {rawData = databaseConnection?.rawQuery(sql)});
+        (databaseConnection) => {rawData = databaseConnection?.rawQuery(sql)});
 
     return rawData?.then((data) {
       return Event.fromJSON(json: data[0]);
@@ -111,7 +113,8 @@ class Event {
       'date': date.toIso8601String(),
       'event_id': _primaryKey,
       'property_id': _propertyKey,
-      'dateCreated': _dateCreated.toIso8601String()
+      'dateCreated': _dateCreated.toIso8601String(),
+      'notification': notification ? 1 : 0,
     });
   }
 

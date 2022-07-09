@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:villadex/Style/colors.dart';
-import 'package:villadex/routes/properties/forms/date_selector.dart';
+import 'package:villadex/routes/properties/forms/date_time_selector.dart';
 import 'package:villadex/routes/properties/menu%20options/generate_report.dart';
 
 import '../../../Style/text_styles.dart';
@@ -89,10 +89,10 @@ class _GenerateReportOptionsState extends State<GenerateReportOptions> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                DateSelector(
-                    callback: _setDateTimeStart, displayText: "Start Date"),
-                DateSelector(
-                    callback: _setDateTimeEnd, displayText: "End Date"),
+                DateTimeSelector(
+                    callback: _setDateTimeStart, dateDisplayText: "Start Date"),
+                DateTimeSelector(
+                    callback: _setDateTimeEnd, dateDisplayText: "End Date"),
               ],
             ),
 

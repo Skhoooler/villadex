@@ -4,7 +4,7 @@ import 'package:villadex/Style/text_styles.dart';
 import 'package:villadex/model/address_model.dart';
 import 'package:villadex/model/event_model.dart';
 import '../../../style/colors.dart';
-import 'date_selector.dart';
+import 'date_time_selector.dart';
 
 class EventForm extends StatefulWidget {
   final int propertyKey;
@@ -55,54 +55,34 @@ class _EventFormState extends State<EventForm> {
                   ),
                 ),
 
-                /// Add a Name and a Date
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    /// Add a name
-                    Flexible(
-                      flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6.0, horizontal: 12),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please give the event a title';
-                            }
-                            return null;
-                          },
-                          controller: _nameController,
-                          textCapitalization: TextCapitalization.words,
-                          autocorrect: false,
-                          cursorColor: VilladexColors().accent,
-                          maxLines: 1,
-                          decoration:
-                              const InputDecoration(labelText: 'Event Title'),
-                        ),
-                      ),
+                /// Add a name
+                Flexible(
+                  flex: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 6.0, horizontal: 12),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please give the event a title';
+                        }
+                        return null;
+                      },
+                      controller: _nameController,
+                      textCapitalization: TextCapitalization.words,
+                      autocorrect: false,
+                      cursorColor: VilladexColors().accent,
+                      maxLines: 1,
+                      decoration:
+                      const InputDecoration(labelText: 'Event Title'),
                     ),
-
-                    /// Add a date
-                    Flexible(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6.0, horizontal: 12.0),
-                        child: DateSelector(
-                          callback: _setDateTime,
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
 
                 /// Add a Description
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12),
+                  const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -117,6 +97,26 @@ class _EventFormState extends State<EventForm> {
                     maxLines: 3,
                     decoration: const InputDecoration(labelText: 'Description'),
                   ),
+                ),
+
+                /// Add a Time and a Date
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    /// Add a date
+                    Flexible(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 6.0, horizontal: 12.0),
+                        child: DateTimeSelector(
+                          callback: _setDateTime,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
 
                 /// Address
@@ -302,6 +302,7 @@ class _EventFormState extends State<EventForm> {
       _date = dateSelected;
     });
   }
+
 
   /// Get rid of controllers
   @override

@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 
 import 'package:villadex/Style/theme.dart' as villadex_theme;
 import 'package:villadex/routes/properties/properties.dart';
+import 'package:villadex/util/notification_service.dart';
 import 'package:villadex/util/splash.dart';
 
-void main() {
+void main() async {
   // Set it to only portrait mode
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await NotificationService().init();
 
   runApp(const Villadex());
 }

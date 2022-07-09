@@ -6,7 +6,7 @@ import '../../../model/category_model.dart';
 import '../../../model/earning_model.dart';
 import '../../../style/colors.dart';
 import 'category_interactor.dart';
-import 'date_selector.dart';
+import 'date_time_selector.dart';
 
 class EarningForm extends StatefulWidget {
   final int propertyKey;
@@ -86,7 +86,7 @@ class _EarningFormState extends State<EarningForm> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 6.0, horizontal: 12.0),
-                        child: DateSelector(
+                        child: DateTimeSelector(
                           callback: _setDateTime,
                         ),
                       ),

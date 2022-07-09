@@ -152,5 +152,18 @@ class Address {
 
   int get key => _primaryKey;
 
+  bool isEmpty() {
+    if (street1.isEmpty &&
+        street2.isEmpty &&
+        city.isEmpty &&
+        state.isEmpty &&
+        zip.isEmpty &&
+        country.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /// Setters
 }
