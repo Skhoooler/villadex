@@ -33,7 +33,7 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
         right: 12,
       ),
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * .5,
+        width: MediaQuery.of(context).size.width * .4,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 primary: VilladexColors().primary,
@@ -46,9 +46,11 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
             onPressed: (() {
               _selectDateTime(context);
             }),
-            child: Text(dateSelected
-                ? display
-                : widget.dateDisplayText) //Text(display),
+            child: Center(
+              child: Text(dateSelected
+                  ? display
+                  : widget.dateDisplayText),
+            ) //Text(display),
             ),
       ),
     );

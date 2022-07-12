@@ -4,7 +4,6 @@
 /// here to change them throughout the project
 
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 
 class VilladexColors {
   /// Main Colors
@@ -20,11 +19,11 @@ class VilladexColors {
   Color primaryGradient = const Color(0xFF4DE0D9);
 
   /// Pie Chart Colors
-  Color pieChartText = const Color(0xffffffff);
-  Color pieChartOne = const Color(0xff0293ee);
-  Color pieChartTwo = const Color(0xffd49444);
-  Color pieChartThree = const Color(0xff845bef);
-  Color pieChartFour = const Color(0xff13d38e);
+  Color pieChartText = const Color(0xFF2C0703);
+  Color pieChartOne = Colors.blue;
+  Color pieChartTwo = Colors.pink;
+  Color pieChartThree = Colors.green;
+  Color pieChartFour = Colors.deepPurpleAccent;
 
   /// Calendar Colors
   Color calendarBackground = const Color(0x604682b4);

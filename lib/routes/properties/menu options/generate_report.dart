@@ -74,9 +74,9 @@ class _ReportGeneratorState extends State<ReportGenerator> {
     String endDate = DateFormat.yMMMMd('en_US').format(widget.endDate);
 
     double gross =
-        await analyzer.getGrossByInterval(widget.startDate, widget.endDate);
+        analyzer.getGrossByInterval(widget.startDate, widget.endDate);
     double net =
-        await analyzer.getNetByInterval(widget.startDate, widget.endDate);
+        analyzer.getNetByInterval(widget.startDate, widget.endDate);
 
     /// Create Graphs
     // Get income data

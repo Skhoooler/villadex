@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:villadex/Routes/properties/properties.dart' as properties;
-import 'package:villadex/Routes/finances.dart' as finances;
+import '../routes/finances/finances.dart' as finances;
 import '../routes/scheduling/calendar.dart' as scheduling;
 import 'package:villadex/Routes/marketing.dart' as marketing;
 
