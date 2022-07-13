@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import '../model/category_model.dart';
 import '../model/earning_model.dart';
 import '../model/property_model.dart';
 import '../model/expenditure_model.dart';
@@ -154,19 +153,38 @@ class VilladexAnalysis {
   /// of all of the expenditures per category, sorts them in descending order,
   /// and then returns the top numToReturn entries.
   //////////////////////////////////////////////////////////////////////////////
-  List<CategoryAnalysisDataPoint> getTopExpendituresByCategory(
-      int numToReturn) {
+  List<CategoryAnalysisDataPoint> getTopExpendituresByCategory(int numToReturn,
+      [DateTime? start, DateTime? end]) {
     final Map<String, List<Expenditure?>> groupedExpenditures = {};
 
     /// Group expenditures by category
-    for (Expenditure? expenditure in expenditures) {
-      // If it does not already have that category as a key, add it with an
-      // empty list
-      groupedExpenditures.putIfAbsent(
-          expenditure?.category.name ?? "None", () => []);
+    // If there are datetime constraints
+    if (start != null && end != null) {
+      expenditures
+          .where((expenditure) =>
+              (expenditure?.expenditureDate.isBefore(end) ?? false) &&
+              (expenditure?.expenditureDate.isAfter(start) ?? false))
+          .forEach((expenditure) {
+        // If it does not already have that category as a key, add it with an
+        // empty list
+        groupedExpenditures.putIfAbsent(
+            expenditure?.category.name ?? "None", () => []);
 
-      // Add an expenditure to that list
-      groupedExpenditures[expenditure?.category.name]?.add(expenditure);
+        // Add an expenditure to that list
+        groupedExpenditures[expenditure?.category.name]?.add(expenditure);
+      });
+
+      // If there are no date time constraints
+    } else {
+      for (Expenditure? expenditure in expenditures) {
+        // If it does not already have that category as a key, add it with an
+        // empty list
+        groupedExpenditures.putIfAbsent(
+            expenditure?.category.name ?? "None", () => []);
+
+        // Add an expenditure to that list
+        groupedExpenditures[expenditure?.category.name]?.add(expenditure);
+      }
     }
 
     /// Add up the amount within each group of expenditures
@@ -196,17 +214,38 @@ class VilladexAnalysis {
   /// of all of the earnings per category, sorts them in descending order,
   /// and then returns the top numToReturn entries.
   //////////////////////////////////////////////////////////////////////////////
-  List<CategoryAnalysisDataPoint> getTopEarningsByCategory(int numToReturn) {
+  List<CategoryAnalysisDataPoint> getTopEarningsByCategory(int numToReturn,
+      [DateTime? start, DateTime? end]) {
     final Map<String, List<Earning?>> groupedEarnings = {};
 
-    /// Group expenditures by category
-    for (Earning? earning in earnings) {
-      // If it does not already have that category as a key, add it with an
-      // empty list
-      groupedEarnings.putIfAbsent(earning?.category?.name ?? "None", () => []);
+    /// Group earnings by category
+    // If there are datetime constraints
+    if (start != null && end != null) {
+      earnings
+          .where((earning) =>
+              (earning?.earningDate.isBefore(end) ?? false) &&
+              (earning?.earningDate.isAfter(start) ?? false))
+          .forEach((earning) {
+        // If it does not already have that category as a key, add it with an
+        // empty list
+        groupedEarnings.putIfAbsent(
+            earning?.category?.name ?? "None", () => []);
 
-      // Add an expenditure to that list
-      groupedEarnings[earning?.category?.name]?.add(earning);
+        // Add an expenditure to that list
+        groupedEarnings[earning?.category?.name]?.add(earning);
+      });
+
+      // If there are no date time constraints
+    } else {
+      for (Earning? earning in earnings) {
+        // If it does not already have that category as a key, add it with an
+        // empty list
+        groupedEarnings.putIfAbsent(
+            earning?.category?.name ?? "None", () => []);
+
+        // Add an expenditure to that list
+        groupedEarnings[earning?.category?.name]?.add(earning);
+      }
     }
 
     /// Add up the amount within each group of expenditures

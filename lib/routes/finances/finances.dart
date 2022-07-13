@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/routes/finances/statistics.dart';
@@ -17,6 +17,9 @@ class FinancesPage extends StatefulWidget {
 
 class _FinancesPageState extends State<FinancesPage> {
   int touchedIndex = -1;
+
+  String selectedIntervalName = "Weekly";
+  DataInterval selectedInterval = DataInterval.weekly;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +63,7 @@ class _FinancesPageState extends State<FinancesPage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * .95,
                 height: MediaQuery.of(context).size.height * .8,
                 child: FutureBuilder<VilladexAnalysis>(
@@ -69,26 +72,69 @@ class _FinancesPageState extends State<FinancesPage> {
                     List<Widget> data = [];
 
                     if (snapshot.hasData) {
-                      data = [
-                        /*SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              /// Show Pie Chart
-                              chart.VilladexPieChart(
-                                title: "Expenses by Category",
-                                analyzer: snapshot.data!,
-                              ),
+                      DateTime end = DateTime.now();
+                      DateTime start = end.subtract(Duration(
+                          days: snapshot.data!
+                              .setIntervalDays(selectedInterval)));
 
-                              /// Show Pie Chart
-                              chart.VilladexPieChart(
-                                title: "Expenses by Category",
-                                analyzer: snapshot.data!,
+                      data = [
+                        /// Dates and Interval Selector
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            /// Dates
+                            Center(
+                              child: Text(
+                                "${DateFormat.yMMMd("en_US").format(DateTime.now().subtract(Duration(days: snapshot.data!.setIntervalDays(selectedInterval)))).toString()}   -   ${DateFormat.yMMMd("en_US").format(DateTime.now()).toString()}",
+                                style: VilladexTextStyles()
+                                    .getSecondaryTextStyle(),
                               ),
-                            ],
-                          ),
-                        ),*/
-                        Container(
+                            ),
+
+                            /// Select Interval
+                            Center(
+                              child: DropdownButton(
+                                value: selectedIntervalName,
+                                onChanged: (String? newValue) {
+                                  if (newValue == "Weekly") {
+                                    selectedInterval = DataInterval.weekly;
+                                  } else if (newValue == "Bi-Weekly") {
+                                    selectedInterval = DataInterval.biWeekly;
+                                  } else if (newValue == "Monthly") {
+                                    selectedInterval = DataInterval.monthly;
+                                  } else if (newValue == "Bi-Yearly") {
+                                    selectedInterval = DataInterval.biYearly;
+                                  } else if (newValue == "Yearly") {
+                                    selectedInterval = DataInterval.yearly;
+                                  } else if (newValue == "Year-To-Date") {
+                                    selectedInterval = DataInterval.yearToDate;
+                                  }
+
+                                  setState(() {
+                                    selectedIntervalName = newValue ?? "Error";
+                                  });
+                                },
+                                items: [
+                                  'Weekly',
+                                  'Bi-Weekly',
+                                  'Monthly',
+                                  'Bi-Yearly',
+                                  'Yearly',
+                                  'Year-To-Date'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        /// Pie Charts
+                        SizedBox(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * .35,
                           child: ListView(
@@ -97,16 +143,20 @@ class _FinancesPageState extends State<FinancesPage> {
                             children: [
                               /// Show Pie Chart
                               chart.VilladexPieChart(
-                                title: "Expenses by Category",
+                                title: "Top Expenses by Category",
                                 analyzer: snapshot.data!,
                                 earningMode: false,
+                                start: start,
+                                end: end,
                               ),
 
                               /// Show Pie Chart
                               chart.VilladexPieChart(
-                                title: "Earnings by Category",
+                                title: "Top Earnings by Category",
                                 analyzer: snapshot.data!,
                                 earningMode: true,
+                                start: start,
+                                end: end,
                               ),
                             ],
                           ),
@@ -114,8 +164,13 @@ class _FinancesPageState extends State<FinancesPage> {
 
                         /// Statistics
                         Center(
-                            child:
-                                VilladexStatistics(analyzer: snapshot.data!)),
+                          child: VilladexStatistics(
+                            analyzer: snapshot.data!,
+                            start: start,
+                            end: end,
+                            selectedInterval: selectedInterval,
+                          ),
+                        ),
                       ];
                     }
                     return ListView.builder(

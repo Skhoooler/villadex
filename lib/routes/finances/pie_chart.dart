@@ -11,6 +11,8 @@ import '../../style/colors.dart';
 class VilladexPieChart extends StatefulWidget {
   final String title;
   final VilladexAnalysis analyzer;
+  final DateTime? start;
+  final DateTime? end;
 
   // If false, do expenditures, else do true
   final bool earningMode;
@@ -20,6 +22,8 @@ class VilladexPieChart extends StatefulWidget {
     required this.title,
     required this.analyzer,
     required this.earningMode,
+    this.start,
+    this.end,
   }) : super(key: key);
 
   @override
@@ -38,16 +42,28 @@ class _VilladexPieChartState extends State<VilladexPieChart> {
   @override
   Widget build(BuildContext context) {
     final List<CategoryAnalysisDataPoint> result = widget.earningMode
-        ? widget.analyzer.getTopEarningsByCategory(4)
-        : widget.analyzer.getTopExpendituresByCategory(4);
+        ? widget.analyzer.getTopEarningsByCategory(4, widget.start, widget.end)
+        : widget.analyzer
+            .getTopExpendituresByCategory(4, widget.start, widget.end);
 
     final List<Widget> dataList = [];
-    for (int i = 0; i < result.length; i++) {
-      dataList.add(_indicator(result[i].category, pieChartColor[i]));
-      dataList.add(const SizedBox(height: 5));
+    if (result.isEmpty) {
+      dataList.add(
+        Center(
+          child: Text(
+            "No Data",
+            style: VilladexTextStyles().getSecondaryTextStyle(),
+          ),
+        ),
+      );
+    } else {
+      for (int i = 0; i < result.length; i++) {
+        dataList.add(_indicator(result[i].category, pieChartColor[i]));
+        dataList.add(const SizedBox(height: 5));
+      }
     }
 
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width * .93,
       height: MediaQuery.of(context).size.height * .3,
       child: Column(
