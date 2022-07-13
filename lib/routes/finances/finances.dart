@@ -70,33 +70,52 @@ class _FinancesPageState extends State<FinancesPage> {
 
                     if (snapshot.hasData) {
                       data = [
-                        /// Show Pie Chart
-                        chart.VilladexPieChart(
-                          title: "Expenses by Category",
-                          analyzer: snapshot.data!,
-                        ),
+                        /*SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              /// Show Pie Chart
+                              chart.VilladexPieChart(
+                                title: "Expenses by Category",
+                                analyzer: snapshot.data!,
+                              ),
 
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            child: Text(
-                              "Statistics",
-                              style:
-                                  VilladexTextStyles().getSecondaryTextStyle(),
-                            ),
+                              /// Show Pie Chart
+                              chart.VilladexPieChart(
+                                title: "Expenses by Category",
+                                analyzer: snapshot.data!,
+                              ),
+                            ],
+                          ),
+                        ),*/
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * .35,
+                          child: ListView(
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              /// Show Pie Chart
+                              chart.VilladexPieChart(
+                                title: "Expenses by Category",
+                                analyzer: snapshot.data!,
+                                earningMode: false,
+                              ),
+
+                              /// Show Pie Chart
+                              chart.VilladexPieChart(
+                                title: "Earnings by Category",
+                                analyzer: snapshot.data!,
+                                earningMode: true,
+                              ),
+                            ],
                           ),
                         ),
 
+                        /// Statistics
                         Center(
                             child:
                                 VilladexStatistics(analyzer: snapshot.data!)),
-
-                        Container(
-                          width: MediaQuery.of(context).size.width * .93,
-                          height: MediaQuery.of(context).size.height * 1,
-                          color: Colors.blue,
-                        ),
                       ];
                     }
                     return ListView.builder(

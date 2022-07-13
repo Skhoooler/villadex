@@ -32,6 +32,19 @@ class _VilladexStatisticsState extends State<VilladexStatistics> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        /// Title
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 16, vertical: 8),
+            child: Text(
+              "Statistics",
+              style:
+              VilladexTextStyles().getSecondaryTextStyle(),
+            ),
+          ),
+        ),
+
         /// Dates
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -171,7 +184,7 @@ class _VilladexStatisticsState extends State<VilladexStatistics> {
           ],
         ),
 
-        SizedBox(
+        const SizedBox(
           height: 15,
         ),
 
@@ -274,7 +287,7 @@ class _VilladexStatisticsState extends State<VilladexStatistics> {
                           .copyWith(color: VilladexColors().error),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ],

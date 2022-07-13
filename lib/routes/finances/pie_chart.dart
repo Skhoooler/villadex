@@ -12,10 +12,14 @@ class VilladexPieChart extends StatefulWidget {
   final String title;
   final VilladexAnalysis analyzer;
 
+  // If false, do expenditures, else do true
+  final bool earningMode;
+
   const VilladexPieChart({
     Key? key,
     required this.title,
     required this.analyzer,
+    required this.earningMode,
   }) : super(key: key);
 
   @override
@@ -24,11 +28,24 @@ class VilladexPieChart extends StatefulWidget {
 
 class _VilladexPieChartState extends State<VilladexPieChart> {
   int touchedIndex = -1;
+  final List<Color> pieChartColor = [
+    VilladexColors().pieChartOne,
+    VilladexColors().pieChartTwo,
+    VilladexColors().pieChartThree,
+    VilladexColors().pieChartFour
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final List<CategoryAnalysisDataPoint> result =
-        widget.analyzer.getTopExpendituresByCategory(4);
+    final List<CategoryAnalysisDataPoint> result = widget.earningMode
+        ? widget.analyzer.getTopEarningsByCategory(4)
+        : widget.analyzer.getTopExpendituresByCategory(4);
+
+    final List<Widget> dataList = [];
+    for (int i = 0; i < result.length; i++) {
+      dataList.add(_indicator(result[i].category, pieChartColor[i]));
+      dataList.add(const SizedBox(height: 5));
+    }
 
     return Container(
       width: MediaQuery.of(context).size.width * .93,
@@ -47,9 +64,24 @@ class _VilladexPieChartState extends State<VilladexPieChart> {
           Expanded(
             flex: 6,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                widget.earningMode
+                    ? const Expanded(
+                        flex: 1,
+                        child: Icon(
+                          Icons.keyboard_arrow_left,
+                          size: 60,
+                        ),
+                      )
+                    : const Expanded(
+                        flex: 0,
+                        child: SizedBox(
+                          height: 1,
+                        ),
+                      ),
+
                 /// Chart
                 Expanded(
                   flex: 5,
@@ -80,31 +112,28 @@ class _VilladexPieChartState extends State<VilladexPieChart> {
 
                 /// Indicators
                 Expanded(
-                  flex: 4,
+                  flex: 2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _indicator(
-                          result[0].category, VilladexColors().pieChartOne),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      _indicator(
-                          result[1].category, VilladexColors().pieChartTwo),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      _indicator(
-                          result[2].category, VilladexColors().pieChartThree),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      _indicator(
-                          result[3].category, VilladexColors().pieChartFour),
-                    ],
+                    children: dataList,
                   ),
                 ),
+
+                widget.earningMode
+                    ? const Expanded(
+                        flex: 0,
+                        child: SizedBox(
+                          height: 1,
+                        ),
+                      )
+                    : const Expanded(
+                        flex: 1,
+                        child: Icon(
+                          Icons.keyboard_arrow_right,
+                          size: 60,
+                        ),
+                      )
               ],
             ),
           ),
@@ -115,7 +144,7 @@ class _VilladexPieChartState extends State<VilladexPieChart> {
 
   List<PieChartSectionData> _showingSections(
       List<CategoryAnalysisDataPoint> result) {
-    return List.generate(4, (i) {
+    return List.generate(result.length, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
@@ -183,7 +212,16 @@ class _VilladexPieChartState extends State<VilladexPieChart> {
         ),
 
         /// Name of the Indicator
-        Text('   $name'),
+        Expanded(
+          flex: 3,
+          child: Text(
+            '   $name',
+            style: VilladexTextStyles().getQuaternaryTextStyle(),
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            softWrap: false,
+          ),
+        ),
       ],
     );
   }

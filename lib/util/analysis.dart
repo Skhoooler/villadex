@@ -97,7 +97,8 @@ class VilladexAnalysis {
         .where((expenditure) =>
             (expenditure?.expenditureDate.isBefore(end) ?? false) &&
             (expenditure?.expenditureDate.isAfter(start) ?? false))
-        .forEach((expenditure) => net -= expenditure?.amount ?? 0);
+        .forEach((expenditure) =>
+            net -= ((expenditure?.amount ?? 0) * (expenditure?.numUnits ?? 0)));
 
     return net;
   }
@@ -190,6 +191,46 @@ class VilladexAnalysis {
   }
 
   //////////////////////////////////////////////////////////////////////////////
+  /// Returns the numToReturn most profitable Categories. This function first
+  /// groups all earnings by category, then adds up the amounts
+  /// of all of the earnings per category, sorts them in descending order,
+  /// and then returns the top numToReturn entries.
+  //////////////////////////////////////////////////////////////////////////////
+  List<CategoryAnalysisDataPoint> getTopEarningsByCategory(int numToReturn) {
+    final Map<String, List<Earning?>> groupedEarnings = {};
+
+    /// Group expenditures by category
+    for (Earning? earning in earnings) {
+      // If it does not already have that category as a key, add it with an
+      // empty list
+      groupedEarnings.putIfAbsent(earning?.category?.name ?? "None", () => []);
+
+      // Add an expenditure to that list
+      groupedEarnings[earning?.category?.name]?.add(earning);
+    }
+
+    /// Add up the amount within each group of expenditures
+    final List<CategoryAnalysisDataPoint> result = [];
+
+    groupedEarnings.forEach((key, earnings) {
+      double total = 0;
+      for (var earning in earnings) {
+        total += earning?.amount ?? 0;
+      }
+
+      result.add(CategoryAnalysisDataPoint(value: total, category: key));
+    });
+
+    /// Sort the list by their values
+    result.sort((CategoryAnalysisDataPoint a, CategoryAnalysisDataPoint b) {
+      return b.value.compareTo(a.value);
+    });
+
+    /// Return the top numToReturn elements of the list
+    return result.take(numToReturn).toList();
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
   /// Returns the Mean for all of the expenditures within an interval
   //////////////////////////////////////////////////////////////////////////////
   double getExpenditureMeanByInterval(DataInterval interval) {
@@ -206,6 +247,10 @@ class VilladexAnalysis {
       result += ((expenditure?.amount ?? 0) * (expenditure?.numUnits ?? 0));
       count += 1;
     });
+
+    if (count == 0) {
+      return 0;
+    }
 
     return (result / count);
   }
@@ -227,6 +272,10 @@ class VilladexAnalysis {
       result += (earning?.amount ?? 0);
       count += 1;
     });
+
+    if (count == 0) {
+      return 0;
+    }
 
     return result / count;
   }
@@ -317,7 +366,7 @@ class VilladexAnalysis {
             (expenditure?.expenditureDate.isBefore(end) ?? false) &&
             (expenditure?.expenditureDate.isAfter(start) ?? false))
         .forEach((expenditure) => result +=
-            (expenditure?.amount ?? 0) * (expenditure?.numUnits ?? 0));
+            ((expenditure?.amount ?? 0) * (expenditure?.numUnits ?? 0)));
 
     return result;
   }
