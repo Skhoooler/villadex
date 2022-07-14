@@ -148,6 +148,9 @@ class Address {
       ", " +
       country;
 
+  String get formattedAddress =>
+      isEmpty() ? "N/A" : "$street1 $street2,\n $city, $state $zip\n $country";
+
   DateTime get dateCreated => _dateCreated;
 
   int get key => _primaryKey;

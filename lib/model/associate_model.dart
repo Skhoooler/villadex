@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:villadex/model/database.dart' as db;
@@ -43,7 +42,7 @@ class Associate {
         payments = jsonDecode(json['payments'])
                 .forEach((data) => Expenditure.fromJSON(json: data)) ??
             [],
-        contact = null,
+        contact = Contact.fromJSON(json: jsonDecode(json['contact'])),
         //contact = Contact.fromJSON(json: jsonDecode(json['contact'])),
         _primaryKey = json['associate_id'],
         _propertyKey = json['property_id'],
@@ -130,4 +129,8 @@ class Associate {
   int get key => _primaryKey ?? 0;
 
   int get propertyKey => _propertyKey;
+
+  String get name => middleName != null
+      ? "$firstName $middleName $lastName"
+      : "$firstName $lastName";
 }

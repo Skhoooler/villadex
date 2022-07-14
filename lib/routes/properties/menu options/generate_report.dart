@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:printing/printing.dart';
 import 'package:villadex/model/event_model.dart';
 
+import '../../../model/associate_model.dart';
 import '../../../style/colors.dart';
 import '../../../style/text_styles.dart';
 
@@ -67,7 +68,6 @@ class _ReportGeneratorState extends State<ReportGenerator> {
     /// Set up colors for the PDF
     PdfColor pdfPrimary = PdfColor.fromInt(VilladexColors().primary.value);
     PdfColor pdfOddRow = PdfColor.fromInt(VilladexColors().oddRow.value);
-    PdfColor pdfWhiteText = PdfColor.fromInt(VilladexColors().background.value);
 
     /// Set up values
     String startDate = DateFormat.yMMMMd('en_US').format(widget.startDate);
@@ -75,8 +75,10 @@ class _ReportGeneratorState extends State<ReportGenerator> {
 
     double gross =
         analyzer.getGrossByInterval(widget.startDate, widget.endDate);
-    double net =
-        analyzer.getNetByInterval(widget.startDate, widget.endDate);
+    double net = analyzer.getNetByInterval(widget.startDate, widget.endDate);
+
+    List<Associate?> associates = await Associate.fetchAll() ?? [];
+    List<Event?> events = await Event.fetchAll() ?? [];
 
     /// Create Graphs
     // Get income data
@@ -201,7 +203,7 @@ class _ReportGeneratorState extends State<ReportGenerator> {
         pw.MultiPage(
           build: (context) {
             return [
-              getEvents(),
+              getEvents(events, pdfPrimary, pdfOddRow),
             ];
           },
         ),
@@ -214,7 +216,7 @@ class _ReportGeneratorState extends State<ReportGenerator> {
         pw.MultiPage(
           build: (context) {
             return [
-              getAssociates(),
+              getAssociates(associates, pdfPrimary, pdfOddRow),
             ];
           },
         ),
@@ -251,10 +253,10 @@ class _ReportGeneratorState extends State<ReportGenerator> {
               // Gross Profit
               pw.Text("Gross Profit", style: VilladexTextStyles().getPDFText()),
               pw.Text(
-                gross > 0
+                gross >= 0
                     ? "\$${gross.toStringAsFixed(2)}"
                     : "-\$${(gross * -1).toStringAsFixed(2)}",
-                style: gross > 0
+                style: gross >= 0
                     ? VilladexTextStyles().getPDFText().copyWith(
                           color: pdfMoney,
                         )
@@ -271,10 +273,10 @@ class _ReportGeneratorState extends State<ReportGenerator> {
                 style: VilladexTextStyles().getPDFText(),
               ),
               pw.Text(
-                net > 0
+                net >= 0
                     ? "\$${net.toStringAsFixed(2)}"
                     : "-\$${(net * -1).toStringAsFixed(2)}",
-                style: net > 0
+                style: net >= 0
                     ? VilladexTextStyles().getPDFText().copyWith(
                           color: pdfMoney,
                         )
@@ -295,17 +297,119 @@ class _ReportGeneratorState extends State<ReportGenerator> {
   }
 
   /// Returns Events
-  pw.Widget getEvents() {
-    const headers = ["Name", "Date", "Address"];
+  pw.Widget getEvents(List<Event?> events, PdfColor primary, PdfColor oddRow) {
+    const headers = ["Name", "Description", "Date", "Address"];
 
-    return pw.Column(children: [pw.Text("Events")]);
+    List<_EventDataPoint> eventData = events
+        .map((event) => _EventDataPoint(
+            event: event ?? Event(name: "", date: DateTime.now())))
+        .toList();
+
+    return pw.Column(
+      children: [
+        pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.start,
+          children: [
+            pw.Text("Events", style: VilladexTextStyles().getPDFHeading1()),
+          ],
+        ),
+
+        pw.SizedBox(height: 15),
+
+        // Table
+        pw.Table.fromTextArray(
+          // Decoration
+          headerDecoration: pw.BoxDecoration(
+            borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+            color: primary, //VilladexColors().pdfPrimary,
+          ),
+
+          oddRowDecoration: pw.BoxDecoration(
+            color: oddRow, //VilladexColors().pdfOddRow,
+          ),
+
+          cellAlignments: {
+            0: pw.Alignment.centerLeft,
+            1: pw.Alignment.centerLeft,
+            2: pw.Alignment.centerLeft,
+            3: pw.Alignment.centerLeft,
+          },
+
+          /// Get Headers
+          headers: List<String>.generate(headers.length, (col) => headers[col]),
+
+          /// Get Data
+          data: List<List<String>>.generate(
+            eventData.length,
+            (row) => List<String>.generate(
+                headers.length, (col) => eventData[row].getIndex(col)),
+          ),
+        ),
+
+        pw.SizedBox(height: 20),
+      ],
+    );
   }
 
   /// Returns Associates
-  pw.Widget getAssociates() {
-    const headers = ["Name", "Date", "Address"];
+  pw.Widget getAssociates(
+      List<Associate?>? associates, PdfColor primary, PdfColor oddRow) {
+    const headers = ["Name", "Address", "Phone", "Email"];
 
-    return pw.Column(children: [pw.Text("Associates")]);
+    List<_AssociateDataPoint> associateData = associates
+            ?.map((associate) => _AssociateDataPoint(
+                associate: associate ??
+                    Associate(
+                        firstName: "",
+                        lastName: "",
+                        propertyKey: widget.property.key)))
+            .toList() ??
+        [];
+
+    return pw.Column(
+      children: [
+        pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.start,
+          children: [
+            pw.Text("Associates", style: VilladexTextStyles().getPDFHeading1()),
+          ],
+        ),
+
+        pw.SizedBox(height: 15),
+
+        // Table
+        pw.Table.fromTextArray(
+          // Decoration
+          headerDecoration: pw.BoxDecoration(
+            borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+            color: primary, //VilladexColors().pdfPrimary,
+          ),
+
+          oddRowDecoration: pw.BoxDecoration(
+            color: oddRow, //VilladexColors().pdfOddRow,
+          ),
+
+          cellAlignments: {
+            0: pw.Alignment.centerLeft,
+            1: pw.Alignment.centerLeft,
+            2: pw.Alignment.centerLeft,
+            3: pw.Alignment.centerLeft,
+          },
+
+          /// Get Headers
+          headers: List<String>.generate(headers.length, (col) => headers[col]),
+
+          /// Get Data
+          data: List<List<String>>.generate(
+            associateData.length,
+            (row) => List<String>.generate(
+                headers.length, (col) => associateData[row].getIndex(col)),
+          ),
+        ),
+
+        pw.SizedBox(height: 20),
+      ],
+    );
   }
 
   /// Returns Earnings
@@ -519,21 +623,52 @@ class _ReportGeneratorState extends State<ReportGenerator> {
 class _EventDataPoint {
   _EventDataPoint({required Event event})
       : name = event.name,
-        address = event.address?.fullAddress ?? "",
+        description = event.description ?? "",
+        address = event.address?.formattedAddress ?? "",
         date = DateFormat('yMd').format(event.date);
 
   final String name;
   final String address;
   final String date;
+  final String description;
 
   String getIndex(int index) {
     switch (index) {
       case 0:
         return name;
       case 1:
-        return date;
+        return description;
       case 2:
+        return date;
+      case 3:
         return address;
+    }
+    return '';
+  }
+}
+
+class _AssociateDataPoint {
+  _AssociateDataPoint({required Associate associate})
+      : name = associate.name,
+        address = associate.contact?.address?.formattedAddress ?? "N/A",
+        phoneNumber = associate.contact?.phoneNumber ?? "N/A",
+        email = associate.contact?.email ?? "N/A";
+
+  final String name;
+  final String address;
+  final String phoneNumber;
+  final String email;
+
+  String getIndex(int index) {
+    switch (index) {
+      case 0:
+        return name;
+      case 1:
+        return address;
+      case 2:
+        return phoneNumber;
+      case 3:
+        return email;
     }
     return '';
   }
