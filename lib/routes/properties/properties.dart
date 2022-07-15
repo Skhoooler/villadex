@@ -45,7 +45,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
                       return SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Text(
-                          'Welcome, ${snapshot.data?.getString("owner")}',
+                          'Welcome ${snapshot.data?.getString("owner")}',
                           maxLines: 2,
                           overflow: TextOverflow.fade,
                           softWrap: true,

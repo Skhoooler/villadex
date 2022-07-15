@@ -25,6 +25,7 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
 
   final startDay = DateTime.utc(2020);
   final endDay = DateTime.utc(DateTime.now().year + 10);
+  CalendarFormat _calendarFormat = CalendarFormat.month;
 
   List<dynamic> _selectedEvents = [];
 
@@ -47,7 +48,7 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
                   if (snapshot.hasData) {
                     calendar = [
                       TableCalendar(
-                        calendarFormat: CalendarFormat.month,
+                        calendarFormat: _calendarFormat,
                         calendarStyle: getCalendarStyle(),
                         headerStyle: getCalendarHeaderStyle(),
                         startingDayOfWeek: StartingDayOfWeek.sunday,
@@ -59,6 +60,11 @@ class _VilladexCalendarState extends State<VilladexCalendar> {
                         },
                         selectedDayPredicate: (day) {
                           return isSameDay(_selectedDay, day);
+                        },
+                        onFormatChanged: (format) {
+                          setState(() {
+                            _calendarFormat = format;
+                          });
                         },
                         onDaySelected: (selectedDay, focusedDay) {
                           setState(() {

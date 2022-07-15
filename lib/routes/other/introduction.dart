@@ -174,5 +174,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
   _setOwner(String owner) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("owner", owner);
+    prefs.setBool("seen", true);
   }
 }

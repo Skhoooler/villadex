@@ -96,9 +96,11 @@ CalendarStyle getCalendarStyle() {
 HeaderStyle getCalendarHeaderStyle() {
   return const HeaderStyle(
     titleCentered: false,
+    formatButtonShowsNext: false,
 
     // Chevron are the '<' '>' icons to swipe the calendar to the left or right
     rightChevronVisible: true,
     leftChevronVisible: true,
+    formatButtonVisible: true
   );
 }

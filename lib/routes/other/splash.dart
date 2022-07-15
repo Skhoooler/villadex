@@ -85,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const PropertiesPage()));
     } else {
-      await prefs.setBool('seen', true);
+
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const IntroductionPage()));
     }

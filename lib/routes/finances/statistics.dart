@@ -156,15 +156,13 @@ class _VilladexStatisticsState extends State<VilladexStatistics> {
                 flex: 1,
                 child: Center(
                   child: Text(
-                    gross > 0
-                        ? "\$${gross.toStringAsFixed(2)}"
-                        : "-\$${(gross * -1).toStringAsFixed(2)}",
-                    style: gross > 0
+                    "\$${gross.toStringAsFixed(2)}",
+                    style: gross == 0
                         ? VilladexTextStyles().getTertiaryTextStyle().copyWith(
-                              color: VilladexColors().money,
+                              color: VilladexColors().error,
                             )
                         : VilladexTextStyles().getTertiaryTextStyle().copyWith(
-                              color: VilladexColors().error,
+                              color: VilladexColors().money,
                             ),
                   ),
                 ),
@@ -191,15 +189,13 @@ class _VilladexStatisticsState extends State<VilladexStatistics> {
               flex: 1,
               child: Center(
                 child: Text(
-                  net > 0
-                      ? "\$${net.toStringAsFixed(2)}"
-                      : "-\$${(net * -1).toStringAsFixed(2)}",
-                  style: net > 0
+                  "\$${net.toStringAsFixed(2)}",
+                  style: net == 0
                       ? VilladexTextStyles().getTertiaryTextStyle().copyWith(
-                            color: VilladexColors().money,
+                            color: VilladexColors().error,
                           )
                       : VilladexTextStyles().getTertiaryTextStyle().copyWith(
-                            color: VilladexColors().error,
+                            color: VilladexColors().money,
                           ),
                 ),
               ),
@@ -207,6 +203,7 @@ class _VilladexStatisticsState extends State<VilladexStatistics> {
           ],
         ),
 
+        /// Total Expenditures
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
