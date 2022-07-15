@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:villadex/Util/nav_bar.dart';
 import 'package:villadex/routes/properties/forms/property_address_interactor.dart';
@@ -25,7 +26,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
       body: Container(
         color: VilladexColors().background,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             /// Spacing
             const SizedBox(
@@ -36,19 +37,34 @@ class _PropertiesPageState extends State<PropertiesPage> {
             Expanded(
               flex: 2,
               child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  'Welcome, Diana',
-                  textAlign: TextAlign.center,
-                  textScaleFactor: 2.0,
-                  style: GoogleFonts.montserrat(
-                    textStyle: TextStyle(
-                      color: VilladexColors().accent,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
+                height: MediaQuery.of(context).size.height * .15,
+                child: FutureBuilder<SharedPreferences>(
+                  future: SharedPreferences.getInstance(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          'Welcome, ${snapshot.data?.getString("owner")}',
+                          maxLines: 2,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          textScaleFactor: 2.0,
+                          style: GoogleFonts.montserrat(
+                            textStyle: TextStyle(
+                              color: VilladexColors().accent,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
                 ),
               ),
             ),
@@ -58,85 +74,81 @@ class _PropertiesPageState extends State<PropertiesPage> {
               flex: 11,
               child: Container(
                 width: MediaQuery.of(context).size.width * .93,
+                height: MediaQuery.of(context).size.height * .65,
                 color: VilladexColors().background,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     /// Property List
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .95,
-                      height: MediaQuery.of(context).size.height * .6,
-                      child: FutureBuilder<List<Property?>?>(
-                          future: Property.fetchAll(),
-                          builder: (context, snapshot) {
-                            List<Widget> data = [];
-
-                            /// If there are properties in the database
-                            if (snapshot.hasData) {
-                              data = snapshot.data?.map((property) {
-                                    return PropertyListItem(
-                                      property: property!,
-                                      callback: reload,
-                                    );
-                                  }).toList() ??
-                                  [];
-
-                              /// If you are waiting for the properties to fetch
-                            } else {
-                              data = [
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width * .2,
-                                  height: MediaQuery.of(context).size.height * .2,
-                                  child: CircularProgressIndicator(
-                                    color: VilladexColors().primary,
-                                  ),
-                                )
-                              ];
-                            }
-                            return ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: data.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return data[index];
-                                });
-                          }),
-                    ),
-
-
-                    /// Add property pop up modal
                     Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: IconButton(
-                            icon: Icon(
-                              Icons.add_rounded,
-                              color: VilladexColors().accent,
-                              size: 50,
-                            ),
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return PropertyAddressForm(
-                                      callback: _setProperty,
-                                    );
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * .95,
+                        height: MediaQuery.of(context).size.height * .6,
+                        child: FutureBuilder<List<Property?>?>(
+                            future: Property.fetchAll(),
+                            builder: (context, snapshot) {
+                              List<Widget> data = [];
+
+                              /// If there are properties in the database
+                              if (snapshot.hasData) {
+                                data = snapshot.data?.map((property) {
+                                      return PropertyListItem(
+                                        property: property!,
+                                        callback: reload,
+                                      );
+                                    }).toList() ??
+                                    [];
+
+                                /// If you are waiting for the properties to fetch
+                              } else {
+                                data = [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * .2,
+                                    height:
+                                        MediaQuery.of(context).size.height * .2,
+                                    child: CircularProgressIndicator(
+                                      color: VilladexColors().primary,
+                                    ),
+                                  )
+                                ];
+                              }
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: data.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return data[index];
                                   });
                             }),
                       ),
+                    ),
+
+                    /// Add property pop up modal
+                    Center(
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.add_rounded,
+                            color: VilladexColors().accent,
+                            size: 50,
+                          ),
+                          onPressed: () {
+                            showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return PropertyAddressForm(
+                                    callback: _setProperty,
+                                  );
+                                });
+                          }),
                     ),
                   ],
                 ),
               ),
             ),
-
-            /// Spacing
-            const SizedBox(
-              height: 10,
-            )
           ],
         ),
       ),

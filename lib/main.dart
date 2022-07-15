@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:villadex/Style/theme.dart' as villadex_theme;
 import 'package:villadex/routes/properties/properties.dart';
 import 'package:villadex/util/notification_service.dart';
-import 'package:villadex/util/splash.dart';
+import 'package:villadex/routes/other/splash.dart';
 
 void main() async {
   // Set it to only portrait mode

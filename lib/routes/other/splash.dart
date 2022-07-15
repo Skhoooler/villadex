@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:villadex/Style/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../routes/properties/properties.dart';
+import '../properties/properties.dart';
+import 'introduction.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -75,7 +77,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigateHome() async {
     await Future.delayed(Duration(milliseconds: duration));
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => const PropertiesPage()));
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+
+    if (_seen) {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const PropertiesPage()));
+    } else {
+      await prefs.setBool('seen', true);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const IntroductionPage()));
+    }
   }
 }
