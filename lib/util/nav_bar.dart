@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:villadex/Routes/properties/properties.dart' as properties;
 import '../routes/finances/finances.dart' as finances;
 import '../routes/scheduling/calendar.dart' as scheduling;
-import 'package:villadex/Routes/marketing.dart' as marketing;
+import '../routes/marketing/marketing.dart' as marketing;
 
 import '../style/colors.dart';
 
@@ -40,6 +40,7 @@ class _NavBarState extends State<NavBar> {
       selectedLabelStyle: const TextStyle(
         color: Colors.red,
       ),
+      selectedItemColor: VilladexColors().accent,
 
       /// Navigate between pages
       currentIndex: selectedPage,

@@ -61,125 +61,127 @@ class _FinancesPageState extends State<FinancesPage> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * .95,
-                height: MediaQuery.of(context).size.height * .8,
-                child: FutureBuilder<VilladexAnalysis>(
-                  future: VilladexAnalysis.create(),
-                  builder: (context, snapshot) {
-                    List<Widget> data = [];
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * .95,
+                  height: MediaQuery.of(context).size.height * .8,
+                  child: FutureBuilder<VilladexAnalysis>(
+                    future: VilladexAnalysis.create(),
+                    builder: (context, snapshot) {
+                      List<Widget> data = [];
 
-                    if (snapshot.hasData) {
-                      DateTime end = DateTime.now();
-                      DateTime start = end.subtract(Duration(
-                          days: snapshot.data!
-                              .setIntervalDays(selectedInterval)));
+                      if (snapshot.hasData) {
+                        DateTime end = DateTime.now();
+                        DateTime start = end.subtract(Duration(
+                            days: snapshot.data!
+                                .setIntervalDays(selectedInterval)));
 
-                      data = [
-                        /// Dates and Interval Selector
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            /// Dates
-                            Center(
-                              child: Text(
-                                "${DateFormat.yMMMd("en_US").format(DateTime.now().subtract(Duration(days: snapshot.data!.setIntervalDays(selectedInterval)))).toString()}   -   ${DateFormat.yMMMd("en_US").format(DateTime.now()).toString()}",
-                                style: VilladexTextStyles()
-                                    .getSecondaryTextStyle(),
-                              ),
-                            ),
-
-                            /// Select Interval
-                            Center(
-                              child: DropdownButton(
-                                value: selectedIntervalName,
-                                onChanged: (String? newValue) {
-                                  if (newValue == "Weekly") {
-                                    selectedInterval = DataInterval.weekly;
-                                  } else if (newValue == "Bi-Weekly") {
-                                    selectedInterval = DataInterval.biWeekly;
-                                  } else if (newValue == "Monthly") {
-                                    selectedInterval = DataInterval.monthly;
-                                  } else if (newValue == "Bi-Yearly") {
-                                    selectedInterval = DataInterval.biYearly;
-                                  } else if (newValue == "Yearly") {
-                                    selectedInterval = DataInterval.yearly;
-                                  } else if (newValue == "Year-To-Date") {
-                                    selectedInterval = DataInterval.yearToDate;
-                                  }
-
-                                  setState(() {
-                                    selectedIntervalName = newValue ?? "Error";
-                                  });
-                                },
-                                items: [
-                                  'Weekly',
-                                  'Bi-Weekly',
-                                  'Monthly',
-                                  'Bi-Yearly',
-                                  'Yearly',
-                                  'Year-To-Date'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        /// Pie Charts
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * .35,
-                          child: ListView(
-                            physics: const BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
+                        data = [
+                          /// Dates and Interval Selector
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              /// Show Pie Chart
-                              chart.VilladexPieChart(
-                                title: "Top Expenses by Category",
-                                analyzer: snapshot.data!,
-                                earningMode: false,
-                                start: start,
-                                end: end,
+                              /// Dates
+                              Center(
+                                child: Text(
+                                  "${DateFormat.yMMMd("en_US").format(DateTime.now().subtract(Duration(days: snapshot.data!.setIntervalDays(selectedInterval)))).toString()}   -   ${DateFormat.yMMMd("en_US").format(DateTime.now()).toString()}",
+                                  style: VilladexTextStyles()
+                                      .getSecondaryTextStyle(),
+                                ),
                               ),
 
-                              /// Show Pie Chart
-                              chart.VilladexPieChart(
-                                title: "Top Earnings by Category",
-                                analyzer: snapshot.data!,
-                                earningMode: true,
-                                start: start,
-                                end: end,
+                              /// Select Interval
+                              Center(
+                                child: DropdownButton(
+                                  value: selectedIntervalName,
+                                  onChanged: (String? newValue) {
+                                    if (newValue == "Weekly") {
+                                      selectedInterval = DataInterval.weekly;
+                                    } else if (newValue == "Bi-Weekly") {
+                                      selectedInterval = DataInterval.biWeekly;
+                                    } else if (newValue == "Monthly") {
+                                      selectedInterval = DataInterval.monthly;
+                                    } else if (newValue == "Bi-Yearly") {
+                                      selectedInterval = DataInterval.biYearly;
+                                    } else if (newValue == "Yearly") {
+                                      selectedInterval = DataInterval.yearly;
+                                    } else if (newValue == "Year-To-Date") {
+                                      selectedInterval = DataInterval.yearToDate;
+                                    }
+
+                                    setState(() {
+                                      selectedIntervalName = newValue ?? "Error";
+                                    });
+                                  },
+                                  items: [
+                                    'Weekly',
+                                    'Bi-Weekly',
+                                    'Monthly',
+                                    'Bi-Yearly',
+                                    'Yearly',
+                                    'Year-To-Date'
+                                  ].map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
                               ),
                             ],
                           ),
-                        ),
 
-                        /// Statistics
-                        Center(
-                          child: VilladexStatistics(
-                            analyzer: snapshot.data!,
-                            start: start,
-                            end: end,
-                            selectedInterval: selectedInterval,
+                          /// Pie Charts
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * .30,
+                            child: ListView(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                /// Show Pie Chart
+                                chart.VilladexPieChart(
+                                  title: "Top Expenses by Category",
+                                  analyzer: snapshot.data!,
+                                  earningMode: false,
+                                  start: start,
+                                  end: end,
+                                ),
+
+                                /// Show Pie Chart
+                                chart.VilladexPieChart(
+                                  title: "Top Earnings by Category",
+                                  analyzer: snapshot.data!,
+                                  earningMode: true,
+                                  start: start,
+                                  end: end,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ];
-                    }
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return data[index];
-                        });
-                  },
+
+                          /// Statistics
+                          Center(
+                            child: VilladexStatistics(
+                              analyzer: snapshot.data!,
+                              start: start,
+                              end: end,
+                              selectedInterval: selectedInterval,
+                            ),
+                          ),
+                        ];
+                      }
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return data[index];
+                          });
+                    },
+                  ),
                 ),
               ),
             ),

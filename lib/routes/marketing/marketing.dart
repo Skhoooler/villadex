@@ -24,6 +24,7 @@ class _MarketingPageState extends State<MarketingPage> {
         ),
       ),
 
+      backgroundColor: VilladexColors().background,
       /// Bottom Nav Bar
       bottomNavigationBar: const NavBar(),
     );
