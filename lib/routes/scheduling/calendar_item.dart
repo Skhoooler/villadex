@@ -5,6 +5,7 @@ import 'package:villadex/routes/properties/forms/date_time_selector.dart';
 
 import '../../Style/text_styles.dart';
 import '../../model/event_model.dart';
+import '../../util/notification_service.dart';
 
 class CalendarListItem extends StatefulWidget {
   final Event event;
@@ -239,6 +240,7 @@ class _CalendarListItemState extends State<CalendarListItem> {
   }
 
   SimpleDialog _setNotification() {
+    NotificationService notificationService = NotificationService();
     return SimpleDialog(
       title: Center(
         child: Column(
@@ -265,6 +267,8 @@ class _CalendarListItemState extends State<CalendarListItem> {
             onPressed: () {
               //todo: Set Notification here
               setState(() {
+                notificationService.scheduleNotification(
+                    widget.event, notificationDateTime);
                 widget.event.notification = true;
               });
               Navigator.pop(context);

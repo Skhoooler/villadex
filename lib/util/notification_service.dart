@@ -42,7 +42,7 @@ class NotificationService {
     //Handle notification tapped logic here
   }
 
-  Future<void> _scheduleNotification(Event event, DateTime dateTime) async {
+  Future<void> scheduleNotification(Event event, DateTime dateTime) async {
     final timeZone = _TimeZone();
     final timeZoneName = await timeZone.getTimeZoneName();
     final location = await timeZone.getLocation(timeZoneName);
